@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CAS 6.0.x Deployment - WAR Overlays &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Learn how to configure and build your own CAS deployment via the WAR overlay method, get rich quickly, stay healthy indefinitely and respect family and friends in a few very easy steps.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/11/16/cas60-gettingstarted-overlay/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CAS 6.0.x Deployment - WAR Overlays">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/11/16/cas60-gettingstarted-overlay/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="CAS 6.0.x Deployment - WAR Overlays" />
+    <meta name="twitter:description" content="Learn how to configure and build your own CAS deployment via the WAR overlay method, get rich quickly, stay healthy indefinitely and respect family and friends in a few very easy steps." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/11/16/cas60-gettingstarted-overlay/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>CAS 6.0.x Deployment - WAR Overlays</h1>
+  <span class="post-meta">Friday, Nov 16, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    15 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>This is a short and sweet tutorial on how to deploy CAS via <a href="https://apereo.github.io/cas/6.0.x/installation/WAR-Overlay-Installation.html">the WAR Overlay method</a>.</p>
+
+<p>This tutorial specifically requires and focuses on:</p>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">6.0.x</code></li>
+  <li>Java 11</li>
+</ul>
+
+<div class="alert alert-info">
+  <strong>Need Help?</strong><br />If you ever get stuck and are in need of additional assistance, start by reviewing the suggestions <a href="https://apereo.github.io/cas/6.0.x/installation/Troubleshooting-Guide.html">provided here</a>. You may also look at available support options <a href="https://apereo.github.io/cas/Support.html">provided here</a>.
+</div>
+
+<ul id="markdown-toc">
+  <li><a href="#overlaywhat" id="markdown-toc-overlaywhat">Overlay…What?</a></li>
+  <li><a href="#overlays-anatomy" id="markdown-toc-overlays-anatomy">Overlay’s Anatomy</a>    <ul>
+      <li><a href="#properties" id="markdown-toc-properties">Properties</a></li>
+      <li><a href="#dependencies" id="markdown-toc-dependencies">Dependencies</a></li>
+    </ul>
+  </li>
+  <li><a href="#the-build" id="markdown-toc-the-build">The Build</a></li>
+  <li><a href="#configuration" id="markdown-toc-configuration">Configuration</a>    <ul>
+      <li><a href="#keep-track" id="markdown-toc-keep-track">Keep Track</a></li>
+    </ul>
+  </li>
+  <li><a href="#ldap-authentication" id="markdown-toc-ldap-authentication">LDAP Authentication</a></li>
+  <li><a href="#registering-applications" id="markdown-toc-registering-applications">Registering Applications</a>    <ul>
+      <li><a href="#configuration-1" id="markdown-toc-configuration-1">Configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#ticketing" id="markdown-toc-ticketing">Ticketing</a>    <ul>
+      <li><a href="#configuration-2" id="markdown-toc-configuration-2">Configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#multifactor-authentication-via-duo-security" id="markdown-toc-multifactor-authentication-via-duo-security">Multifactor Authentication via Duo Security</a>    <ul>
+      <li><a href="#configuration-3" id="markdown-toc-configuration-3">Configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#monitoring--status" id="markdown-toc-monitoring--status">Monitoring &amp; Status</a>    <ul>
+      <li><a href="#configuration-4" id="markdown-toc-configuration-4">Configuration</a></li>
+    </ul>
+  </li>
+  <li><a href="#overlay-customization" id="markdown-toc-overlay-customization">Overlay Customization</a></li>
+  <li><a href="#user-interface-customizations" id="markdown-toc-user-interface-customizations">User Interface Customizations</a></li>
+  <li><a href="#deploy" id="markdown-toc-deploy">Deploy</a>    <ul>
+      <li><a href="#deploy-behind-a-proxy" id="markdown-toc-deploy-behind-a-proxy">Deploy Behind a Proxy</a></li>
+    </ul>
+  </li>
+  <li><a href="#what-about" id="markdown-toc-what-about">What About…?</a></li>
+  <li><a href="#so" id="markdown-toc-so">So…</a></li>
+</ul>
+
+<h1 id="overlaywhat">Overlay…What?</h1>
+
+<p>Overlays are a strategy to combat repetitive code and/or resources. Rather than downloading the CAS codebase and building it from source, overlays allow you to download a pre-built vanilla CAS web application server provided by the project itself, override/insert specific behavior into it and then merge it all back together to produce the final (web application) artifact. You can find a lot more about how overlays work <a href="https://apereo.github.io/cas/6.0.x/installation/WAR-Overlay-Installation.html">here</a>.</p>
+
+<p>The concept of the WAR Overlay is NOT a CAS invention. It’s specifically an <em>Apache Maven</em> feature and of course, there are techniques and plugins available to apply the same concept to Gradle-based builds as well. For this tutorial, the Gradle overlay we will be working with is <a href="https://github.com/apereo/cas-overlay-template">available here</a>.</p>
+
+<div class="alert alert-info">
+  <strong>Gradle WAR Overlay</strong><br />The Maven WAR overlay template is now deprecated and moved aside. The reference overlay project simply resides here and is transformed to use the Gradle build tool instead. This is done to reduce maintenance overhead and simplify the deployment strategy while allowing future attempts to make auto-generation of the overlay as comfortable as possible.
+</div>
+
+<p>Once you have forked and cloned the repository locally, you’re ready to begin.</p>
+
+<div class="alert alert-info">
+  <strong>Note</strong><br />Remember to switch to the appropriate branch. Today, the <code>master</code> branch of the repository applies to CAS <code>6.0.x</code> deployments. That may not necessarily remain true when you start your own deployment. So examine the branches and make sure you <code>checkout</code> the one matching your intended CAS version.
+</div>
+
+<h1 id="overlays-anatomy">Overlay’s Anatomy</h1>
+
+<p>Similar to Grey’s, a <em>Gradle</em> WAR overlay is composed of several facets the most important of which are the <code class="highlighter-rouge">build.gradle</code> and <code class="highlighter-rouge">gradle.properties</code> file. These are build-descriptor files whose job is to teach Gradle how to obtain, build, configure (and in certain cases deploy) CAS artifacts.</p>
+
+<div class="alert alert-info">
+  <strong>KISS</strong><br />You do not need to download Gradle separately. The project provides one for you automatically with the embedded Gradle Wrapper.
+</div>
+
+<p>The CAS Gradle Overlay is composed of several sections. The ones you need to worry about are the following.</p>
+
+<h2 id="properties">Properties</h2>
+
+<p>In <code class="highlighter-rouge">gradle.properties</code> file, project settings and versions are specified:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.version</span><span class="p">=</span><span class="s">6.0.0</span>
+<span class="py">springBootVersion</span><span class="p">=</span><span class="s">2.1.0.RELEASE</span>
+
+<span class="py">appServer</span><span class="p">=</span><span class="s">-tomcat</span>
+
+<span class="py">gradleVersion</span><span class="p">=</span><span class="s">4.10.2</span>
+<span class="py">tomcatVersion</span><span class="p">=</span><span class="s">9</span>
+<span class="py">tomcatFullVersion</span><span class="p">=</span><span class="s">9.0.12</span>
+
+<span class="py">group</span><span class="p">=</span><span class="s">org.apereo.cas</span>
+<span class="py">sourceCompatibility</span><span class="p">=</span><span class="s">11</span>
+<span class="py">targetCompatibility</span><span class="p">=</span><span class="s">11</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">gradle.properties</code> file describes what versions of CAS, Spring Boot, and Java are required for the deployment. You are in practice mostly concerned with the <code class="highlighter-rouge">cas.version</code> setting and as new (maintenance) releases come out, it would be sufficient to simply update that version and re-run the build.</p>
+
+<p>This might be a good time to review the CAS project’s <a href="https://apereo.github.io/cas/developer/Release-Policy.html">Release Policy</a> as well as <a href="https://apereo.github.io/cas/developer/Maintenance-Policy.html">Maintenance Policy</a>.</p>
+
+<h2 id="dependencies">Dependencies</h2>
+
+<p>The next piece describes the <em>dependencies</em> of the overlay build. These are the set of components almost always provided by the CAS project that will be packaged up and put into the final web application artifact. At a minimum, you need to have the <code class="highlighter-rouge">cas-server-webapp-${appServer}</code> module available because that is the web application into which you intend to inject your settings and customizations if any. Also, note that the module declarations are typically configured to download the CAS version instructed by the property <code class="highlighter-rouge">cas.version</code>.</p>
+
+<p>Here is an example:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">project</span><span class="o">.</span><span class="na">hasProperty</span><span class="o">(</span><span class="s2">"external"</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">compile</span> <span class="s2">"org.apereo.cas:cas-server-webapp:${casServerVersion}"</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">compile</span> <span class="s2">"org.apereo.cas:cas-server-webapp${project.appServer}:${casServerVersion}"</span>
+    <span class="o">}</span>
+    <span class="c1">// Other dependencies may be listed here...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Including a CAS module/dependency in the <code class="highlighter-rouge">build.gradle</code> simply advertises to CAS <em>your intention</em> of turning on a new feature or a variation of a current behavior. Do NOT include something in your build just because it looks and sounds cool. Remember that the point of an overlay is to only keep track of things you actually need and care about, and no more.</p>
+
+<div class="alert alert-warning">
+  <strong>Remember</strong><br />Keep your build clean and tidy. A messy build often leads to a messy deployment, complicates your upgrade path and is a documented cause of early hair loss. Keep changes down to the absolute essentials and document their need for your deployment. If you review the configuration a year from now, you should have an idea of why things are the way they are.
+</div>
+
+<h1 id="the-build">The Build</h1>
+
+<p>Now that you have a basic understanding of the build descriptor, it’s time to actually run the build. A Gradle build is often executed by passing specific goals/commands to Gradle itself, aka <code class="highlighter-rouge">gradlew</code>. So for instance in the terminal and once inside the project directory you could execute things like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>cas-overlay-template
+gradlew clean
+</code></pre></div></div>
+
+<p>The WAR Overlay project provides you with an embedded Gradle <em>wrapper</em> whose job is to first determine whether you have Gradle installed. If not, it will download and configure one for you based on the project’s needs.</p>
+
+<p>So, how are you supposed to know what commands/goals can be passed to the build? You can hit the Gradle guides and docs to study these for sure, but the Overlay project also provides you with a shell script that wraps itself around the Gradle wrapper and provides an easy facade for you to remember commands and their use.</p>
+
+<div class="alert alert-info">
+  <strong>Note</strong><br />When in doubt, <code>gradlew tasks</code> is a good starting position to learn what tasks are available in the project.
+</div>
+
+<p>This is the <code class="highlighter-rouge">build.sh</code> file, which you can run as such:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>cas-overlay-template
+./build.sh <span class="nb">help
+</span>Usage: build.sh ...
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">help</code> command describes the set of available operations you may carry out with the build script.</p>
+
+<div class="alert alert-info">
+  <strong>Remember</strong><br />Docs grow old. Always consult the overlay project's <code>README</code> file to keep to date.
+</div>
+
+<p>As an example, here’s what I see if I were to run the <code class="highlighter-rouge">package</code> command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh copy package
+
+Creating configuration directory under /etc/cas
+Copying configuration files from etc/cas to /etc/cas/config
+etc/cas/config/application.yml -&gt; /etc/cas/config/application.yml
+etc/cas/config/cas.properties -&gt; /etc/cas/config/cas.properties
+etc/cas/config/log4j2.xml -&gt; /etc/cas/config/log4j2.xml
+
+Starting a Gradle Daemon <span class="o">(</span>subsequent builds will be faster<span class="o">)</span>
+Configuration on demand is an incubating feature.
+
+BUILD SUCCESSFUL <span class="k">in </span>14s
+2 actionable tasks: 2 executed
+...
+</code></pre></div></div>
+
+<p>You can see that the build attempts to download, clean, compile and package all artifacts, and finally, it produces a <code class="highlighter-rouge">build/libs/cas.war</code> which you can then use for actual deployments.</p>
+
+<div class="alert alert-info">
+  <strong>Remember</strong><br />You are allowed to pass any of Gradle's native command-line arguments to the <code>build.sh</code> file.
+</div>
+
+<h1 id="configuration">Configuration</h1>
+
+<p>I am going to skip over the configuration of <code class="highlighter-rouge">/etc/cas/config</code> and all that it deals with. If you need the reference, you may always <a href="https://apereo.github.io/cas/6.0.x/configuration/Configuration-Management.html">use this guide</a> to study various aspects of CAS configuration.</p>
+
+<p>Suffice it to say that, quite simply, CAS deployment expects <em>the main</em> configuration file to be found under <code class="highlighter-rouge">/etc/cas/config/cas.properties</code>. This is a key-value store that is able to dictate and alter the behavior of the running CAS software.</p>
+
+<p>As an example, you might encounter something like:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.server.name</span><span class="p">=</span><span class="s">https://cas.example.org:8443</span>
+<span class="py">cas.server.prefix</span><span class="p">=</span><span class="s">https://cas.example.org:8443/cas</span>
+<span class="py">logging.config</span><span class="p">=</span><span class="s">file:/etc/cas/config/log4j2.xml</span>
+</code></pre></div></div>
+
+<p>…which at a minimum, identifies the CAS server’s URL and prefix and instructs the running server to locate the logging configuration at <code class="highlighter-rouge">file:/etc/cas/config/log4j2.xml</code>. The overlay by default ships with a <code class="highlighter-rouge">log4j2.xml</code> that you can use to customize logging locations, levels, etc. Note that the presence of all that is contained inside <code class="highlighter-rouge">/etc/cas/config/</code> is optional. CAS will continue to fall back onto defaults if the directory and the files within are not found.</p>
+
+<h2 id="keep-track">Keep Track</h2>
+
+<p>It is <strong>VERY IMPORTANT</strong> that you contain and commit the entire overlay directory (save the obvious exclusions such as the <code class="highlighter-rouge">build</code> directory) into some sort of source control system, such as <code class="highlighter-rouge">git</code>. Treat your deployment just like any other project with tags, releases, and functional baselines.</p>
+
+<h1 id="ldap-authentication">LDAP Authentication</h1>
+
+<p>We need to first establish a primary mode of validating credentials by sticking with <a href="https://apereo.github.io/cas/6.0.x/installation/LDAP-Authentication.html">LDAP authentication</a>. The strategy here, as indicated by the CAS documentation, is to declare the intention/module in the build script:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">compile</span> <span class="s2">"org.apereo.cas:cas-server-support-ldap:${casServerVersion}"</span>
+</code></pre></div></div>
+
+<p>…and then configure the relevant <code class="highlighter-rouge">cas.authn.ldap[x]</code> settings for the directory server in use. Most commonly, that would translate into the following settings:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">cas.authn.ldap[0]</span><span class="py">.type</span><span class="p">=</span><span class="s">AUTHENTICATED</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.ldapUrl</span><span class="p">=</span><span class="s">ldaps://ldap1.example.org</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.baseDn</span><span class="p">=</span><span class="s">dc=example,dc=org</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.searchFilter</span><span class="p">=</span><span class="s">cn={user}</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.bindDn</span><span class="p">=</span><span class="s">cn=Directory Manager,dc=example,dc=org</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.bindCredential</span><span class="p">=</span><span class="s">...</span>
+</code></pre></div></div>
+
+<p>To resolve and fetch the needed attributes which will be used later by CAS for release, the simplest way would be to let LDAP authentication retrieve the attributes directly from the directory server.  The following setting allows us to do just that:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">cas.authn.ldap[0]</span><span class="py">.principalAttributeList</span><span class="p">=</span><span class="s">memberOf,cn,givenName,mail</span>
+</code></pre></div></div>
+
+<h1 id="registering-applications">Registering Applications</h1>
+
+<p>Client applications that wish to use the CAS server for authentication must be registered with the server apriori. CAS provides a number of <a href="https://apereo.github.io/cas/6.0.x/services/Service-Management.html#storage">facilities to keep track of the registration records</a> and you may choose any that fits your needs best. In more technical terms, CAS deals with service management using two specific components: Individual implementations that support a form of a database are referred to as <em>Service Registry</em> components and they are many. There is also a parent component that sits on top of the configured service registry as more of an orchestrator that provides a generic facade and entry point for the rest of CAS without entangling all other operations and subsystems with the specifics and particulars of a storage technology.</p>
+
+<p>In this tutorial, we are going to try to configure CAS with <a href="https://apereo.github.io/cas/6.0.x/services/JSON-Service-Management.html">the JSON service registry</a>.</p>
+
+<h2 id="configuration-1">Configuration</h2>
+
+<p>First, ensure you have declared the appropriate module/intention in the build:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">compile</span> <span class="s2">"org.apereo.cas:cas-server-support-json-service-registry:${casServerVersion}"</span>
+</code></pre></div></div>
+
+<p>Next, you must teach CAS how to look up JSON files to read and write registration records. This is done in the <code class="highlighter-rouge">cas.properties</code> file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.serviceRegistry.initFromJson</span><span class="p">=</span><span class="s">false</span>
+<span class="py">cas.serviceRegistry.json.location</span><span class="p">=</span><span class="s">file:/etc/cas/services</span>
+</code></pre></div></div>
+
+<p>…where a sample <code class="highlighter-rouge">ApplicationName-1001.json</code> would then be placed inside <code class="highlighter-rouge">/etc/cas/services</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://app.example.org"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"ApplicationName"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"evaluationOrder"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h1 id="ticketing">Ticketing</h1>
+
+<p>A robust CAS deployment requires the presence and configuration of an <em>internal</em> database that is responsible for <a href="https://apereo.github.io/cas/6.0.x/ticketing/Configuring-Ticketing-Components.html">keeping track of tickets</a> issued by CAS. CAS itself comes by default with a memory-based node-specific cache that is often more than sufficient for smaller deployments or certain variations of a <a href="https://apereo.github.io/cas/6.0.x/planning/High-Availability-Guide.html">clustered deployment</a>. Just like the service management facility, large variety of databases and storage options are supposed by CAS under the facade of a <em>Ticket Registry</em>.</p>
+
+<p>In this tutorial, we are going to configure CAS to use a <a href="https://apereo.github.io/cas/6.0.x/ticketing/Hazelcast-Ticket-Registry.html">Hazelcast Ticket Registry</a> with the assumption that our deployment is going to be deployed in an AWS-sponsored environment. Hazelcast Ticket Registry is often a decent choice when deploying CAS in a cluster and can take advantage of AWS’s native support for Hazelcast in order to read node metadata properly and locate other CAS nodes in the same cluster in order to present a common, global and shared ticket registry. This is an ideal choice that requires very little manual work and/or troubleshooting, comparing to using options such as Multicast or manually noting down the address and location of each CAS server in the cluster.</p>
+
+<h2 id="configuration-2">Configuration</h2>
+
+<p>First, ensure you have declared the appropriate module/intention in the build:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">compile</span> <span class="s2">"org.apereo.cas:cas-server-support-hazlcast-ticket-registry:${casServerVersion}"</span>
+</code></pre></div></div>
+
+<p>Next, the AWS-specific configuration of Hazelcast would go into our <code class="highlighter-rouge">cas.properties</code>:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.ticket.registry.hazelcast.cluster.discovery.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">cas.ticket.registry.hazelcast.cluster.discovery.aws.accessKey</span><span class="p">=</span><span class="s">...</span>
+<span class="py">cas.ticket.registry.hazelcast.cluster.discovery.aws.secretKey</span><span class="p">=</span><span class="s">...</span>
+<span class="py">cas.ticket.registry.hazelcast.cluster.discovery.aws.region</span><span class="p">=</span><span class="s">us-east-1</span>
+<span class="py">cas.ticket.registry.hazelcast.cluster.discovery.aws.securityGroupName</span><span class="p">=</span><span class="s">...</span>
+<span class="c"># cas.ticket.registry.hazelcast.cluster.discovery.aws.tagKey=
+# cas.ticket.registry.hazelcast.cluster.discovery.aws.tagValue=
+</span></code></pre></div></div>
+
+<p>That should do it.</p>
+
+<p>Of course, if you are working on a more modest CAS deployment in an environment that is more or less owned by you and you prefer more explicit control over CAS node registrations in your cluster, the following settings would be more ideal:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># cas.ticket.registry.hazelcast.cluster.instanceName=localhost
+# cas.ticket.registry.hazelcast.cluster.port=5701
+# cas.ticket.registry.hazelcast.cluster.portAutoIncrement=true
+</span><span class="py">cas.ticket.registry.hazelcast.cluster.members</span><span class="p">=</span><span class="s">123.321.123.321,223.621.123.521,...</span>
+</code></pre></div></div>
+
+<h1 id="multifactor-authentication-via-duo-security">Multifactor Authentication via Duo Security</h1>
+
+<p>As a rather common use case, the majority of CAS deployments that intend to turn on multifactor authentication support tend to do so via <a href="https://apereo.github.io/cas/6.0.x/installation/DuoSecurity-Authentication.html">Duo Security</a>. We will be going through the same exercise here where we let CAS trigger Duo Security for users who belong to the <code class="highlighter-rouge">mfa-eligible</code> group, indicated by the <code class="highlighter-rouge">memberOf</code> attribute on the LDAP user account.</p>
+
+<h2 id="configuration-3">Configuration</h2>
+
+<p>First, ensure you have declared the appropriate module/intention in the build:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">compile</span> <span class="s2">"org.apereo.cas:cas-server-support-duo:${casServerVersion}"</span>
+</code></pre></div></div>
+
+<p>Then, put specific Duo Security settings in `cas.properties. Things such as the secret key, integration key, etc which should be provided by your Duo Security subscription:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">cas.authn.mfa.duo[0]</span><span class="py">.duoSecretKey</span><span class="p">=</span>
+<span class="err">cas.authn.mfa.duo[0]</span><span class="py">.duoApplicationKey</span><span class="p">=</span>
+<span class="err">cas.authn.mfa.duo[0]</span><span class="py">.duoIntegrationKey</span><span class="p">=</span>
+<span class="err">cas.authn.mfa.duo[0]</span><span class="py">.duoApiHost</span><span class="p">=</span>
+</code></pre></div></div>
+
+<p>At this point, we have enabled Duo Security and we just need to find a way to instruct CAS to route the authentication flow over to Duo Security in the appropriate condition. Our task here is to build a special condition that activates multifactor authentication if any of the values assigned to the attribute <code class="highlighter-rouge">memberOf</code> contain the value <code class="highlighter-rouge">mfa-eligible</code>. This condition is placed in the <code class="highlighter-rouge">cas.properties</code> file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.authn.mfa.globalPrincipalAttributeNameTriggers</span><span class="p">=</span><span class="s">memberOf</span>
+<span class="py">cas.authn.mfa.globalPrincipalAttributeValueRegex</span><span class="p">=</span><span class="s">mfa-eligible</span>
+</code></pre></div></div>
+
+<p>If the above condition holds true and CAS is to route to a multifactor authentication flow, that would obviously be one supported and provided by Duo Security since that’s the only provider that is currently configured to CAS.</p>
+
+<h1 id="monitoring--status">Monitoring &amp; Status</h1>
+
+<p>Many CAS deployments rely on the <code class="highlighter-rouge">/status</code> endpoint for monitoring the health and activity of the CAS deployment. This endpoint is typically secured via an IP address, allowing external monitoring tools and load balancers to reach the endpoint and parse the output. In this quick exercise, we are going to accomplish that task, allowing the <code class="highlighter-rouge">status</code> endpoint to be available over HTTP to <code class="highlighter-rouge">localhost</code>.</p>
+
+<h2 id="configuration-4">Configuration</h2>
+
+<p>To enable and expose the <code class="highlighter-rouge">status</code> endpoint, the following settings should come in handy:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">management.endpoints.web.base-path</span><span class="p">=</span><span class="s">/actuator</span>
+<span class="py">management.endpoints.web.exposure.include</span><span class="p">=</span><span class="s">status</span>
+<span class="py">management.endpoint.status.enabled</span><span class="p">=</span><span class="s">true</span>
+
+<span class="py">cas.monitor.endpoints.endpoint.status.access</span><span class="p">=</span><span class="s">IP_ADDRESS</span>
+<span class="py">cas.monitor.endpoints.endpoint.status.requiredIpAddresses</span><span class="p">=</span><span class="s">127.0.0.1</span>
+</code></pre></div></div>
+
+<p>Remember that the default path for endpoints exposed over the web is at <code class="highlighter-rouge">/actuator</code>, such as <code class="highlighter-rouge">/actuator/status</code>.</p>
+
+<h1 id="overlay-customization">Overlay Customization</h1>
+
+<p>The <code class="highlighter-rouge">build/libs</code> directory contains the results of the overlay process. Since I have not actually customized and overlaid anything yet, all configuration files simply match their default and are packaged as such. As an example, let’s grab <a href="https://apereo.github.io/cas/6.0.x/ux/User-Interface-Customization-Localization.html">the default message bundle</a> and change the text associated with <code class="highlighter-rouge">screen.welcome.instructions</code>.</p>
+
+<div class="alert alert-warning">
+  <strong>Remember</strong><br />Do NOT ever make changes in the <code>build</code> directory. The changesets will be cleaned out and set back to defaults every time you do a build. Follow the overlay process to avoid surprises.
+</div>
+
+<p>First, I will need to move the file to my project directory so that during the overlay process Gradle can use that instead of what is provided by default.</p>
+
+<p>Here we go:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh getresource messages.properties
+
+Exploded the CAS web application file at build/cas
+Searching <span class="k">for </span>resource name messages.properties...
+Found resource<span class="o">(</span>s<span class="o">)</span>:
+build/cas/WEB-INF/classes/messages.properties
+Created resource at src/main/resources/messages.properties
+src/main/resources/messages.properties
+</code></pre></div></div>
+
+<p>Then I’ll leave everything in that file alone, except the line I want to change.</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span>
+<span class="py">screen.welcome.instructions</span><span class="p">=</span><span class="s">Speak friend and enter.</span>
+<span class="err">...</span>
+</code></pre></div></div>
+
+<p>Then I’ll package things up as usual.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh package
+</code></pre></div></div>
+
+<p>If I <code class="highlighter-rouge">explode</code> the built web application again and look at <code class="highlighter-rouge">build/cas/WEB-INF/classes/messages.properties</code> after the build, I should see that the overlay process has picked and overlaid onto the default <em>my version</em> of the file.</p>
+
+<div class="alert alert-info">
+  <strong>Remember</strong><br />Only overlay and modify files you actually need and try to use externalized resources and configuration as much as possible. Just because you CAN override something in the default package, it doesn't mean that you should.
+</div>
+
+<h1 id="user-interface-customizations">User Interface Customizations</h1>
+
+<p>In order to modify the CAS HTML views, each file first needs to be brought over into the overlay. You can use the <code class="highlighter-rouge">build.sh listviews</code> command to see what HTML views are available for customizations. Once chosen, simply use <code class="highlighter-rouge">build.sh getview footer.html</code> to bring the view into your overlay.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exploded the CAS web application file at build/cas
+Searching <span class="k">for </span>view name footer.html...
+Found view<span class="o">(</span>s<span class="o">)</span>:
+build/cas/WEB-INF/classes/templates/fragments/footer.html
+Created view at src/main/resources/templates/fragments/footer.html
+src/main/resources/templates/fragments/footer.htm
+</code></pre></div></div>
+
+<p>Now that you have the <code class="highlighter-rouge">footer.html</code> brought into the overlay, you can simply modify the file at <code class="highlighter-rouge">src/main/resources/templates/fragments/footer.html</code>, and then repackage and run the build as usual.</p>
+
+<h1 id="deploy">Deploy</h1>
+
+<p>You have a number of options when it comes to deploying the final <code class="highlighter-rouge">cas.war</code> file. The easiest approach would be to simply use the <code class="highlighter-rouge">build.sh run</code> command and have the overlay be deployed inside an embedded container. By default, the CAS web application expects to run on the secure port <code class="highlighter-rouge">8443</code> which requires that you create a keystore file at <code class="highlighter-rouge">/etc/cas/</code> named <code class="highlighter-rouge">thekeystore</code>.</p>
+
+<h2 id="deploy-behind-a-proxy">Deploy Behind a Proxy</h2>
+
+<p>Using the embedded Apache Tomcat container provided by CAS automatically is the recommended approach in almost all cases (The embedded bit; not the Apache Tomcat bit) as the container configuration is entirely automated by CAS and its version is guaranteed to be compatible with the running CAS deployment. Furthermore, updates and maintenance of the servlet container are handled at the CAS project level where you as the adopter are only tasked with making sure your deployment is running the latest available release to take advantage of such updates.</p>
+
+<p>If you wish to run CAS via the embedded Apache Tomcat container behind a proxy or load balancer and have that entity terminate SSL, you will need to open up a communication channel between the proxy and CAS such that (as an example):</p>
+
+<ul>
+  <li>Apache Tomcat runs on port 8080, assuming that’s what the proxy uses to talk to CAS.</li>
+  <li>Apache Tomcat has SSL turned off.</li>
+  <li>Apache Tomcat connector listening on the above port is marked as secure.</li>
+</ul>
+
+<p>The above tasklist translates to the following properties expected to be found in your <code class="highlighter-rouge">cas.properties</code>:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">server.port</span><span class="p">=</span><span class="s">8080</span>
+<span class="py">server.ssl.enabled</span><span class="p">=</span><span class="s">false</span>
+<span class="py">cas.server.tomcat.http.enabled</span><span class="p">=</span><span class="s">false</span>
+<span class="py">cas.server.tomcat.httpProxy.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">cas.server.tomcat.httpProxy.secure</span><span class="p">=</span><span class="s">true</span>
+<span class="py">cas.server.tomcat.httpProxy.scheme</span><span class="p">=</span><span class="s">https</span>
+</code></pre></div></div>
+
+<h1 id="what-about">What About…?</h1>
+
+<p>For more content, <a href="https://apereo.github.io/tags/#CAS">please see this link</a>.</p>
+
+<h1 id="so">So…</h1>
+
+<p>It’s important that you start off simple and make changes one step at a time. Once you have a functional environment, you can gradually and slowly add customizations to move files around.</p>
+
+<p>I hope this review was of some help to you and I am sure that both this post as well as the functionality it attempts to explain can be improved in any number of ways. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F11%2F16%2Fcas60-gettingstarted-overlay%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=CAS+6.0.x+Deployment+-+WAR+Overlays&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F11%2F16%2Fcas60-gettingstarted-overlay%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F11%2F16%2Fcas60-gettingstarted-overlay%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F11%2F16%2Fcas60-gettingstarted-overlay%2F&amp;title=CAS+6.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F11%2F16%2Fcas60-gettingstarted-overlay%2F&amp;title=CAS+6.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F11%2F16%2Fcas60-gettingstarted-overlay%2F&amp;name=CAS+6.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F11%2F16%2Fcas60-gettingstarted-overlay%2F&amp;title=CAS+6.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F11%2F16%2Fcas60-gettingstarted-overlay%2F&amp;title=CAS+6.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F11%2F16%2Fcas60-gettingstarted-overlay%2F&amp;t=CAS+6.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

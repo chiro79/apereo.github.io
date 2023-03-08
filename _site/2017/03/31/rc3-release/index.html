@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CAS 5.1.0 RC3 Feature Release &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="...in which I present an overview of CAS 5.1.0 RC3 release.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/03/31/rc3-release/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CAS 5.1.0 RC3 Feature Release">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/03/31/rc3-release/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="CAS 5.1.0 RC3 Feature Release" />
+    <meta name="twitter:description" content="...in which I present an overview of CAS 5.1.0 RC3 release." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/03/31/rc3-release/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>CAS 5.1.0 RC3 Feature Release</h1>
+  <span class="post-meta">Friday, Mar 31, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    12 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <!--
+<div class="alert alert-danger">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>WATCH OUT!</strong><br/>This post is not official yet and may be heavily edited as CAS development makes progress. <a href="https://apereo.github.io/feed.xml">Watch</a> for further updates.
+</div>
+-->
+
+<p>The official CAS <code class="highlighter-rouge">5.0.0</code> GA was released on <a href="https://github.com/apereo/cas/releases/tag/v5.0.0">November 7th 2016</a>. Since then,
+the project has been moving forward with development of the next feature release
+that is tagged as <code class="highlighter-rouge">5.1.0</code>. This post intends to highlight some of the improvements
+and enhancements packed into the third release candidate in the <code class="highlighter-rouge">5.1.0</code> series.</p>
+
+<p>The in-development documentation of CAS <code class="highlighter-rouge">5.1.0</code> is <a href="https://apereo.github.io/cas/development/">available here</a>.
+The release schedule is also <a href="https://github.com/apereo/cas/milestones">available here</a>. The release policy
+is <a href="https://apereo.github.io/cas/developer/Release-Policy.html">available here</a>.</p>
+
+<p>If you are looking for additional info on the previous release candidate, <a href="https://apereo.github.io/2017/02/24/rc2-release/">please see this post</a>.</p>
+
+<!-- TOC -->
+
+<ul>
+  <li><a href="#embedded-container-modules">Embedded Container Modules</a></li>
+  <li><a href="#hazelcast-ticket-registry">Hazelcast Ticket Registry</a></li>
+  <li><a href="#embedded-tomcat-ssl-valve">Embedded Tomcat SSL Valve</a></li>
+  <li><a href="#administrative-endpoint-security">Administrative Endpoint Security</a></li>
+  <li><a href="#scripted-username-attribute-providers">Scripted Username Attribute Providers</a></li>
+  <li><a href="#spnego-webflow-authentication">SPNEGO Webflow Authentication</a></li>
+  <li><a href="#jpa-ticket-registry">JPA Ticket Registry</a></li>
+  <li><a href="#ticket-metadata-and-catalog">Ticket Metadata and Catalog</a></li>
+  <li><a href="#embedded-tomcat-default-connector-settings">Embedded Tomcat Default Connector Settings</a></li>
+  <li><a href="#code-cleanup-and-optimization">Code Cleanup and Optimization</a></li>
+  <li><a href="#configuration-panel">Configuration Panel</a></li>
+  <li><a href="#spring-cloud-configuration-server">Spring Cloud Configuration Server</a></li>
+  <li><a href="#dynamodb-ticket-registry">DynamoDb Ticket Registry</a></li>
+  <li><a href="#cas-heroku-demos">CAS Heroku Demos</a></li>
+  <li><a href="#attribute-repositories--attributes">Attribute Repositories &amp; Attributes</a></li>
+  <li><a href="#aws-cloudwatch-support">AWS CloudWatch Support</a></li>
+  <li><a href="#sass-auto-compilation">Sass Auto Compilation</a></li>
+  <li><a href="#rest-authentication-via-x509">REST Authentication via X.509</a></li>
+  <li><a href="#x509-principal-resolution">X.509 Principal Resolution</a></li>
+  <li><a href="#ws-fed-protocol">WS-Fed Protocol</a></li>
+  <li><a href="#attribute-filtering-policies">Attribute Filtering Policies</a></li>
+  <li><a href="#jasypt-support">Jasypt Support</a></li>
+  <li><a href="#dynamodb-service-registry">DynamoDb Service Registry</a></li>
+  <li><a href="#minor-bug-fixes">Minor Bug Fixes</a>
+    <ul>
+      <li><a href="#community-contributions">Community Contributions</a></li>
+      <li><a href="#others">Others</a></li>
+    </ul>
+  </li>
+  <li><a href="#library-upgrades">Library Upgrades</a></li>
+  <li><a href="#whats-next">What’s Next?</a></li>
+  <li><a href="#get-involved">Get Involved</a></li>
+  <li><a href="#das-ende">Das Ende</a></li>
+</ul>
+
+<!-- /TOC -->
+
+<h2 id="embedded-container-modules">Embedded Container Modules</h2>
+
+<p>In previous feature releases, the CAS server web application module shipped automatically with an embedded Tomcat container.
+This presented a few difficulties to folks who wanted to step outside the box and get the CAS web application deployed in alternative
+containers such as WebSphere, JBoss, etc.</p>
+
+<p>Starting with this release candidate, the CAS server web application switches back to its original vanilla state where nothing is embedded by default. This should allow you to deploy CAS to any container that is servlet-spec compliant by CAS requirements. However, <a href="https://apereo.github.io/cas/development/installation/Configuring-Servlet-Container.html">additional modules are provided for embedded containers</a> that are Apache Tomcat, Jetty and Undertow. If you had been previously working with the embedded container and running Apache Tomcat natively, you do need to switch the webapp module to one that contains an embedded container of your choice.</p>
+
+<p>Note that embedded-container modules may be deployed to externally-configured containers too. CAS should detect the external instance and auto-disable the embedded container from bootstrapping itself, regardless of container type.</p>
+
+<h2 id="hazelcast-ticket-registry">Hazelcast Ticket Registry</h2>
+
+<p>Thanks to community contributions, the Hazelcast Ticket Registry is <a href="https://github.com/apereo/cas/pull/2361">reorganized</a> to improve its performance, by splitting the underlying cache in half. Work is also done to ensure the registry is prepped to handle additional ticket types dynamically.</p>
+
+<h2 id="embedded-tomcat-ssl-valve">Embedded Tomcat SSL Valve</h2>
+
+<p>Thanks to community contributions, the embedded tomcat container gains support for configuration of the SSL Valve.
+This should be useful if you are trying to handle X.509 authentication at the servlet container level.</p>
+
+<h2 id="administrative-endpoint-security">Administrative Endpoint Security</h2>
+
+<p>Individual endpoints that are exposed by the CAS admin panels each have their own security settings. To make the configuration easier, there now exists a single block that may control the security of all settings globally, while still allowing individual overrides to take over.</p>
+
+<p>As an additional option, endpoints that are secured with Spring Security now can take advantage of JAAS authentication.</p>
+
+<h2 id="scripted-username-attribute-providers">Scripted Username Attribute Providers</h2>
+
+<p><a href="https://apereo.github.io/cas/development/integration/Attribute-Release-PrincipalId.html">Username attribute providers</a> linked to a service definition are enhanced to accommodate further scripting techniques via Groovy.
+Also, a number of providers are now able to apply transformations on the final username returned back to the application, such as turning the id into all caps, etc.</p>
+
+<h2 id="spnego-webflow-authentication">SPNEGO Webflow Authentication</h2>
+
+<p>The <a href="https://apereo.github.io/cas/development/installation/SPNEGO-Authentication.html">SPNEGO functionality</a> still had a few references and instructions on how changes that needed to be manually applied to the webflow. Those are now removed and automated internally to match the manual steps.</p>
+
+<h2 id="jpa-ticket-registry">JPA Ticket Registry</h2>
+
+<p>The <a href="https://apereo.github.io/cas/development/installation/JPA-Ticket-Registry.html">JPA ticket registry</a> no longer requests a hardcoded dependency link to the OAuth module. In the past, the registry simply auto-created OAuth tables and entities given the components were found and scanned automatically as a result of that dependency link. Today, that chain is removed and the registry shall only recognize and act upon OAuth functionality, if the functionality is explicitly turned on.</p>
+
+<h2 id="ticket-metadata-and-catalog">Ticket Metadata and Catalog</h2>
+
+<p>Traditionally, ticket types in CAS are mostly concerned with ticket-granting tickets, service tickets, proxy tickets, etc. These are distinct types that are defined as first-class citizens of the CAS public API. Over time, there have emerged additional tickets types that represent various other forms of <em>tokens</em> to CAS, such as OAuth codes, access tokens, refresh tokens, etc. Each ticket type has its own lifespan and other settings too. How do ticket registries deal with additional types, given their presence and functionality can only be discovered at runtime dynamically?</p>
+
+<p>Some took shortcuts. For instance, the JPA ticket registry created a hard-link to the OAuth module (described above) so it could ensure OAuth tickets were stored in separate tables as distinct entities, etc. It asked for pre-authorized knowledge of the CAS API, even though the functionality controlled by that API may not even be in use at all. Is there a reason the registry should handle OAuth-related functionality <em>even when</em> OAuth is not even enabled or required by the deployment?</p>
+
+<p>Not a trick question.</p>
+
+<p>So the target goal is that each registry implementation (and all of CAS really) should be able to dynamically realize what ticket types are used by the CAS runtime and what ticketing-related functionality is actually enabled by the deployer. The discovery mechanism should provide enough information, as a catalog, to the relevant modules about known types, their metadata and various other required properties so each registry can dynamically and generically look up that metadata and regroup itself to handle each unique type. Advantages of this approach are:</p>
+
+<ol>
+  <li>No need to establish static linkage between CAS modules to teach each about various ticket types exposed in the module API. As you can imagine, over time given new tickets types that have emerged and the list of registries supported by CAS, static linking is simply non-maintainable and core logic in each registry can get very messy if it were to deal with 8+ different ticket types, caches, storage requirements, etc.</li>
+  <li>Given no static linking, LOC will be reduced down to the bare minimum and what may be auto-discovered at runtime.</li>
+  <li>Given no static linking, maintenance and extensions to the CAS API can be done much more comfortably.</li>
+  <li>Given no static linking, the amount of extra [yet needless] work that would be carried out by each registry is only activated <em>IIF</em> the feature is actually utilized by the deployment.</li>
+</ol>
+
+<p>So starting with this release candidate, modules that intend to provide their own special flavors of tickets when necessary register the relevant types into the “global ticket catalog” as it were. Registries are then freed up look into the catalog and reorganize themselves as needed to handle all ticket types.</p>
+
+<h2 id="embedded-tomcat-default-connector-settings">Embedded Tomcat Default Connector Settings</h2>
+
+<p>In the event that you decide to run CAS without any SSL configuration in <em>proxying</em> mode and perhaps on a non-secure port,
+there are now additional settings exposed in the configuration that allow you to control the behavior of the connector linked 
+to the port, to mark it as <code class="highlighter-rouge">secure</code> with a scheme of <code class="highlighter-rouge">https</code>, etc.</p>
+
+<h2 id="code-cleanup-and-optimization">Code Cleanup and Optimization</h2>
+
+<p>Thanks to community contributions, the CAS codebase is revitalized ever more to make sure
+most if not all underlying components adhere to proper coding standards and design practices.
+Changes in this area include adjustments to style guidelines, constructor-based dependency injections
+and better adherence to the native Java 8 Collections and Lambda APIs.</p>
+
+<h2 id="configuration-panel">Configuration Panel</h2>
+
+<p>A number of enhancements are applied to the CAS configuration panel to ensure it can detect properties that are changed manually
+in configuration sources (i.e <code class="highlighter-rouge">cas|application.properties</code>). The panel is also able to now immediately apply configuration changes. This item is closely related to the changes done, described below, to externalize the deployment of the Spring Cloud Configuration Server.</p>
+
+<p><img src="https://cloud.githubusercontent.com/assets/1205228/23504845/60464f12-ff56-11e6-8c82-1e4107638dac.png" alt="image" /></p>
+
+<h2 id="spring-cloud-configuration-server">Spring Cloud Configuration Server</h2>
+
+<div class="alert alert-warning">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Beware</strong><br />This may be a breaking configuration change. 
+  Consult <a href="https://apereo.github.io/cas/development/">the docs</a> to learn more.
+</div>
+
+<p>In previous versions and release candidates, CAS shipped with an embedded configuration server backed by Spring Cloud. While extremely powerful, this added a number of complications such as bootstrap start-up times and extra care around securing various endpoints, etc. In this release candidate, the <a href="https://apereo.github.io/cas/development/installation/Configuration-Server-Management.html">configuration server functionality</a> is pulled out of the main CAS server web application and is produced as a separate project with its own overlay. Deployments may choose to run CAS in a <em>standalone</em> mode or they may wish to let CAS become a client of the centralized configuration server consuming settings from multiple sources for a variety of profiles, etc.</p>
+
+<p>Note that if you’d deployed CAS with the understanding of reading configuration files from the default <code class="highlighter-rouge">/etc/cas/config</code>, then you should have very little, if anything, to worry about if and when you make the jump. If you have deviated from the defaults and decided to go your own way, please consult the documentation to learn about needed readjustments.</p>
+
+<h2 id="dynamodb-ticket-registry">DynamoDb Ticket Registry</h2>
+
+<p>CAS gains <a href="https://apereo.github.io/cas/development/installation/DynamoDb-Ticket-Registry.html">support for DynamoDb</a> as yet another option for its ticket registry. This feature might look more attractive for those who wish to use AWS as the deployment environment and take advantage of native platform services and offerings.</p>
+
+<h2 id="cas-heroku-demos">CAS Heroku Demos</h2>
+
+<p>Demo instances of both the CAS server and CAS Management server web applications have been updated to run the latest versions of CAS 5.</p>
+
+<h2 id="attribute-repositories--attributes">Attribute Repositories &amp; Attributes</h2>
+
+<div class="alert alert-warning">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Beware</strong><br />This may be a breaking configuration change. 
+  Consult <a href="https://apereo.github.io/cas/development/">the docs</a> to learn more.
+</div>
+
+<p>A <a href="https://github.com/apereo/cas/issues/2083">requested improvement</a> from the <code class="highlighter-rouge">5.0.x</code> days; Deployments that cannot not rely on the attribute retrieval mechanism done during the same authentication request/transaction typically use separate attribute repositories to define retrieval rules. This allows one to for instance say:</p>
+
+<p><em>Authenticate against a JDBC source, but retrieve attributes from separate LDAP and Groovy sources.</em></p>
+
+<p>Or a bit more advanced:</p>
+
+<p><em>Authenticate against an LDAP source, but retrieve attributes from multiple LDAP repositories yet map attributes for each differently depending on the authentication source</em>.</p>
+
+<p>So long story short, attributes that were to be retrieved from such sources were all defined in one common block global to all repositories. In this release, the attributes are removed from the global common block in CAS configuration settings and made specific for each attribute repository instance that is defined. This provides a much more flexible configuration where one could for instance then say:</p>
+
+<p><em>Authenticate against a JDBC source, but define two LDAP sources for attributes where one is only allowed to request/retrieve attributes A,B,C while the other can only request/retrieve X,Y,C. Oh…map these attributes for each source differently. Then merge it all together and resolve conflicts. Have fun while doing it!</em></p>
+
+<p>Fun times.</p>
+
+<h2 id="aws-cloudwatch-support">AWS CloudWatch Support</h2>
+
+<p>CAS gains support to route logs automatically to <a href="https://aws.amazon.com/cloudwatch/">AWS CloudWatch</a>. You can review <a href="https://apereo.github.io/cas/development/installation/Logging.html">this guide here</a> to learn more. You are also allowed to use other logging and monitoring tools such as Sentry, Syslog and Logstash to manage and route CAS logs in addition to all the usual options.</p>
+
+<h2 id="sass-auto-compilation">Sass Auto Compilation</h2>
+
+<p>Sass files are now automatically and as part of the build compiled to <code class="highlighter-rouge">.css</code> files for the main CAS server web application.</p>
+
+<h2 id="rest-authentication-via-x509">REST Authentication via X.509</h2>
+
+<p>CAS <a href="https://apereo.github.io/cas/development/protocol/REST-Protocol.html">REST Protocol</a> gains the ability to authenticate credentials via X.509, thanks to community contributions.</p>
+
+<h2 id="x509-principal-resolution">X.509 Principal Resolution</h2>
+
+<p>Thanks to community contributions, X.509 principal resolution by serial number is now able to support HEX and other configurable radixes.</p>
+
+<h2 id="ws-fed-protocol">WS-Fed Protocol</h2>
+
+<p>Starting with this release candidate, CAS gains <a href="https://apereo.github.io/cas/development/protocol/WS-Federation-Protocol.html">modest support</a> for the WS-Fed protocol, acting both as an identity provider and security token service.</p>
+
+<h2 id="attribute-filtering-policies">Attribute Filtering Policies</h2>
+
+<p>A number of <a href="https://apereo.github.io/cas/development/integration/Attribute-Release-Policies.html#attribute-filters">new attribute filters</a> are worked into this release that provide support for selectively applying patterns to attributes values to allow or disallow them.</p>
+
+<h2 id="jasypt-support">Jasypt Support</h2>
+
+<p>Running CAS in standalone mode now allows you the option to place encrypted settings into the CAS configuration files and then have them be decoded automatically.
+This feature is brought to you by <a href="https://apereo.github.io/cas/development/installation/Configuration-Properties-Security.html">CAS taking advantage of Jasypt</a>.</p>
+
+<h2 id="dynamodb-service-registry">DynamoDb Service Registry</h2>
+
+<p>CAS gains <a href="https://apereo.github.io/cas/development/installation/DynamoDb-Service-Management.html">support for DynamoDb</a> as yet another option for its service registry. This feature might look more attractive for those who wish to use AWS as the deployment environment and take advantage of native platform services and offerings.</p>
+
+<h2 id="minor-bug-fixes">Minor Bug Fixes</h2>
+
+<p>A number of small bug fixes have been incorporated into this feature release:</p>
+
+<h3 id="community-contributions">Community Contributions</h3>
+
+<ul>
+  <li>SAML2 <code class="highlighter-rouge">InResponseTo</code> field is now correctly set in response.</li>
+  <li>JDBC data sources are massaged to correctly handle the minimum number of idle connections.</li>
+  <li>YAML properties are now correctly loaded both from the embedded web application as well as externalized sources.</li>
+  <li>Regressions that made service properties in the CAS management webapp dysfunctional are now removed/fixed.</li>
+  <li>LDAP authentication removes the need for separate SASL authentication type option, folding it neatly into <code class="highlighter-rouge">AUTHENTICATED</code>.</li>
+  <li>Documentation improvements to explain the proper encoding used for <code class="highlighter-rouge">.properties</code> and <code class="highlighter-rouge">.yml</code> files.</li>
+</ul>
+
+<h3 id="others">Others</h3>
+
+<ul>
+  <li>OAuth services are now properly recognized during the logout process.</li>
+  <li>SAML2 authenication statements should now properly include a session index.</li>
+  <li>CAS cookies are set to <code class="highlighter-rouge">httpOnly</code> by default with options to control this behavior externally.</li>
+  <li>SAML2 attribute statements should now correctly use the SAML2 prefix when constructing attribute values.</li>
+  <li>SAML2 ECP functionality gets a brand new pass to resolve a series of issues with encodings and responses.</li>
+</ul>
+
+<h2 id="library-upgrades">Library Upgrades</h2>
+
+<ul>
+  <li>Spring</li>
+  <li>Hazelcast</li>
+  <li>Spring Boot</li>
+  <li>Apache Tomcat</li>
+  <li>Spring Cloud</li>
+  <li>Hibernate</li>
+  <li>Log4j</li>
+  <li>HJSON</li>
+  <li>Metrics</li>
+  <li>Groovy</li>
+  <li>JodaTime</li>
+  <li>…</li>
+</ul>
+
+<h2 id="whats-next">What’s Next?</h2>
+
+<p>The development team is working to make sure the CAS <code class="highlighter-rouge">5.1.0</code> release is
+on <a href="https://github.com/apereo/cas/milestones">schedule</a>. Additional release candidates
+and more updates will likely be released prior to the official GA release.</p>
+
+<h2 id="get-involved">Get Involved</h2>
+
+<ul>
+  <li>Start your CAS deployment today. Try out features and <a href="https://apereo.github.io/cas/Mailing-Lists.html">share feedback</a>.</li>
+  <li>Better yet, <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">contribute patches</a>.</li>
+  <li>Review and suggest documentation improvements.</li>
+  <li>Review the release schedule and make sure you report your desired feature requests on the project’s issue tracker.</li>
+</ul>
+
+<h2 id="das-ende">Das Ende</h2>
+
+<p>A big hearty thanks to all who participated in the development of this release to submit patches, report issues and suggest improvements. Keep’em coming!</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F31%2Frc3-release%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=CAS+5.1.0+RC3+Feature+Release&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F31%2Frc3-release%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F31%2Frc3-release%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F31%2Frc3-release%2F&amp;title=CAS+5.1.0+RC3+Feature+Release" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F31%2Frc3-release%2F&amp;title=CAS+5.1.0+RC3+Feature+Release" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F31%2Frc3-release%2F&amp;name=CAS+5.1.0+RC3+Feature+Release" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F31%2Frc3-release%2F&amp;title=CAS+5.1.0+RC3+Feature+Release" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F31%2Frc3-release%2F&amp;title=CAS+5.1.0+RC3+Feature+Release" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F31%2Frc3-release%2F&amp;t=CAS+5.1.0+RC3+Feature+Release" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Multitenancy With CAS &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A short review of multitenancy feature variants and equivalents in Apereo CAS.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/10/23/cas-multitenancy/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Multitenancy With CAS">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/10/23/cas-multitenancy/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Multitenancy With CAS" />
+    <meta name="twitter:description" content="A short review of multitenancy feature variants and equivalents in Apereo CAS." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/10/23/cas-multitenancy/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Multitenancy With CAS</h1>
+  <span class="post-meta">Monday, Oct 23, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    8 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <!--
+<div class="alert alert-danger">
+  <strong>WATCH OUT!</strong><br/>This post is not official yet and may be heavily edited as CAS development makes progress. <a href="https://apereo.github.io/feed.xml">Watch</a> for further updates.
+</div>
+-->
+
+<div class="alert alert-success">
+  <strong>Collaborate</strong><br />This blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>According to <a href="https://www.wikiwand.com/en/Multitenancy">Wikipedia</a>, the term “software multitenancy” is defined as:</p>
+
+<blockquote>
+  <p>…a software architecture in which a single instance of software runs on a server and serves multiple tenants. A tenant is a group of users who share a common access with specific privileges to the software instance.</p>
+</blockquote>
+
+<p>I have been asked on and off about multitenancy capabilities of CAS and whether <a href="https://apereo.github.io/2017/02/18/onthe-theoryof-possibility/">it is possible</a> to have one CAS deployment serve many tenants. To be clear, multitenancy in a CAS context would cover the following areas for each tenant:</p>
+
+<ul>
+  <li>Brand and theme the user interface.</li>
+  <li>Define and limit authentication sources including attribute retrieval and release.</li>
+  <li>Control logging strategies and audits in different granular details.</li>
+  <li>Define and limit enabled/supported authentication protocols both as an IdP and IdP Proxy (delegated authentication).</li>
+  <li>Feature management, such as tickets, security, access strategy, flow customizations, etc.</li>
+  <li>…</li>
+</ul>
+
+<p>In addition to the problem of isolating configuration per tenant, there also needs to be a mechanism by which CAS may shake hands with each tenant to recognize and activate their connected configuration. Furthermore, any design needs to also carefully weigh and evaluate possibilities of <em>feature imbalance</em> which is the problem of introducing capabilities requested by a tenant without impact and side-effects to others and doing so in such a way to ensure all tenants can get their fair share of system capabilities if and when asked.</p>
+
+<p>If all of this sounds complex and seems like a lot of work, it is simply because it is. If this is something you desire to see in your deployment, please <a href="https://twitter.com/misagh84">reach out</a>.</p>
+
+<p>While support for multi-tenancy in the above terms and conditions is absent in CAS today, in this tutorial I wish to uncover <em>a few</em> aspects of the CAS software that may prove as viable alternatives or shortcuts for the time being to handle multitenancy-like features.</p>
+
+<h1 id="scenario">Scenario</h1>
+
+<p>Let’s suppose we are in charge of a CAS deployment that is tasked to serve two distinct tenants A and B each of which wish to register a few different applications registered with CAS with a variety of other rules that affect attribute release, themes, etc.</p>
+
+<h2 id="constraints">Constraints</h2>
+
+<p>It is important to treat these tenants as generic as possible and not make any assumptions about their underlying deployment or architecture. Equally significant, note that our tenants are simply <em>unable</em> to make changes whatsoever on their end to make our lives easier on this end. We might be able to relax this clause and make amends later in the future, (assuming fairly tight control over the environment) but until then, tenants’ expectation is to integrate with a given CAS deployment as if it was only their own completely ignorant of its multitenancy capabilities. Everything that can be done should be done with CAS to see that expectation to reality.</p>
+
+<h1 id="poor-mans-multitenancy">Poor Man’s Multitenancy</h1>
+
+<p>One possible solution is to turn the problem from one of software into one of deployment topology. Rather than having <em>a single</em> CAS deployment serving many tenants, you would simply have many smaller deployments serving each tenant and you would assign each tenant a specific endpoint that handles their needs exclusively. For our tenants, we could have <code class="highlighter-rouge">https://sso.example.org/tenantA/cas/</code> and <code class="highlighter-rouge">https://sso.example.org/tenantB/cas</code> endpoint and so on. (If you care, rewrite the URLs prettier at some level to hide details) All CAS functionality is scoped to the specific endpoints that are shared with each tenant and the software itself cares not how it is contacted and by whom so long as requests are well-formed.</p>
+
+<p>While arguably this is the simplest of all options and grants the most flexibility, it goes without saying that managing many small deployments, upgrades and maintenance efforts across the platform does incur cost and risk and requires quite a bit of automation, technique and infrastructure support to let all play nice.</p>
+
+<h1 id="authentication">Authentication</h1>
+
+<p>To further complicate the scenario, let’s suppose that tenant A uses a MySQL database for its account source and authentication while tenant B uses Active Directory. Our goal is to let tenant A users only use MySQL while tenant B users are limited to Active Directory and we want to do so based on the semantics of the credential passed. Simply put, if the credential id matches the syntax of <code class="highlighter-rouge">xyz@tenantA.org</code>, we would want CAS to use MySQL and if the credential matches <code class="highlighter-rouge">xyz@tenantB.org</code>, CAS would use Active Directory instead.</p>
+
+<p>I am of course assuming, rather obviously, that tenants support username/password authentication modes. Fancier forms of authentication are left out for brevity. Let’s also assume that we know how to configure CAS to use MySQL and Active Directory as authentication sources. With that, the first question we might ask is: Can CAS be configured to use a specific authentication strategy based on the properties of the credential?</p>
+
+<p>The answer is, yes.</p>
+
+<p>Most authentication strategies in CAS are given a <a href="https://apereo.github.io/cas/development/installation/Configuration-Properties-Common.html#authentication-credential-selection">predicate to examine the requested credential</a> for eligibility. This predicate is simply a fancy a condition whose outcome determines whether the authentication strategy/handler should proceed to operate on the credential.</p>
+
+<p>So, we can design the following conditions for our MySQL and Active Directory authentication modes:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span>
+<span class="err">cas.authn.jdbc.search[0]</span><span class="py">.credentialCriteria</span><span class="p">=</span><span class="s">.+@tenantA</span><span class="se">\.</span><span class="s">org</span>
+<span class="err">...</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.credentialCriteria</span><span class="p">=</span><span class="s">.+@tenantB</span><span class="se">\.</span><span class="s">org</span>
+<span class="err">...</span>
+</code></pre></div></div>
+
+<p>In the above settings, the <code class="highlighter-rouge">credentialCriteria</code> is a regular expression pattern that is tested against the credential identifier. A successful match indicates credential eligibility.</p>
+
+<h1 id="attribute-retrieval">Attribute Retrieval</h1>
+
+<p>Having configured authentication sources for each tenant, how could we retrieve attributes in much the same way?</p>
+
+<p>A number of authentication strategies in CAS have the ability to fetch attributes from the same source in which the account was found. In our case above, we want <code class="highlighter-rouge">firstName</code> and <code class="highlighter-rouge">lastName</code> to be retrieved from MySQL and <code class="highlighter-rouge">cn</code> and <code class="highlighter-rouge">givenName</code> from Active Directory once the authentication attempt is successful. The requirements are translated as below:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span>
+<span class="err">cas.authn.jdbc.search[0]</span><span class="py">.principalAttributeList</span><span class="p">=</span><span class="s">firstName,lastName</span>
+<span class="err">...</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.principalAttributeList</span><span class="p">=</span><span class="s">cn,givenName</span>
+<span class="err">...</span>
+</code></pre></div></div>
+
+<p>Simple, eh?</p>
+
+<h1 id="attribute-release">Attribute Release</h1>
+
+<p>In our quest to multi-tenancy, we need to design a strategy to release bundles of attributes to each tenant. One option is to simply register all applications with CAS and design attribute release policies for each. While reasonable, this approach might lead to some maintenance overhead, especially as you begin to design attribute release rules from a tenant perspective and as that number grows over time. To elaborate, let’s say all applications managed by tenant A should receive the <code class="highlighter-rouge">firstName</code> attribute but only a few privileged applications in the same group need access to <code class="highlighter-rouge">lastName</code>. Are we to duplicate the same attribute release policy rules for each service definition with <code class="highlighter-rouge">firstName</code> as the allowed attribute and only in special cases then make room for <code class="highlighter-rouge">lastName</code>? Not quite. What might be more desirable is if we had a way to <em>share policy rules</em> across tenants and definitions to centralize configuration and policy.</p>
+
+<p>One option is to <a href="https://apereo.github.io/cas/development/integration/Attribute-Release-Policies.html#groovy-script">use a Groovy script</a> shared across members of a given tenant. For instance, our release policy includes something like this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"some-application-part-of-tenant-A"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Example Tenant A application"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"attributeReleasePolicy"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.GroovyScriptAttributeReleasePolicy"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"groovyScript"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"classpath:/tenantA-attr-release-policy.groovy"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>…and the shared script would have the following outline:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.*</span>
+
+<span class="kt">def</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;&gt;</span> <span class="n">run</span><span class="o">(</span><span class="kd">final</span> <span class="n">Object</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">def</span> <span class="n">currentAttributes</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+    <span class="kt">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span>
+    <span class="kt">def</span> <span class="n">principal</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span>
+    <span class="kt">def</span> <span class="n">service</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span>
+
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>You may also want to get even fancier by assigning <a href="https://apereo.github.io/cas/development/installation/Configuring-Service-Custom-Properties.html">arbitrary tags to each service definition</a> to further control different sorts of centralized policies in the script.</p>
+
+<h1 id="themes">Themes</h1>
+
+<p>Based on the <a href="https://apereo.github.io/cas/development/installation/User-Interface-Customization-Themes.html">CAS documentation for dynamic themes</a>,</p>
+
+<blockquote>
+  <p>CAS can also utilize a service’s associated theme to selectively choose which set of UI views will be used to generate the standard views. This is especially useful in cases where the set of pages for a theme that is targeted for a different type of audience are entirely different structurally that simply using a simple theme is not practical to augment the default views.</p>
+</blockquote>
+
+<p>Sounds exactly like what we might want to use for our tenants. In my example, I am simply going to customize the CAS login view fragment for each tenant and then assign the special theme identifier to all tenant A members. Let’s say I am going to call the theme identifier <code class="highlighter-rouge">tenantATheme</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"some-application-part-of-tenant-A"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Example Tenant A application"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"theme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tenantATheme"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"attributeReleasePolicy"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.GroovyScriptAttributeReleasePolicy"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"groovyScript"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"tenantATheme"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Then, I would create the theme directory which would contain the customized login view for tenant A members:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir <span class="nt">-p</span> src/main/resources/templates/tenantATheme
+<span class="nb">cd </span>src/main/resources/templates/tenantATheme
+touch casLoginView.html
+</code></pre></div></div>
+
+<p>My theme may also contain its own CSS and Javascript variants under a <code class="highlighter-rouge">src/main/resources/tenantATheme.properties</code>:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">standard.custom.css.file</span><span class="p">=</span><span class="s">/themes/[theme_name]/css/cas.css</span>
+<span class="py">cas.javascript.file</span><span class="p">=</span><span class="s">/themes/[theme_name]/js/cas.js</span>
+<span class="py">admin.custom.css.file</span><span class="p">=</span><span class="s">/themes/[theme-name]/css/admin.css</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">casLoginView.html</code> found at <code class="highlighter-rouge">src/main/resources/templates/tenantATheme</code> will now always be used for applications that are members of tenant A and carry the assigned theme in their definition.</p>
+
+<h1 id="summary">Summary</h1>
+
+<p>I hope this review was of some help to you. As you have been reading, I can guess that you have come up with a number of missing bits and pieces that would satisfy your use cases more comprehensively with CAS. In a way, that is exactly what this tutorial intends to inspire. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F23%2Fcas-multitenancy%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Multitenancy+With+CAS&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F23%2Fcas-multitenancy%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F23%2Fcas-multitenancy%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F23%2Fcas-multitenancy%2F&amp;title=Multitenancy+With+CAS" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F23%2Fcas-multitenancy%2F&amp;title=Multitenancy+With+CAS" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F23%2Fcas-multitenancy%2F&amp;name=Multitenancy+With+CAS" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F23%2Fcas-multitenancy%2F&amp;title=Multitenancy+With+CAS" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F23%2Fcas-multitenancy%2F&amp;title=Multitenancy+With+CAS" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F23%2Fcas-multitenancy%2F&amp;t=Multitenancy+With+CAS" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

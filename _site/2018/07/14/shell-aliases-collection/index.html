@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Get Productive with Shell Aliases &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A collection of useful shell aliases, gathered over the years to help increase one's productivity and developer happiness.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/07/14/shell-aliases-collection/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Get Productive with Shell Aliases">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/07/14/shell-aliases-collection/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Get Productive with Shell Aliases" />
+    <meta name="twitter:description" content="A collection of useful shell aliases, gathered over the years to help increase one's productivity and developer happiness." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/07/14/shell-aliases-collection/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Get Productive with Shell Aliases</h1>
+  <span class="post-meta">Saturday, Jul 14, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    4 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Over the years, I have collected a number of shell aliases from various blog posts and websites that have tremendously helped me navigate and automate confusing workflows and remember complicated terminal commands. This post, for what it’s worth, is about giving back to the developer community with me sharing aliases I find to be extremely useful in hopes that you, dear reader, also find them useable and productive.</p>
+
+<p>There may be better options for housing such aliases, but for better or worse, all commands are to be put inside <code class="highlighter-rouge">~/.profile</code>, all of which have been exercised on <strong>macOS</strong>.</p>
+
+<h2 id="activate-profile">Activate Profile</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">editp</span><span class="o">=</span><span class="s1">'edit ~/.profile'</span>
+<span class="nb">alias </span><span class="nv">actp</span><span class="o">=</span><span class="s1">'source ~/.profile'</span>
+</code></pre></div></div>
+
+<h2 id="change-directory">Change Directory</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span>cd..<span class="o">=</span><span class="s1">'cd ../'</span>                         <span class="c"># Go back 1 directory level (for fast typers)</span>
+<span class="nb">alias</span> ..<span class="o">=</span><span class="s1">'cd ../'</span>                           <span class="c"># Go back 1 directory level</span>
+<span class="nb">alias</span> ...<span class="o">=</span><span class="s1">'cd ../../'</span>                       <span class="c"># Go back 2 directory levels</span>
+<span class="nb">alias</span> .3<span class="o">=</span><span class="s1">'cd ../../../'</span>                     <span class="c"># Go back 3 directory levels</span>
+<span class="nb">alias</span> .4<span class="o">=</span><span class="s1">'cd ../../../../'</span>                  <span class="c"># Go back 4 directory levels</span>
+<span class="nb">alias</span> .5<span class="o">=</span><span class="s1">'cd ../../../../../'</span>               <span class="c"># Go back 5 directory levels</span>
+<span class="nb">alias</span> .6<span class="o">=</span><span class="s1">'cd ../../../../../../'</span>            <span class="c"># Go back 6 directory levels</span>
+</code></pre></div></div>
+
+<h2 id="editors">Editors</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">edit</span><span class="o">=</span><span class="s2">"code"</span> <span class="c"># Visual Studio Code</span>
+<span class="nb">alias </span><span class="nv">this</span><span class="o">=</span><span class="s2">"edit ."</span>
+<span class="nb">alias </span><span class="nv">subl</span><span class="o">=</span><span class="s2">"/Applications/Sublime</span><span class="se">\ </span><span class="s2">Text.app/Contents/SharedSupport/bin/subl </span><span class="nv">$@</span><span class="s2">"</span>
+<span class="nb">alias </span><span class="nv">this</span><span class="o">=</span><span class="s2">"edit ."</span>
+</code></pre></div></div>
+
+<h2 id="variables-for-colorful-output">Variables for Colorful Output</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">BOLD</span><span class="o">=</span><span class="k">$(</span>tput bold<span class="k">)</span>
+<span class="nv">BLACK</span><span class="o">=</span><span class="k">$(</span>tput setaf 0<span class="k">)</span>
+<span class="nv">WHITE</span><span class="o">=</span><span class="k">$(</span>tput setaf 7<span class="k">)</span>
+<span class="nv">BLUE</span><span class="o">=</span><span class="k">$(</span>tput setaf 4<span class="k">)</span>
+<span class="nv">GREEN</span><span class="o">=</span><span class="k">$(</span>tput setaf 2<span class="k">)</span>
+<span class="nv">NORMAL</span><span class="o">=</span><span class="k">$(</span>tput sgr0<span class="k">)</span>
+</code></pre></div></div>
+
+<h2 id="mastering-the-ssh-agent">Mastering the SSH Agent</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">env</span><span class="o">=</span><span class="nv">$HOME</span>/.ssh/environment
+
+<span class="k">function </span>agent_is_running<span class="o">()</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$SSH_AUTH_SOCK</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="c"># ssh-add returns:</span>
+    <span class="c">#   0 = agent running, has keys</span>
+    <span class="c">#   1 = agent running, no keys</span>
+    <span class="c">#   2 = agent not running</span>
+    ssh-add <span class="nt">-l</span> <span class="o">&gt;</span>/dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o">[</span> <span class="nv">$?</span> <span class="nt">-eq</span> 1 <span class="o">]</span>
+  <span class="k">else
+    </span><span class="nb">false
+  </span><span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="k">function </span>agent_has_keys<span class="o">()</span> <span class="o">{</span>
+  ssh-add <span class="nt">-l</span> <span class="o">&gt;</span>/dev/null 2&gt;&amp;1
+<span class="o">}</span>
+
+<span class="k">function </span>agent_load_env<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">.</span> <span class="s2">"</span><span class="nv">$env</span><span class="s2">"</span> <span class="o">&gt;</span>/dev/null
+<span class="o">}</span>
+
+<span class="k">function </span>agent_start<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="s2">"Starting SSH agent..."</span>
+  <span class="o">(</span><span class="nb">umask </span>077<span class="p">;</span> ssh-agent <span class="o">&gt;</span><span class="s2">"</span><span class="nv">$env</span><span class="s2">"</span><span class="o">)</span>
+  <span class="nb">.</span> <span class="s2">"</span><span class="nv">$env</span><span class="s2">"</span> <span class="o">&gt;</span>/dev/null
+<span class="o">}</span>
+
+<span class="k">function </span>add_all_keys<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="s2">"Adding SSH keys..."</span>
+  <span class="nb">ls</span> ~/.ssh | <span class="nb">grep</span> ^id_rsa.<span class="k">*</span><span class="nv">$ </span>| sed <span class="s2">"s:^:</span><span class="sb">`</span><span class="nb">echo</span> ~<span class="sb">`</span><span class="s2">/.ssh/:"</span> | xargs <span class="nt">-n</span> 1 ssh-add
+<span class="o">}</span>
+
+<span class="k">if</span> <span class="o">!</span> agent_is_running<span class="p">;</span> <span class="k">then
+  </span>agent_load_env
+<span class="k">fi</span>
+
+<span class="c"># if your keys are not stored in ~/.ssh/id_rsa.pub or ~/.ssh/id_dsa.pub, you'll need</span>
+<span class="c"># to paste the proper path after ssh-add</span>
+<span class="k">if</span> <span class="o">!</span> agent_is_running<span class="p">;</span> <span class="k">then
+  </span>agent_start
+  add_all_keys
+<span class="k">elif</span> <span class="o">!</span> agent_has_keys<span class="p">;</span> <span class="k">then
+  </span>add_all_keys
+<span class="k">fi
+
+</span><span class="nb">echo</span> <span class="sb">`</span>ssh-add <span class="nt">-l</span> | wc <span class="nt">-l</span><span class="sb">`</span> SSH keys registered.
+
+<span class="nb">unset </span>env
+</code></pre></div></div>
+
+<h2 id="fancy-git-prompt">Fancy Git Prompt</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">[</span> <span class="nt">-f</span> <span class="s2">"</span><span class="k">$(</span>brew <span class="nt">--prefix</span> bash-git-prompt<span class="k">)</span><span class="s2">/share/gitprompt.sh"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nv">GIT_PROMPT_THEME</span><span class="o">=</span>Default
+    <span class="nb">source</span> <span class="s2">"</span><span class="k">$(</span>brew <span class="nt">--prefix</span> bash-git-prompt<span class="k">)</span><span class="s2">/share/gitprompt.sh"</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<h2 id="switch-jdk-versions">Switch JDK Versions</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>setjdk<span class="o">()</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span><span class="nt">-ne</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
+   </span>removeFromPath <span class="s1">'/System/Library/Frameworks/JavaVM.framework/Home/bin'</span>
+   <span class="k">if</span> <span class="o">[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="k">${</span><span class="nv">JAVA_HOME</span><span class="p">+x</span><span class="k">}</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span>removeFromPath <span class="s2">"</span><span class="nv">$JAVA_HOME</span><span class="s2">/bin"</span>
+   <span class="k">fi
+   </span><span class="nb">export </span><span class="nv">JAVA_HOME</span><span class="o">=</span><span class="sb">`</span>/usr/libexec/java_home <span class="nt">-v</span> <span class="nv">$@</span><span class="sb">`</span>
+   <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin:<span class="nv">$PATH</span>
+   <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"JAVA_HOME to </span><span class="nv">$@</span><span class="s2">"</span>
+  <span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="k">function </span>removeFromPath<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$PATH</span> | sed <span class="nt">-E</span> <span class="nt">-e</span> <span class="s2">"s;:</span><span class="nv">$1</span><span class="s2">;;"</span> <span class="nt">-e</span> <span class="s2">"s;</span><span class="nv">$1</span><span class="s2">:?;;"</span><span class="k">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>…where you can do:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setjdk 1.8
+</code></pre></div></div>
+
+<p>or:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setjdk 11
+</code></pre></div></div>
+
+<h2 id="spawn-databases-via-docker">Spawn Databases via Docker</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>mysql<span class="o">()</span> <span class="o">{</span>
+    docker run <span class="nt">--name</span> mysql <span class="nt">-p3306</span>:3306 <span class="nt">--env</span><span class="o">=</span><span class="s2">"MYSQL_ROOT_PASSWORD=password"</span> <span class="nt">--env</span><span class="o">=</span><span class="s2">"MYSQL_DATABASE=test"</span> <span class="nt">-d</span> mysql
+<span class="o">}</span>
+
+<span class="k">function </span>sqlserver<span class="o">()</span> <span class="o">{</span>
+    docker run <span class="nt">-e</span> <span class="s1">'ACCEPT_EULA=Y'</span> <span class="nt">-e</span> <span class="s1">'SA_PASSWORD=p@ssw0rd'</span> <span class="nt">-p</span> 1433:1433 microsoft/mssql-server-linux:2017-CU7
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="gradle">Gradle</h2>
+
+<h3 id="dependency-insight">Dependency Insight</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>gdep<span class="o">()</span> <span class="o">{</span>
+  ./gradlew dependencyInsight <span class="nt">--configuration</span> <span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="nt">--dependency</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>…where you can do:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gdep compileClasspath jackson
+</code></pre></div></div>
+
+<h3 id="properties">Properties</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">gprop</span><span class="o">=</span><span class="s2">"edit ~/.gradle/gradle.properties"</span>
+</code></pre></div></div>
+
+<h2 id="helpers">Helpers</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">openPorts</span><span class="o">=</span><span class="s1">'sudo lsof -i | grep LISTEN'</span>
+
+<span class="nb">alias </span><span class="nv">cls</span><span class="o">=</span><span class="s2">"clear"</span>
+<span class="nb">alias </span><span class="nv">del</span><span class="o">=</span><span class="s1">'rm'</span>
+<span class="nb">alias </span><span class="nv">path</span><span class="o">=</span><span class="s1">'echo -e ${PATH//:/\\n}'</span>
+
+<span class="nb">alias </span><span class="nv">hostfile</span><span class="o">=</span><span class="s2">"sudo atom /etc/hosts"</span> <span class="c"># Requires Atom</span>
+
+<span class="k">function </span>mcd<span class="o">()</span> <span class="o">{</span>
+  mkdir <span class="nt">-p</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="p">;</span>
+<span class="o">}</span>
+
+<span class="nb">alias </span><span class="nv">dir</span><span class="o">=</span><span class="s2">"ls -a -l"</span>
+<span class="nb">alias </span><span class="nv">myip</span><span class="o">=</span><span class="s2">"curl ifconfig.co/json"</span>
+</code></pre></div></div>
+
+<h2 id="docker">Docker</h2>
+
+<h3 id="search--destroy">Search &amp; Destroy</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">dkc</span><span class="o">=</span><span class="s2">"docker stop </span><span class="k">$(</span>docker ps <span class="nt">-aq</span><span class="k">)</span><span class="s2">; docker rm </span><span class="k">$(</span>docker ps <span class="nt">-aq</span><span class="k">)</span><span class="s2">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="ssh-into-container">SSH Into Container</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>dockerssh<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">export </span><span class="nv">CID</span><span class="o">=</span><span class="k">$(</span>docker ps <span class="nt">-aqf</span> <span class="s2">"name=</span><span class="nv">$1</span><span class="s2">"</span><span class="k">)</span><span class="p">;</span> docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="nv">$CID</span> /bin/bash
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="git">Git</h2>
+
+<h3 id="commit-changes">Commit Changes</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>gc<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Commit message:</span><span class="se">\n</span><span class="k">${</span><span class="nv">WHITE</span><span class="k">}</span><span class="se">\t</span><span class="nv">$1</span><span class="se">\n</span><span class="k">${</span><span class="nv">NORMAL</span><span class="k">}</span><span class="s2">"</span>
+
+  <span class="nb">echo</span> <span class="s2">"Adding all changes..."</span>
+  git add <span class="nt">--all</span>
+  <span class="nb">echo</span> <span class="s2">"Committing changes..."</span>
+  git commit <span class="nt">-S</span> <span class="nt">-am</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+
+  <span class="nb">echo</span> <span class="s2">"Fetching all submodules..."</span>
+  <span class="nv">modules</span><span class="o">=(</span><span class="k">$(</span>git submodule | awk <span class="s1">'{print $2}'</span><span class="k">)</span><span class="o">)</span>
+
+  <span class="k">for </span>module <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">modules</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="k">do
+    </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\t</span><span class="s2">Switching to module </span><span class="k">${</span><span class="nv">WHITE</span><span class="k">}${</span><span class="nv">module</span><span class="k">}${</span><span class="nv">NORMAL</span><span class="k">}</span><span class="s2">"</span>
+    <span class="nb">pushd</span> <span class="nv">$module</span> <span class="o">&gt;</span> /dev/null
+    <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\t</span><span class="s2">Fetching status for module </span><span class="k">${</span><span class="nv">WHITE</span><span class="k">}${</span><span class="nv">module</span><span class="k">}${</span><span class="nv">NORMAL</span><span class="k">}</span><span class="s2">"</span>
+    <span class="nv">modulestatus</span><span class="o">=</span><span class="k">$(</span>git status <span class="nt">--porcelain</span> | wc <span class="nt">-l</span><span class="k">)</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$modulestatus</span> <span class="nt">-ne</span> 0 <span class="o">]]</span><span class="p">;</span> <span class="k">then
+      </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\t</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Updating module: </span><span class="k">${</span><span class="nv">WHITE</span><span class="k">}${</span><span class="nv">module</span><span class="k">}${</span><span class="nv">NORMAL</span><span class="k">}</span><span class="s2">"</span>
+
+      <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\t</span><span class="s2">Adding changes for module </span><span class="k">${</span><span class="nv">WHITE</span><span class="k">}${</span><span class="nv">module</span><span class="k">}${</span><span class="nv">NORMAL</span><span class="k">}</span><span class="s2">"</span>
+      git add <span class="nt">--all</span>
+      <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\t</span><span class="s2">Committing changes for module </span><span class="k">${</span><span class="nv">WHITE</span><span class="k">}${</span><span class="nv">module</span><span class="k">}${</span><span class="nv">NORMAL</span><span class="k">}</span><span class="s2">"</span>
+      git commit <span class="nt">-S</span> <span class="nt">-am</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+      git status <span class="nt">--short</span>
+    <span class="k">else
+      </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\t</span><span class="s2">No changes found to commit for module </span><span class="k">${</span><span class="nv">WHITE</span><span class="k">}${</span><span class="nv">module</span><span class="k">}${</span><span class="nv">NORMAL</span><span class="k">}</span><span class="s2">"</span>
+    <span class="k">fi
+    </span><span class="nb">popd</span> <span class="o">&gt;</span> /dev/null
+  <span class="k">done
+  </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Done!</span><span class="se">\n</span><span class="s2">Status:</span><span class="k">${</span><span class="nv">NORMAL</span><span class="k">}</span><span class="s2">"</span>
+  git status
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="misc">Misc</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">delmerged</span><span class="o">=</span><span class="s2">"git branch --merged | grep -v "</span><span class="se">\*</span><span class="s2">" | grep -v master | grep -v dev | xargs -n 1 git branch -d"</span>
+<span class="nb">alias </span><span class="nv">gco</span><span class="o">=</span><span class="s2">"git checkout </span><span class="nv">$1</span><span class="s2">"</span>
+<span class="nb">alias </span><span class="nv">gbo</span><span class="o">=</span><span class="s2">"git checkout -b </span><span class="nv">$1</span><span class="s2">"</span>
+<span class="nb">alias </span><span class="nv">gp</span><span class="o">=</span><span class="s2">"git push --set-upstream </span><span class="nv">$1</span><span class="s2"> </span><span class="nv">$2</span><span class="s2">"</span>
+<span class="nb">alias </span><span class="nv">gl</span><span class="o">=</span><span class="s2">"git pull </span><span class="nv">$1</span><span class="s2"> </span><span class="nv">$2</span><span class="s2">"</span>
+<span class="nb">alias </span><span class="nv">grs</span><span class="o">=</span><span class="s2">"git reset --hard &amp;&amp; git clean -fd"</span>
+<span class="nb">alias </span><span class="nv">gba</span><span class="o">=</span><span class="s2">"git branch -a"</span>
+<span class="nb">alias </span><span class="nv">gbr</span><span class="o">=</span><span class="s2">"git branch -r"</span>
+<span class="nb">alias </span><span class="nv">gs</span><span class="o">=</span><span class="s2">"git status -s -b"</span>
+<span class="nb">alias </span><span class="nv">gpl</span><span class="o">=</span><span class="s2">"git pull origin master --no-edit --allow-unrelated-histories"</span>
+<span class="nb">alias </span><span class="nv">gps</span><span class="o">=</span><span class="s2">"git push origin master --recurse-submodules=on-demand "</span>
+<span class="nb">alias </span><span class="nv">gst</span><span class="o">=</span><span class="s2">"git status"</span>
+<span class="nb">alias </span><span class="nv">ggc</span><span class="o">=</span><span class="s2">"git gc --aggressive --prune=now"</span>
+</code></pre></div></div>
+
+<h2 id="processes">Processes</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>pidit<span class="o">()</span> <span class="o">{</span>
+    ps <span class="nt">-ef</span> | <span class="nb">grep</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="nb">grep</span> |  awk <span class="s1">'{print $2}'</span>
+<span class="o">}</span>
+
+<span class="k">function </span>proc<span class="o">()</span> <span class="o">{</span>
+    ps <span class="nt">-ef</span> | <span class="nb">grep</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="nb">grep</span>
+<span class="o">}</span>
+
+<span class="k">function </span>kp<span class="o">()</span> <span class="o">{</span>
+    ps <span class="nt">-ef</span> | <span class="nb">grep</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="nb">grep</span> | awk <span class="s1">'{print $2}'</span> | xargs <span class="nb">kill</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="search-aliases">Search Aliases</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>cm<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">alias</span> | <span class="nb">grep</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span> | head <span class="nt">-n</span> 1
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="contribute-to-apereo-blog">Contribute to Apereo Blog</h2>
+
+<p>Once you have cloned the Apereo Blog repository:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">blog</span><span class="o">=</span><span class="s2">"cd /path/to/apereo.github.io"</span>
+<span class="nb">alias </span><span class="nv">blogthis</span><span class="o">=</span><span class="s2">"blog; this"</span>
+</code></pre></div></div>
+
+<p>That’s it. I hope you find these useful.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F14%2Fshell-aliases-collection%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Get+Productive+with+Shell+Aliases&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F14%2Fshell-aliases-collection%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F14%2Fshell-aliases-collection%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F14%2Fshell-aliases-collection%2F&amp;title=Get+Productive+with+Shell+Aliases" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F14%2Fshell-aliases-collection%2F&amp;title=Get+Productive+with+Shell+Aliases" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F14%2Fshell-aliases-collection%2F&amp;name=Get+Productive+with+Shell+Aliases" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F14%2Fshell-aliases-collection%2F&amp;title=Get+Productive+with+Shell+Aliases" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F14%2Fshell-aliases-collection%2F&amp;title=Get+Productive+with+Shell+Aliases" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F14%2Fshell-aliases-collection%2F&amp;t=Get+Productive+with+Shell+Aliases" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

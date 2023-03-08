@@ -1,0 +1,760 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Apereo Community Blog</title>
+    <description>This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.</description>
+    <link>https://apereo.github.io/</link>
+    <atom:link href="https://apereo.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>CAS 6.1.0 RC1 Feature Release</title>
+        <description>&lt;div class=&quot;alert alert-danger&quot;&gt;
+  &lt;strong&gt;WATCH OUT!&lt;/strong&gt;&lt;br /&gt;This post is not official yet and may be heavily edited as CAS development makes progress. &lt;a href=&quot;https://apereo.github.io/feed.xml&quot;&gt;Watch&lt;/a&gt; for further updates.
+&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;p&gt;The official CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;6.0.0&lt;/code&gt; GA was released on &lt;a href=&quot;https://github.com/apereo/cas/releases/tag/v6.0.0&quot;&gt;December 28th, 2018&lt;/a&gt;. Since then, the project has been moving forward with development of the next feature release that is tagged as &lt;code class=&quot;highlighter-rouge&quot;&gt;6.1.0&lt;/code&gt;. Please review the &lt;a href=&quot;https://apereo.github.io/cas/developer/Release-Policy.html&quot;&gt;release policy&lt;/a&gt; to learn more about the scope of the release. This post intends to highlight some of the improvements and enhancements packed into the &lt;strong&gt;first&lt;/strong&gt; release candidate in the &lt;code class=&quot;highlighter-rouge&quot;&gt;6.1.0&lt;/code&gt; series.&lt;/p&gt;
+
+&lt;!--
+You can read about the previous release candidate [here](https://apereo.github.io/2018/10/26/600rc3-release/).
+--&gt;
+
+&lt;h2 class=&quot;no_toc&quot; id=&quot;shake-well-before-use&quot;&gt;Shake Well Before Use&lt;/h2&gt;
+
+&lt;p&gt;We strongly recommend that you take advantage of the release candidates as they come out. Waiting for a &lt;code class=&quot;highlighter-rouge&quot;&gt;GA&lt;/code&gt; release is only going to set you up for unpleasant surprises. A &lt;code class=&quot;highlighter-rouge&quot;&gt;GA&lt;/code&gt; is simply &lt;a href=&quot;https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/&quot;&gt;a tag and nothing more&lt;/a&gt;. Note that CAS releases are &lt;em&gt;strictly&lt;/em&gt; time-based releases; they are not scheduled or based on specific benchmarks, statistics or completion of features. To gain confidence in a particular release, it is strongly recommended that you start early by experimenting with release candidates and/or follow-up snapshots.&lt;/p&gt;
+
+&lt;p&gt;In order to start experimenting with release candidates, at any given time, you should be able to append &lt;code class=&quot;highlighter-rouge&quot;&gt;-SNAPSHOT&lt;/code&gt; to the CAS version specified in order to take advantage of snapshot builds as changes are made and published.&lt;/p&gt;
+
+&lt;h3 class=&quot;no_toc&quot; id=&quot;overlay&quot;&gt;Overlay&lt;/h3&gt;
+
+&lt;p&gt;In the &lt;code class=&quot;highlighter-rouge&quot;&gt;gradle.properties&lt;/code&gt; of &lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;the overlay&lt;/a&gt;, adjust the following setting:&lt;/p&gt;
+
+&lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;py&quot;&gt;casVersion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;6.1.0-RC1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 class=&quot;no_toc&quot; id=&quot;changes&quot;&gt;Changes&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#new--noteworthy&quot; id=&quot;markdown-toc-new--noteworthy&quot;&gt;New &amp;amp; Noteworthy&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#hazelcast-wan-replication&quot; id=&quot;markdown-toc-hazelcast-wan-replication&quot;&gt;Hazelcast WAN Replication&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#saml2-metadata-management-via-json&quot; id=&quot;markdown-toc-saml2-metadata-management-via-json&quot;&gt;SAML2 Metadata Management via JSON&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#saml2-signing-credential-fingerprint&quot; id=&quot;markdown-toc-saml2-signing-credential-fingerprint&quot;&gt;SAML2 Signing Credential Fingerprint&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#password-synchronization&quot; id=&quot;markdown-toc-password-synchronization&quot;&gt;Password Synchronization&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#small-stuff&quot; id=&quot;markdown-toc-small-stuff&quot;&gt;Small Stuff&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#library-upgrades&quot; id=&quot;markdown-toc-library-upgrades&quot;&gt;Library Upgrades&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#resources&quot; id=&quot;markdown-toc-resources&quot;&gt;Resources&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#get-involved&quot; id=&quot;markdown-toc-get-involved&quot;&gt;Get Involved&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#credits&quot; id=&quot;markdown-toc-credits&quot;&gt;Credits&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;new--noteworthy&quot;&gt;New &amp;amp; Noteworthy&lt;/h3&gt;
+
+&lt;h4 id=&quot;hazelcast-wan-replication&quot;&gt;Hazelcast WAN Replication&lt;/h4&gt;
+
+&lt;p&gt;Hazelcast WAN replication using static discovery is now &lt;a href=&quot;https://apereo.github.io/cas/development/ticketing/Hazelcast-Ticket-Registry.html&quot;&gt;supported by CAS&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;saml2-metadata-management-via-json&quot;&gt;SAML2 Metadata Management via JSON&lt;/h4&gt;
+
+&lt;p&gt;SAML2 service provider integrations that do not necessarily provide metadata may be managed dynamically inside a &lt;a href=&quot;https://apereo.github.io/cas/development/installation/Configuring-SAML2-Authentication.html#service-provider-metadata&quot;&gt;standalone JSON file&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;saml2-signing-credential-fingerprint&quot;&gt;SAML2 Signing Credential Fingerprint&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://apereo.github.io/cas/development/installation/Configuring-SAML2-Authentication.html#saml-services&quot;&gt;SAML services&lt;/a&gt; are given the ability
+to filter the signing credential used in the metadata by its &lt;code class=&quot;highlighter-rouge&quot;&gt;SHA-1&lt;/code&gt; fingerprint.&lt;/p&gt;
+
+&lt;h4 id=&quot;password-synchronization&quot;&gt;Password Synchronization&lt;/h4&gt;
+
+&lt;p&gt;Support for &lt;a href=&quot;https://apereo.github.io/cas/development/installation/Password-Synchronization.html&quot;&gt;password synchronization&lt;/a&gt; is now available.&lt;/p&gt;
+
+&lt;h3 id=&quot;small-stuff&quot;&gt;Small Stuff&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://apereo.github.io/cas/development/installation/Rest-Authentication.html&quot;&gt;REST Authentication&lt;/a&gt; can now display warnings as part of the authentication flow.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://apereo.github.io/cas/development/password_management/Password-Management-REST.html&quot;&gt;REST Password Management&lt;/a&gt; may now support endpoints protected via Basic AuthN.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;library-upgrades&quot;&gt;Library Upgrades&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hibernate&lt;/li&gt;
+  &lt;li&gt;Gradle&lt;/li&gt;
+  &lt;li&gt;Azure KeyVault&lt;/li&gt;
+  &lt;li&gt;OpenSAML&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;resources&quot;&gt;Resources&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://apereo.github.io/cas/development/&quot;&gt;Documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas/milestones&quot;&gt;Release Schedule&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://apereo.github.io/cas/developer/Release-Policy.html&quot;&gt;Release Policy&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;get-involved&quot;&gt;Get Involved&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Start your CAS deployment today. Try out features and &lt;a href=&quot;https://apereo.github.io/cas/Mailing-Lists.html&quot;&gt;share feedback&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Better yet, &lt;a href=&quot;https://apereo.github.io/cas/developer/Contributor-Guidelines.html&quot;&gt;contribute patches&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Suggest and apply documentation improvements.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;credits&quot;&gt;Credits&lt;/h2&gt;
+
+&lt;p&gt;Big thanks to all who participate in the development of this release to submit patches and contribute improvements. Keep’em coming!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2019/02/01/610rc1-release/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2019/02/01/610rc1-release/</guid>
+      </item>
+    
+      <item>
+        <title>Apereo CAS - OohLala Mobile SAML2 Integration</title>
+        <description>&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot;&gt;
+  &lt;strong&gt;Contributed Content&lt;/strong&gt;&lt;br /&gt;Paul Spaude of Unicon, Inc was kind enough to contribute this guide.
+&lt;/div&gt;
+
+&lt;p&gt;Ready Communication’s OohLala Mobile provides a mobile community and communication tools for higher education. As a SAML2 service provider, it can be integrated with CAS running as a SAML identity provider and this blog post provides a quick walkthrough of how to make that integration possible.&lt;/p&gt;
+
+&lt;p&gt;Our starting position is based on the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3.x&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;Maven Overlay&lt;/a&gt; (The &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3&lt;/code&gt; branch specifically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;cas-configuration&quot;&gt;CAS Configuration&lt;/h1&gt;
+
+&lt;p&gt;First, ensure that your CAS deployment is equipped to act as a &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/Configuring-SAML2-Authentication.html&quot;&gt;SAML2 identity provider&lt;/a&gt;. Next, you may also use the &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/JSON-Service-Management.html&quot;&gt;JSON Service Registry&lt;/a&gt; to keep track of the relying-party registration record in JSON definition files.&lt;/p&gt;
+
+&lt;p&gt;The JSON file to contain the service provider relying-party record would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.support.saml.services.SamlRegisteredService&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;serviceId&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://integration.oohlalamobile.com/saml/[instance-name]/metadata&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;OohLaLa&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;metadataLocation&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://integration.oohlalamobile.com/saml/[instance-name]/metadata&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;encryptAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signResponses&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;attributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;allowedAttributes&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;java.util.ArrayList&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;givenName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sn&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mail&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;uid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few things to point out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will need to adjust the &lt;code class=&quot;highlighter-rouge&quot;&gt;metadataLocation&lt;/code&gt; to match your instance.&lt;/li&gt;
+  &lt;li&gt;Make sure CAS has retrieved the allowed attributes (i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;givenName&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;sn&lt;/code&gt; etc) listed in the JSON definition file.&lt;/li&gt;
+  &lt;li&gt;Make sure the SP metadata has the correct entity id, matching the instance.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;finale&quot;&gt;Finale&lt;/h1&gt;
+
+&lt;p&gt;Thanks to Paul Spaude of Unicon, Inc who was kind enough to share the above integration notes. If you too have an integration with a well-known SAML2 service provider, please consider sharing that guide in form of a blog post here as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2018/12/24/cas53-oohlalamobile-saml2-integration/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2018/12/24/cas53-oohlalamobile-saml2-integration/</guid>
+      </item>
+    
+      <item>
+        <title>Apereo CAS - Cranium Cafe SAML2 Integration</title>
+        <description>&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot;&gt;
+  &lt;strong&gt;Contributed Content&lt;/strong&gt;&lt;br /&gt;Paul Spaude of Unicon, Inc was kind enough to contribute this guide.
+&lt;/div&gt;
+
+&lt;p&gt;Cranium Cafe is a virtual teleconferencing platform that creates a simple, mobile in-office appointment. As a SAML2 service provider, it can be integrated with CAS running as a SAML identity provider and this blog post provides a quick walkthrough of how to make that integration possible.&lt;/p&gt;
+
+&lt;p&gt;Our starting position is based on the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3.x&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;Maven Overlay&lt;/a&gt; (The &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3&lt;/code&gt; branch specifically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;cas-configuration&quot;&gt;CAS Configuration&lt;/h1&gt;
+
+&lt;p&gt;First, ensure that your CAS deployment is equipped to act as a &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/Configuring-SAML2-Authentication.html&quot;&gt;SAML2 identity provider&lt;/a&gt;. Next, you may also use the &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/JSON-Service-Management.html&quot;&gt;JSON Service Registry&lt;/a&gt; to keep track of the relying-party registration record in JSON definition files.&lt;/p&gt;
+
+&lt;p&gt;The JSON file to contain the service provider relying-party record would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.support.saml.services.SamlRegisteredService&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;serviceId&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://my.craniumcafe.com/login/saml2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CraniumCafe&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;metadataLocation&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://my.craniumcafe.com/login/saml2_metadata&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;encryptAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signResponses&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;attributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.services.ReturnMappedAttributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;allowedAttributes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;java.util.TreeMap&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;eduPersonScopedAffiliation&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;groovy { return attributes['eduPersonAffiliation'].get(0) + '@example.org' }&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;displayName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;displayName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mail&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mail&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;eduPersonPrincipalName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;groovy { return attributes['eduPersonPrincipalName'].get(0) + '@example.org' }&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few things to point out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will need to adjust the &lt;code class=&quot;highlighter-rouge&quot;&gt;metadataLocation&lt;/code&gt; to match your instance.&lt;/li&gt;
+  &lt;li&gt;Make sure CAS has retrieved the allowed attributes (i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;eduPersonPrincipalName&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;mail&lt;/code&gt; etc) listed in the JSON definition file.&lt;/li&gt;
+  &lt;li&gt;Make sure the SP metadata has the correct entity id, matching the instance.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;finale&quot;&gt;Finale&lt;/h1&gt;
+
+&lt;p&gt;Thanks to Paul Spaude of Unicon, Inc who was kind enough to share the above integration notes. If you too have an integration with a well-known SAML2 service provider, please consider sharing that guide in form of a blog post here as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2018/12/24/cas53-oclc-saml2-integration/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2018/12/24/cas53-oclc-saml2-integration/</guid>
+      </item>
+    
+      <item>
+        <title>Apereo CAS - eLumen SAML2 Integration</title>
+        <description>&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot;&gt;
+  &lt;strong&gt;Contributed Content&lt;/strong&gt;&lt;br /&gt;Paul Spaude of Unicon, Inc was kind enough to contribute this guide.
+&lt;/div&gt;
+
+&lt;p&gt;eLumen is a higher-ed, assessment and curriculum management system that gives real insight into each students’ engagement and progress—while satisfying the growing demands of accreditation and other compliance mandates. As a SAML2 service provider, it can be integrated with CAS running as a SAML identity provider and this blog post provides a quick walkthrough of how to make that integration possible.&lt;/p&gt;
+
+&lt;p&gt;Our starting position is based on the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3.x&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;Maven Overlay&lt;/a&gt; (The &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3&lt;/code&gt; branch specifically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;cas-configuration&quot;&gt;CAS Configuration&lt;/h1&gt;
+
+&lt;p&gt;First, ensure that your CAS deployment is equipped to act as a &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/Configuring-SAML2-Authentication.html&quot;&gt;SAML2 identity provider&lt;/a&gt;. Next, you may also use the &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/JSON-Service-Management.html&quot;&gt;JSON Service Registry&lt;/a&gt; to keep track of the relying-party registration record in JSON definition files.&lt;/p&gt;
+
+&lt;p&gt;The JSON file to contain the service provider relying-party record would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.support.saml.services.SamlRegisteredService&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;serviceId&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[entity-id].elumenapp.com&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ELumen&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;evaluationOrder&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;metadataLocation&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/path/to/elumen-metadata.xml&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;encryptAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signResponses&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;attributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.services.ReturnMappedAttributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;allowedAttributes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;java.util.TreeMap&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;uid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;uid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;eduPersonPrincipalName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;groovy { return attributes['eduPersonPrincipalName'].get(0) + '@exampl.org' }&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few things to point out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will need to adjust the &lt;code class=&quot;highlighter-rouge&quot;&gt;metadataLocation&lt;/code&gt; to match your instance.&lt;/li&gt;
+  &lt;li&gt;Make sure CAS has retrieved the allowed attributes (i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;eduPersonPrincipalName&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;uid&lt;/code&gt; etc) listed in the JSON definition file.&lt;/li&gt;
+  &lt;li&gt;Make sure the SP metadata has the correct entity id, matching the instance.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;finale&quot;&gt;Finale&lt;/h1&gt;
+
+&lt;p&gt;Thanks to Paul Spaude of Unicon, Inc who was kind enough to share the above integration notes. If you too have an integration with a well-known SAML2 service provider, please consider sharing that guide in form of a blog post here as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2018/12/24/cas53-elumen-saml2-integration/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2018/12/24/cas53-elumen-saml2-integration/</guid>
+      </item>
+    
+      <item>
+        <title>Apereo CAS - Rave SAML2 Integration</title>
+        <description>&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot;&gt;
+  &lt;strong&gt;Contributed Content&lt;/strong&gt;&lt;br /&gt;Paul Spaude of Unicon, Inc was kind enough to contribute this guide.
+&lt;/div&gt;
+
+&lt;p&gt;Rave is a mass notification system designed to deliver fast and effective messaging for routine and emergency communications. As a SAML2 service provider, Rave can be integrated with CAS running as a SAML identity provider and this blog post provides a quick walkthrough of how to make that integration possible.&lt;/p&gt;
+
+&lt;p&gt;Our starting position is based on the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3.x&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;Maven Overlay&lt;/a&gt; (The &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3&lt;/code&gt; branch specifically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;cas-configuration&quot;&gt;CAS Configuration&lt;/h1&gt;
+
+&lt;p&gt;First, ensure that your CAS deployment is equipped to act as a &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/Configuring-SAML2-Authentication.html&quot;&gt;SAML2 identity provider&lt;/a&gt;. Next, you may also use the &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/JSON-Service-Management.html&quot;&gt;JSON Service Registry&lt;/a&gt; to keep track of the relying-party registration record in JSON definition files.&lt;/p&gt;
+
+&lt;p&gt;The JSON file to contain the service provider relying-party record would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.support.saml.services.SamlRegisteredService&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;serviceId&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://www.getrave.com/shibboleth-sp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Rave&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;metadataLocation&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/path/to/metadata.xml&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;encryptAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signResponses&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;requiredNameIdFormat&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;urn:oasis:names:tc:SAML:2.0:nameid-format:transient&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;attributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.services.ReturnMappedAttributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;allowedAttributes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;java.util.TreeMap&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;employeeNumber&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;urn:oid:1.2.840.113556.1.2.610&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;eduPersonPrincipalName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;groovy { return attributes['eduPersonPrincipalName'].get(0) + '@example.org' }&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few things to point out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will need to adjust the &lt;code class=&quot;highlighter-rouge&quot;&gt;metadataLocation&lt;/code&gt; to match your instance.&lt;/li&gt;
+  &lt;li&gt;Make sure CAS has retrieved the allowed attributes (i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;employeeNumber&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;eduPersonPrincipalName&lt;/code&gt; etc) listed in the JSON definition file.&lt;/li&gt;
+  &lt;li&gt;Make sure the SP metadata has the correct entity id, matching the Rave instance.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;finale&quot;&gt;Finale&lt;/h1&gt;
+
+&lt;p&gt;Thanks to Paul Spaude of Unicon, Inc who was kind enough to share the above integration notes. If you too have an integration with a well-known SAML2 service provider, please consider sharing that guide in form of a blog post here as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2018/12/23/cas53-getrave-saml2-integration/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2018/12/23/cas53-getrave-saml2-integration/</guid>
+      </item>
+    
+      <item>
+        <title>Apereo CAS - HireTouch SAML2 Integration</title>
+        <description>&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot;&gt;
+  &lt;strong&gt;Contributed Content&lt;/strong&gt;&lt;br /&gt;Paul Spaude of Unicon, Inc was kind enough to contribute this guide.
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://hiretouch.com&quot;&gt;HireTouch&lt;/a&gt; offers talent management solutions and is built specifically for human resources departments and hiring managers. As a SAML2 service provider, HireTouch can be integrated with CAS running as a SAML identity provider and this blog post provides a quick walkthrough of how to make that integration possible.&lt;/p&gt;
+
+&lt;p&gt;Our starting position is based on the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3.x&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;Maven Overlay&lt;/a&gt; (The &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3&lt;/code&gt; branch specifically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;cas-configuration&quot;&gt;CAS Configuration&lt;/h1&gt;
+
+&lt;p&gt;First, ensure that your CAS deployment is equipped to act as a &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/Configuring-SAML2-Authentication.html&quot;&gt;SAML2 identity provider&lt;/a&gt;. Next, you may also use the &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/JSON-Service-Management.html&quot;&gt;JSON Service Registry&lt;/a&gt; to keep track of the relying-party registration record in JSON definition files.&lt;/p&gt;
+
+&lt;p&gt;The JSON file to contain the service provider relying-party record would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.support.saml.services.SamlRegisteredService&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;serviceId&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://[instance].hiretouch.com/admin/saml/consume&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HireTouch&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;metadataLocation&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/path/to/metadata.xml&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;encryptAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signResponses&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;attributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;allowedAttributes&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;java.util.ArrayList&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;uid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few things to point out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will need to adjust the &lt;code class=&quot;highlighter-rouge&quot;&gt;metadataLocation&lt;/code&gt; to match your instance.&lt;/li&gt;
+  &lt;li&gt;Make sure CAS has retrieved the allowed attributes (i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;uid&lt;/code&gt; etc) listed in the JSON definition file.&lt;/li&gt;
+  &lt;li&gt;Make sure the SP metadata has the correct entity id, matching the HireTouch instance.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;finale&quot;&gt;Finale&lt;/h1&gt;
+
+&lt;p&gt;Thanks to Paul Spaude of Unicon, Inc who was kind enough to share the above integration notes. If you too have an integration with a well-known SAML2 service provider, please consider sharing that guide in form of a blog post here as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Dec 2018 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2018/12/22/cas53-hiretouch-saml2-integration/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2018/12/22/cas53-hiretouch-saml2-integration/</guid>
+      </item>
+    
+      <item>
+        <title>Apereo CAS - Microsoft Office 365 SAML2 Integration</title>
+        <description>&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot;&gt;
+  &lt;strong&gt;Contributed Content&lt;/strong&gt;&lt;br /&gt;Paul Spaude of Unicon, Inc was kind enough to contribute this guide.
+&lt;/div&gt;
+
+&lt;p&gt;Office 365 is a line of subscription services offered by Microsoft, as part of the Microsoft Office product line. As a SAML2 service provider, Office 365  can be integrated with CAS running as a SAML identity provider and this blog post provides a quick walkthrough of how to make that integration possible.&lt;/p&gt;
+
+&lt;p&gt;Our starting position is based on the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3.x&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;Maven Overlay&lt;/a&gt; (The &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3&lt;/code&gt; branch specifically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;office-365-configuration&quot;&gt;Office 365 Configuration&lt;/h1&gt;
+
+&lt;p&gt;The following resources should come in handy:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/active-directory/develop/single-sign-on-saml-protocol&quot;&gt;Azure Active Directory: Single Sign-On SAML protocol&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blogs.perficient.com/2015/04/01/office-365-why-you-need-to-understand-immutableid/&quot;&gt;Office 365 – Why You Need to Understand ImmutableID&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Azure Active Directory SAML2 metadata may be &lt;a href=&quot;https://nexus.microsoftonline-p.com/federationmetadata/saml20/federationmetadata.xml&quot;&gt;found here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;cas-configuration&quot;&gt;CAS Configuration&lt;/h1&gt;
+
+&lt;p&gt;First, ensure that your CAS deployment is equipped to act as a &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/Configuring-SAML2-Authentication.html&quot;&gt;SAML2 identity provider&lt;/a&gt;. Next, you may also use the &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/JSON-Service-Management.html&quot;&gt;JSON Service Registry&lt;/a&gt; to keep track of the relying-party registration record in JSON definition files.&lt;/p&gt;
+
+&lt;p&gt;The JSON file to contain the service provider relying-party record would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.support.saml.services.SamlRegisteredService&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;serviceId&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;urn:federation:MicrosoftOnline&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Office365_SP&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Microsoft Office 365 / Azure AD&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;metadataLocation&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;file:///path/to/WindowsAzureAD-metadata.xml&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;encryptAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signAssertions&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;signResponses&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;requiredNameIdFormat&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;urn:oasis:names:tc:SAML:2.0:nameid-format:persistent&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;usernameAttributeProvider&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;usernameAttribute&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;objectGUID&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;attributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.services.ReturnMappedAttributeReleasePolicy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;allowedAttributes&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;java.util.TreeMap&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;userPrincipalName&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;IDPEmail&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few things to point out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will need to adjust the &lt;code class=&quot;highlighter-rouge&quot;&gt;metadataLocation&lt;/code&gt; to match your data and the Office 365 instance.&lt;/li&gt;
+  &lt;li&gt;Make sure CAS has retrieved the allowed attributes (i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;IDPEmail&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;objectGUID&lt;/code&gt; etc) listed in the JSON definition file. This is required in the final generated SAML2 response to create the proper &lt;code class=&quot;highlighter-rouge&quot;&gt;NameIDFormat&lt;/code&gt; element.&lt;/li&gt;
+  &lt;li&gt;Make sure the SP metadata has the correct entity id, matching your Office 365 instance address.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;finale&quot;&gt;Finale&lt;/h1&gt;
+
+&lt;p&gt;Thanks to Paul Spaude of Unicon, Inc who was kind enough to share the above integration notes. If you too have an integration with a well-known SAML2 service provider, please consider sharing that guide in form of a blog post here as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 06 Dec 2018 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2018/12/06/cas53-office365-saml2-integration/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2018/12/06/cas53-office365-saml2-integration/</guid>
+      </item>
+    
+      <item>
+        <title>Apereo CAS - HappyFox SAML2 Integration</title>
+        <description>&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;p&gt;HappyFox is an all-in-one help desk ticketing system. As a SAML2 service provider, HappyFox can be integrated with CAS running as a SAML identity provider and this blog post provides a quick walkthrough of how to make that integration possible.&lt;/p&gt;
+
+&lt;p&gt;Our starting position is based on the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3.x&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;Maven Overlay&lt;/a&gt; (The &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3&lt;/code&gt; branch specifically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;happyfox-configuration&quot;&gt;HappyFox Configuration&lt;/h1&gt;
+
+&lt;p&gt;Use &lt;a href=&quot;https://support.happyfox.com/kb/article/515-using-saml-for-single-sign-on/&quot;&gt;these instructions&lt;/a&gt; to set up HappyFox as a SAML2 service provider.&lt;/p&gt;
+
+&lt;h1 id=&quot;cas-configuration&quot;&gt;CAS Configuration&lt;/h1&gt;
+
+&lt;p&gt;First, ensure that your CAS deployment is equipped to act as a &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/Configuring-SAML2-Authentication.html&quot;&gt;SAML2 identity provider&lt;/a&gt;. Next, you may also use the &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/JSON-Service-Management.html&quot;&gt;JSON Service Registry&lt;/a&gt; to keep track of the HappyFox relying-party registration record in JSON definition files.&lt;/p&gt;
+
+&lt;p&gt;The JSON file to contain the service provider relying-party record would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.support.saml.services.SamlRegisteredService&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;serviceId&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://[name].happyfox.com/saml/metadata/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HappyFox&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;description&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HappyFox&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;evaluationOrder&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;metadataLocation&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;file:/etc/cas/config/saml/happyfox-metadata.xml&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;usernameAttributeProvider&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;@class&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;usernameAttribute&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mail&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that HappyFox does not provide its own SP metadata and you will have to create it youself. The following is example of what that metadata may look like:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot;?&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;md:EntityDescriptor&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns:md=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;urn:oasis:names:tc:SAML:2.0:metadata&quot;&lt;/span&gt;
+                     &lt;span class=&quot;na&quot;&gt;validUntil=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2050-12-05T19:27:46Z&quot;&lt;/span&gt;
+                     &lt;span class=&quot;na&quot;&gt;cacheDuration=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;PT604800S&quot;&lt;/span&gt;
+                     &lt;span class=&quot;na&quot;&gt;entityID=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://[name].happyfox.com/saml/metadata/&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;md:SPSSODescriptor&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;AuthnRequestsSigned=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;WantAssertionsSigned=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt;
+                        &lt;span class=&quot;na&quot;&gt;protocolSupportEnumeration=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;urn:oasis:names:tc:SAML:2.0:protocol&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;md:NameIDFormat&amp;gt;&lt;/span&gt;urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress&lt;span class=&quot;nt&quot;&gt;&amp;lt;/md:NameIDFormat&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;md:AssertionConsumerService&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Binding=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST&quot;&lt;/span&gt;
+                                     &lt;span class=&quot;na&quot;&gt;Location=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://[name].happyfox.com/saml/callback/&quot;&lt;/span&gt;
+                                     &lt;span class=&quot;na&quot;&gt;index=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/md:SPSSODescriptor&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/md:EntityDescriptor&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few things to point out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will need to adjust the &lt;code class=&quot;highlighter-rouge&quot;&gt;serviceId&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;metadataLocation&lt;/code&gt; to match your data and the HappyFox instance.&lt;/li&gt;
+  &lt;li&gt;Make sure CAS has retrieved the allowed attributes (i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;mail&lt;/code&gt; etc) listed in the JSON definition file. This is required in the final generated SAML2 response to create the proper &lt;code class=&quot;highlighter-rouge&quot;&gt;NameIDFormat&lt;/code&gt; element.&lt;/li&gt;
+  &lt;li&gt;Make sure the SP metadata has the correct entity id, matching your HappyFox instance address.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;finale&quot;&gt;Finale&lt;/h1&gt;
+
+&lt;p&gt;If you too have an integration with a well-known SAML2 service provider, please consider sharing that guide in form of a blog post here as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 04 Dec 2018 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2018/12/04/cas53-happyfox-saml2-integration/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2018/12/04/cas53-happyfox-saml2-integration/</guid>
+      </item>
+    
+      <item>
+        <title>Apereo CAS - Cisco Webex SAML2 Integration</title>
+        <description>&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot;&gt;
+  &lt;strong&gt;Contributed Content&lt;/strong&gt;&lt;br /&gt;Keith Conger of Colorado College, an active member of the CAS community, was kind enough to contribute this guide.
+&lt;/div&gt;
+
+&lt;p&gt;Cisco Webex, formerly WebEx Communications Inc., is a company that provides on-demand collaboration, online meeting, web conferencing and videoconferencing applications. As a SAML2 service provider, Cisco Webex can be integrated with CAS running as a SAML identity provider and this blog post provides a quick walkthrough of how to make that integration possible.&lt;/p&gt;
+
+&lt;p&gt;Our starting position is based on the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3.x&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;Maven Overlay&lt;/a&gt; (The &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3&lt;/code&gt; branch specifically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;cisco-webex-configuration&quot;&gt;Cisco Webex Configuration&lt;/h1&gt;
+
+&lt;p&gt;Download the service provider metadata and upload the CAS identity provider metadata. No other configuration is required.&lt;/p&gt;
+
+&lt;h1 id=&quot;cas-configuration&quot;&gt;CAS Configuration&lt;/h1&gt;
+
+&lt;p&gt;First, ensure that your CAS deployment is equipped to act as a &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/Configuring-SAML2-Authentication.html&quot;&gt;SAML2 identity provider&lt;/a&gt;. Next, you may also use the &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/JSON-Service-Management.html&quot;&gt;JSON Service Registry&lt;/a&gt; to keep track of the Cisco Webex relying-party registration record in JSON definition files.&lt;/p&gt;
+
+&lt;p&gt;The JSON file to contain the Cisco Webex record would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;org.apereo.cas.support.saml.services.SamlRegisteredService&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;serviceId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;^https&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//idbroker.webex.com/.*&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Cisco&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Webex&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Cisco&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Webex&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;usernameAttributeProvider&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;usernameAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;mail&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;attributeReleasePolicy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;org.apereo.cas.services.ReturnMappedAttributeReleasePolicy&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;allowedAttributes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.TreeMap&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;givenName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;firstName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;mail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;sn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;lastName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;displayName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;displayName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;metadataLocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/path/to/webex-metadata.xml&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;signAssertions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;skipGeneratingSubjectConfirmationNotBefore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;requiredNameIdFormat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;urn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;oasis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;tc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;SAML&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;nameid-format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;emailAddress&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;signResponses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few things to point out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will need to adjust the &lt;code class=&quot;highlighter-rouge&quot;&gt;serviceId&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;metadataLocation&lt;/code&gt; to match your data and the Cisco Webex instance.&lt;/li&gt;
+  &lt;li&gt;Make sure CAS has retrieved the allowed attributes (i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;mail&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;givenName&lt;/code&gt;, etc) listed in the JSON definition file.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;finale&quot;&gt;Finale&lt;/h1&gt;
+
+&lt;p&gt;Thanks to Keith Conger of Colorado College who was kind enough to share the above integration notes. If you too have an integration with a well-known SAML2 service provider, please consider sharing that guide in form of a blog post here as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 04 Dec 2018 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2018/12/04/cas53-cisco-webex-saml2-integration/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2018/12/04/cas53-cisco-webex-saml2-integration/</guid>
+      </item>
+    
+      <item>
+        <title>Apereo CAS - VMware Identity Manager SAML2 Integration</title>
+        <description>&lt;div class=&quot;alert alert-success&quot;&gt;
+  &lt;strong&gt;Collaborate&lt;/strong&gt;&lt;br /&gt;The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to &lt;a href=&quot;https://github.com/apereo/apereo.github.io&quot;&gt;this repository&lt;/a&gt;.
+&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot;&gt;
+  &lt;strong&gt;Contributed Content&lt;/strong&gt;&lt;br /&gt;Keith Conger of Colorado College, an active member of the CAS community, was kind enough to contribute this guide.
+&lt;/div&gt;
+
+&lt;p&gt;VMware Identity Manager is identity management for the mobile cloud era that delivers on consumer-simple expectations like one-touch access to nearly any app, from any device, optimized with AirWatch Conditional Access. As a SAML2 service provider, VMware Identity Manager can be integrated with CAS running as a SAML identity provider and this blog post provides a quick walkthrough of how to make that integration possible.&lt;/p&gt;
+
+&lt;p&gt;Our starting position is based on the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CAS &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3.x&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Java 8&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/apereo/cas-overlay-template&quot;&gt;Maven Overlay&lt;/a&gt; (The &lt;code class=&quot;highlighter-rouge&quot;&gt;5.3&lt;/code&gt; branch specifically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;vmware-identity-manager-configuration&quot;&gt;VMware Identity Manager Configuration&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Register CAS as an identity provider&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img width=&quot;1100&quot; src=&quot;https://user-images.githubusercontent.com/1205228/49401590-d9c07a00-f704-11e8-9f65-3813a078d924.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Configure authentication methods&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img width=&quot;1000&quot; alt=&quot;screen shot 2018-11-27 at 3 01 55 pm&quot; src=&quot;https://user-images.githubusercontent.com/1205228/49401739-49cf0000-f705-11e8-8c7b-c862f69f7d63.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;cas-configuration&quot;&gt;CAS Configuration&lt;/h1&gt;
+
+&lt;p&gt;First, ensure that your CAS deployment is equipped to act as a &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/Configuring-SAML2-Authentication.html&quot;&gt;SAML2 identity provider&lt;/a&gt;. Next, you may also use the &lt;a href=&quot;https://apereo.github.io/cas/5.3.x/installation/JSON-Service-Management.html&quot;&gt;JSON Service Registry&lt;/a&gt; to keep track of the VMware Identity Manager relying-party registration record in JSON definition files.&lt;/p&gt;
+
+&lt;p&gt;The JSON file to contain the VMware Identity Manager registration record would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;org.apereo.cas.support.saml.services.SamlRegisteredService&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;serviceId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;your-vmware-idm-entity-id&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;VMware&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Identity&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Manager&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;VMware&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Identity&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Manager&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;attributeReleasePolicy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;org.apereo.cas.services.ReturnMappedAttributeReleasePolicy&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;allowedAttributes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.TreeMap&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;givenName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;firstName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;mail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;sAMAccountName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;userName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;sn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;lastName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;userPrincipalName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;userPrincipalName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;metadataLocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/path/to/vmware-idm.xml&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;signAssertions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;skipGeneratingSubjectConfirmationNotBefore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;signResponses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few things to point out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will of course need to adjust the &lt;code class=&quot;highlighter-rouge&quot;&gt;serviceId&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;metadataLocation&lt;/code&gt; to match your data and VMware Identity Manager instance.&lt;/li&gt;
+  &lt;li&gt;Make sure CAS has retrieved the allowed attributes (i.e. &lt;code class=&quot;highlighter-rouge&quot;&gt;mail&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;givenName&lt;/code&gt;, etc) listed in the JSON definition file.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;finale&quot;&gt;Finale&lt;/h1&gt;
+
+&lt;p&gt;Thanks to Keith Conger of Colorado College who was kind enough to share the above integration notes. If you too have an integration with a well-known SAML2 service provider, please consider sharing that guide in form of a blog post here as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/misagh84&quot;&gt;Misagh Moayyed&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
+        <link>https://apereo.github.io/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/</link>
+        <guid isPermaLink="true">https://apereo.github.io/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/</guid>
+      </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Effective Software Troubleshooting Tactics &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A collection of what hopefully are obvious troubleshooting tactics when it comes to diagnosing software deployment issues and configuration problems.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/09/05/effective-diagnostics/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Effective Software Troubleshooting Tactics">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/09/05/effective-diagnostics/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Effective Software Troubleshooting Tactics" />
+    <meta name="twitter:description" content="A collection of what hopefully are obvious troubleshooting tactics when it comes to diagnosing software deployment issues and configuration problems." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/09/05/effective-diagnostics/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Effective Software Troubleshooting Tactics</h1>
+  <span class="post-meta">Wednesday, Sep 5, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    13 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>As an <a href="https://unicon.net/solutions/identity-and-access-management">IAM consultant</a>, a good portion of my time throughout the day is spent troubleshooting issues, analyzing logs, helping client and colleagues figure out how to make sense of a seemingly impossible situation when it comes to production system failures, behavioral weirdness or just simply getting something to work per a piece of documentation. I have found that having a documented set of steps and methods proves helpful at a high level as you set out a strategy to solve <em>almost any</em> issue dealing with software.</p>
+
+<p>In this blog post, I am sharing a few tactics I have learned and gathered over the years to help boost up my problem-solving foo and I hope that these continue to serve as helpful reminders for you as you troubleshoot software issues or diagnose deployment failures. Please note that these techniques are not listed in any particular order and all weigh more or less equally in terms of importance and priority. <em>Use what works best for you, in the order that works best for you</em>.</p>
+
+<h1 id="component-break-down">Component Break-down</h1>
+
+<p>As you set to configure and deploy a piece of software, one of the very first things you should do is to identify the <em>key actors</em> and their role in your particular deployment. For instance, if you are deploying a Java-based web application somewhere, your component break-down would include:</p>
+
+<ul>
+  <li>The application itself</li>
+  <li>Server deployment environment</li>
+  <li>Dependent libraries/tooling</li>
+  <li>Operating system</li>
+  <li>Network</li>
+  <li>Underlying programming language/framework</li>
+  <li>…</li>
+</ul>
+
+<p>As you enumerate the components, it is important that you get to know each player to a reasonable degree. Be suspicious of everything. Once you have identified the key suspects, start working down the list and question everything.</p>
+
+<h1 id="start-simple">Start Simple</h1>
+
+<p>The weirdness you are trying to diagnose may, in fact, be a consequence of a rather complicated use case that involves many players, ugly preconditions and a decent weather forecast. It is generally rather difficult and sometimes impossible to get every aspect of that difficult use case configured and developed in one initial attempt, specifically if you are not too familiar with the technical solution or even the use case at hand. So, start simple and break down the use case into logical, concrete, bounded chunks. Shoot for best case scenarios small enough to be manageable in your starting attempts. Once successful, tweak one aspect of the configuration in oh-so-small ways, introduce a variable and observe how the behavior changes. Repeat this process until you get home.</p>
+
+<p>Not too long ago, a colleague and I were trying to figure out how to let Apache Tomcat handle <a href="https://tomcat.apache.org/tomcat-8.5-doc/config/http.html"><code class="highlighter-rouge">clientAuth</code></a>. After a component break-down, we had the following <em>key</em> actors:</p>
+
+<ul>
+  <li>Apache Tomcat</li>
+  <li>Application Realm Configuration</li>
+  <li>SSL Certificate Setup</li>
+  <li>Browser Setup</li>
+  <li>…</li>
+</ul>
+
+<p>Then we broke the use case down:</p>
+
+<ol>
+  <li>Visit URL in application</li>
+  <li>Browser presents certificate choice</li>
+  <li>Apache Tomcat processes that choice</li>
+  <li>Application accepts certificate</li>
+  <li>Other stuff happens…</li>
+</ol>
+
+<p>So, we started to work down the list: <em>Can the URL be accessed without Tomcat’s interference? What browser version/type is used? Is our test certificate sane and valid?</em>, etc. Our very best initial outcome simply was the success of getting to a particular URL. We did not necessarily care what the URL looked like, whether it could or should be changed or rewritten, how one could end up at that URL, web access vs non-web access, etc. All those details were entirely irrelevant and we would get to them later.</p>
+
+<p>Things must be simple before they are complicated.</p>
+
+<h1 id="thou-shall-log">Thou Shall Log</h1>
+
+<p>Application logs are <strong>THE BEST RESOURCE</strong> for determining the root cause of a problem, provided you have configured the appropriate log levels. Specifically, you want to make sure <code class="highlighter-rouge">DEBUG</code> or <code class="highlighter-rouge">TRACE</code> levels are turned on for the relevant packages and components in your logging configuration. Know where the logging configuration is, become familiar with its syntax when changes are due and know where the output data is saved.</p>
+
+<p>Also:</p>
+
+<ul>
+  <li>
+    <p>When changes are applied, you may need to restart the server environment and observe the log files to get a better understanding of behavior.</p>
+  </li>
+  <li>
+    <p>Remember that you may not always be dealing with a <em>single</em> log file. Various events may get logged to different files at different locations on the system and you will need to be mindful of all locations where diagnostic data may be. For example, Apache Tomcat has a <code class="highlighter-rouge">catalina.out</code> log file, then some kind of a <code class="highlighter-rouge">localhost-xyz</code> file, then some sort of a <code class="highlighter-rouge">accesslog</code> file, then you have the application log files which may or may not choose to use the same the log files as target destinations for data, etc. <em>Know your toolset</em>. Remember to look at everything.</p>
+  </li>
+  <li>
+    <p>Nuke all logs before you start the next test attempt. <strong>ALWAYS</strong> start clean. When you or anyone else analyzes diagnostics data, there should never be a question of <em>Wait. Is this recent? Is this actually my attempt at doing X? It says there is an error, but the date goes back to 2 years ago. How?</em>. Put a stop to all that. Stop wasting time. Save lives.</p>
+  </li>
+</ul>
+
+<p>If there is one take away in this section for you, dear reader, and one that you should take to heart, internalize, build statues for in tribute and pray to in the morning when you wake up, is this: <strong>REVIEW LOGS</strong>.</p>
+
+<p>Put another way:</p>
+
+<ul>
+  <li>Are you troubleshooting software? Please review logs.</li>
+  <li>Cannot get some vendor integration working? Please review logs.</li>
+  <li>Neighbor’s loud music keeping you up at night? Please review logs.</li>
+  <li>Ran out of milk? Please review logs.</li>
+  <li>Dog shedding on the carpet? Cat doesn’t approve of your life choices? Sure. Please review logs.</li>
+</ul>
+
+<p>In summary, the answer is almost always in the logs.</p>
+
+<h1 id="compare-solutions">Compare Solutions</h1>
+
+<p>If you can afford it, another helpful technique is to find environments and/or solutions that actually deliver the use case you need so that you can begin to compare differences. Your objective here is to try to eliminate variables that make the job unnecessarily unique and bothersome and remove those. Identification of these gotchas is the first step, but perhaps more importantly, understanding them and their effect is more ideal. For example, when we were trying to figure out Apache Tomcat’s way of handling <code class="highlighter-rouge">clientAuth</code>, we started asking the following questions:</p>
+
+<ul>
+  <li><em>This is Apache Tomcat 8. Does it work with 7? Does it work with 6?</em></li>
+  <li><em>Do we have a certificate that actually does work? How is that different from ours?</em></li>
+  <li><em>Docs say we need file <code class="highlighter-rouge">X</code> at THIS location, but we have <code class="highlighter-rouge">X</code> at THAT location. Is that important?</em></li>
+  <li><em>Logs say we cannot connect to our new LDAP. Can we connect to our old LDAP? What’s changed?</em></li>
+</ul>
+
+<p>Again, you want to find a solution that works and start comparing to identify differences and variables. Find working examples. Try different versions of software components with the same configuration you have today.</p>
+
+<p>Once you have spotted the difference, it’s important that you establish a baseline first <em>and then</em> start tweaking that baseline one small step at a time in configuration and elsewhere to find the missing element or changing behavior. If you thought option <code class="highlighter-rouge">X</code> in the configuration does blah, it’s important to figure out why it does or does not do as advertised. Identify what works and what doesn’t. Getting something to work is important and is one best case scenario sure, but you should not have to stop there, as there will come a time where you would have to go above and beyond option X and getting something to work might bring about other (usually security-related) consequences of which you should be mindful.</p>
+
+<h1 id="code-speaks-truth">Code Speaks Truth</h1>
+
+<p>So, thus far you have identified the key components, broke down the use case, examined logs, and played around with alternative solutions. <code class="highlighter-rouge">X</code> works but <code class="highlighter-rouge">X+1</code> does not. You know that. Your logs know that. Your previous working examples and legacy environments and your cat know that. What’s next?</p>
+
+<p><em>Truth can only be found in one place: the code</em>, and surely, you must handle the truth.</p>
+
+<p>In my earlier anecdote of dealing with Apache Tomcat and <code class="highlighter-rouge">clientAuth</code>, all the steps led us to a suspicious <a href="https://github.com/Unicon/x509authentication-bypassing-tomcat-realm">realm</a> configuration that was not activated quite correctly. We knew the realm worked and we know it was recognized by Apache Tomcat, yet it was never invoked at the right moment. So we started out by configuring Apache Tomcat for <a href="https://blog.trifork.com/2014/07/14/how-to-remotely-debug-application-running-on-tomcat-from-within-intellij-idea/">remote debugging</a>, got the source code, compiled it and connected it via IntelliJ IDEA to a live running Tomcat instance so we could step through each statement. This method allowed us to debug the application, the realm, specific portion of Apache Tomcat code dealing with the realm…and surely, the cat.</p>
+
+<p>What I am trying to say here is that, (if you have access and a permitting license), you must be prepared for stepping down into the code to either trace the flow and logic statically by simply reading (between) the lines or begin a remote debugging session as we did to figure out how it is actually executing. Logs, comparable solutions and such can only take you so far. In the end, code speaks the truth.</p>
+
+<h1 id="share-pain-responsibly">Share Pain, Responsibly</h1>
+
+<p>With enough collected data, you should, of course, ask for help and guidance as time and opportunity allows. Sharing data and problem reports requires a degree of discipline to make it easy for others to understand the request easily and respond to it quickly. While there would always be room for follow-up questions and clarifications, it is best to produce and collect as much data as possible and share them using well-understood conventional formats and channels for the best outcome.</p>
+
+<p>A very good discipline is to use a starting template for sharing such reports. A template is basically a stubbed out application, categorized with a series of questions relevant for diagnostics where you fill in the gaps and state the problem description. Again, whether or not the project or community asks this of you, try to provide the following data points:</p>
+
+<ul>
+  <li><em>Problem Statement</em></li>
+</ul>
+
+<p>State the problem description. <em>What</em> are you trying to do? <em>Why</em> are you doing it at all? This is where you begin to explain the use case at hand, and circumstances that led you to it.</p>
+
+<p>Be brief but precise:</p>
+
+<ol>
+  <li>Avoid statements such as <em>We have X and it doesn’t work</em>. That statement simply doesn’t work.</li>
+  <li>Reformulate statements such as <em>Is it possible to do X?</em> to explain the why, the what and the how.</li>
+</ol>
+
+<ul>
+  <li><em>Expected Outcome</em></li>
+</ul>
+
+<p>As the title suggests, what do you expect to happen? What should be the end result in your view?</p>
+
+<ul>
+  <li><em>Current Outcome</em></li>
+</ul>
+
+<p>As the title suggests, what do you see happening today?</p>
+
+<ul>
+  <li><em>Reproduce</em></li>
+</ul>
+
+<p>How exactly should one go about reproducing the current outcome? Do you have a series of test cases that demonstrate some faulty behavior? Do you have a sample, a test application to exhibit the issue at hand?</p>
+
+<ul>
+  <li><em>Diagnostics</em></li>
+</ul>
+
+<p>What steps have you taken to identify and diagnose what you consider to be an issue? How far down the rabbit hole have you traveled to debug the code, analyze the logs, find comparable solutions and track breaking change and incompatibility across software releases?</p>
+
+<ul>
+  <li><em>Workarounds</em></li>
+</ul>
+
+<p>Do you have a solution at hand today that does the job? Have you experimented with code and configuration to determine the root cause and come up with a suggestion on how X may be improved, fixed, etc?</p>
+
+<ul>
+  <li><em>Logs</em></li>
+</ul>
+
+<p>It is important that you provide the full story given to you by log data. You may either attach a clean log file that shows the faulty sequence of operations from start to finish, or (and you should avoid this where you can) you may decide to paste relevant sections of the log although this option is usually risky since the portions you think are relevant may not, in fact, be the entire story. If you do decide to share snippets of logs, remember to <em>not</em> paste the entire log output into a forum or description field, and learn to format and organize the data so it can be easily and readily understood by others quickly.</p>
+
+<ul>
+  <li><em>Environment</em></li>
+</ul>
+
+<p>Describe the environment you have today. What are the key components at play here? What precise version of the software do you run? Where did you download it? How old is it and have you considered upgrading? How did you install it? What changes have been applied to the software or its surrounding ecosystem, etc?</p>
+
+<p>Stick to a template. Less guesswork leads to quicker responses and better outcomes. Practice.</p>
+
+<h1 id="eat-sleep-think">Eat, Sleep, Think</h1>
+
+<p>This particular item may not be all too relevant when it comes to troubleshooting software, as issue resolution is usually time-sensitive and a task with a fair amount of pressure and stress, but I personally find this to be very valuable during design or coding sessions. At times, where you are stumped for a solution and have been staring at the screen and logs for a long time, unsure of how to connect certain pieces together and pigeonholed into a particular line of thinking, it is very useful to leave it all behind for a period of time and switch to a more <em>physical activity</em>. Go for a walk around the neighborhood’s park, take a nap, shoot a few free throws, etc and allow your brain to reset itself and subconsciously work on the problem in the background. Once you come back, you would have the equivalent of a second pair of eyes and a fresh perspective on how to attack the problem.</p>
+
+<p>In the same category, I find that re-iterating the problem and insofar solutions using a whiteboard, pen/pencil, chatting with a colleague or just about any other type of physical activity outside the use of electronics has the same effect. This effectively tickles your brain to get moving on a solution without you actively realizing it, and of course, a short break every once in a while can do a lot of good. My personal best is around 40-minute mark where I get up, walk around and try to do something totally different and silly, like attempting to train the pigeons outside to dubstep.</p>
+
+<p>Believe me, it works. (The technique, not the dubstep).</p>
+
+<h1 id="start-early">Start Early</h1>
+
+<p><img src="https://user-images.githubusercontent.com/1205228/45082890-9b202100-b10f-11e8-9e28-c02251d3271a.png" alt="image" /></p>
+
+<p><a href="https://apereo.github.io/2017/03/08/the-myth-of-ga-rel/">This</a>.</p>
+
+<h1 id="so">So…</h1>
+
+<p>I hope this review was of some help to you. This is by no means a comprehensive list; a lot of it is subjective and could be entirely inapplicable to you, your personality and work etiquette. Either way, if you have other tactics and strategies to share please feel free to edit this post as best you can.</p>
+
+<p>Also, many thanks to <a href="https://github.com/jtgasper3">@jtgasper3</a> for reviewing this post and providing feedback.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F09%2F05%2Feffective-diagnostics%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Effective+Software+Troubleshooting+Tactics&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F09%2F05%2Feffective-diagnostics%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F09%2F05%2Feffective-diagnostics%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F09%2F05%2Feffective-diagnostics%2F&amp;title=Effective+Software+Troubleshooting+Tactics" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F09%2F05%2Feffective-diagnostics%2F&amp;title=Effective+Software+Troubleshooting+Tactics" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F09%2F05%2Feffective-diagnostics%2F&amp;name=Effective+Software+Troubleshooting+Tactics" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F09%2F05%2Feffective-diagnostics%2F&amp;title=Effective+Software+Troubleshooting+Tactics" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F09%2F05%2Feffective-diagnostics%2F&amp;title=Effective+Software+Troubleshooting+Tactics" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F09%2F05%2Feffective-diagnostics%2F&amp;t=Effective+Software+Troubleshooting+Tactics" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Forced Authentication with Apereo CAS &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Discourse on supporting forced authentication with the Apereo CAS server from the perspective of an application protected with mod-auth-cas, the Apache httpd module for CAS.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/02/26/forcedauth-modauth-cas/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Forced Authentication with Apereo CAS">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/02/26/forcedauth-modauth-cas/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Forced Authentication with Apereo CAS" />
+    <meta name="twitter:description" content="Discourse on supporting forced authentication with the Apereo CAS server from the perspective of an application protected with mod-auth-cas, the Apache httpd module for CAS." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/02/26/forcedauth-modauth-cas/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Forced Authentication with Apereo CAS</h1>
+  <span class="post-meta">Monday, Feb 26, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    5 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+<strong>Collaborate</strong><br />This blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>This post summarizes a recent conversation I had with a few colleagues on strategies one may use to support forced authentication with CAS and the journey we went on to discover and diagnose a few integration issues with an application protected by <a href="https://github.com/apereo/mod_auth_cas">mod_auth_cas</a>.</p>
+
+<p>Let’s begin.</p>
+
+<h1 id="the-problem">The Problem</h1>
+
+<p>Some CAS deployments present with the rather common requirement to challenge the user to re-enter credentials in some applications. To accommodate this, it’s likely that deployments may opt into creative yet <em>non-standard</em> solutions such as applications themselves prompting for credentials to replay them in a back-end call. This is problematic for a number of reasons:</p>
+
+<ul>
+  <li>Applications present a differently styled login form.</li>
+  <li>Applications directly get involved in handling user credentials.</li>
+</ul>
+
+<p>Last but most important:</p>
+
+<blockquote>
+  <p>The only thing necessary for the triumph of evil is for good men to replay credentials.</p>
+</blockquote>
+
+<p>So, is there a way to force re-authentication with CAS?</p>
+
+<h1 id="forced-authentication">Forced Authentication</h1>
+
+<p>The <a href="https://apereo.github.io/cas/development/protocol/CAS-Protocol-Specification.html">CAS protocol</a> has a specific parameter dedicated to forced authentication, named as <code class="highlighter-rouge">renew=true</code>.</p>
+
+<p>If supplied as part of an authentication request:</p>
+
+<blockquote>
+  <p>Single sign-on will be bypassed. In this case, CAS will require the client to present credentials regardless of the existence of a single sign-on session with CAS.</p>
+</blockquote>
+
+<p>If supplied as part of a validation request:</p>
+
+<blockquote>
+  <p>Ticket validation will only succeed if the service ticket was issued from the presentation of the user’s primary credentials. It will fail if the ticket was issued from a single sign-on session.</p>
+</blockquote>
+
+<div class="alert alert-info">
+<strong>Version Caveat</strong><br />If you have deployed CAS <code>5.2.x</code>, you need to at least be on <code>5.2.3</code> for the renew parameter to function correctly.</div>
+
+<p>It goes without saying that <code class="highlighter-rouge">renew=true</code> works best if you wish to let the application make that decision when needed. Alternatively, you may also control this behavior centrally by <a href="https://apereo.github.io/cas/development/installation/Configuring-Service-Access-Strategy.html#disable-service-sso-access">marking the relevant application/service</a> in the CAS service registry (JSON file, etc) such that it would not participate in SSO and would always be asked for credentials regardless of what the application says.</p>
+
+<h1 id="real-life-example">Real Life Example</h1>
+
+<p>Let’s say we have an application at <code class="highlighter-rouge">https://secure-dev.example.org/groups/</code> that has SSO enabled.  We need one subfolder of that app at <code class="highlighter-rouge">https://secure-dev.example.org/groups/reauth/</code> to require re-authentication to access.</p>
+
+<p>So, (assuming a <a href="https://apereo.github.io/cas/development/installation/JSON-Service-Management.html">JSON service registry</a>), we have one service registration record requiring SSO to cover any app on the host. Note that SSO participation is by default on and it’s perfectly good for us to practice laziness here.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="err">@class</span><span class="p">:</span><span class="w"> </span><span class="err">org.apereo.cas.services.RegexRegisteredService</span><span class="w">
+  </span><span class="err">serviceId</span><span class="p">:</span><span class="w"> </span><span class="err">^https?</span><span class="p">:</span><span class="err">//</span><span class="p">[</span><span class="err">\w</span><span class="p">]</span><span class="err">+-dev.example.org/.*</span><span class="w">
+  </span><span class="err">name</span><span class="p">:</span><span class="w"> </span><span class="err">secure-dev.example.org</span><span class="w">
+  </span><span class="err">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="w">
+  </span><span class="err">description</span><span class="p">:</span><span class="w"> </span><span class="err">Everything</span><span class="w">
+  </span><span class="err">evaluationOrder</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We set up another service registration with a lower (i.e. processed first; think of it like the Olympics rankings) evaluation order and <code class="highlighter-rouge">ssoEnabled: false</code> to cover the subfolder:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="err">@class</span><span class="p">:</span><span class="w"> </span><span class="err">org.apereo.cas.services.RegexRegisteredService</span><span class="w">
+  </span><span class="err">serviceId</span><span class="p">:</span><span class="w"> </span><span class="err">^https?</span><span class="p">:</span><span class="err">//</span><span class="p">[</span><span class="err">\w</span><span class="p">]</span><span class="err">+-dev.example.org/groups/reauth/.*</span><span class="w">
+  </span><span class="err">name</span><span class="p">:</span><span class="w"> </span><span class="err">secure-dev.example.org</span><span class="w"> </span><span class="err">Groups</span><span class="w"> </span><span class="err">Reauth</span><span class="w">
+  </span><span class="err">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="w">
+  </span><span class="err">description</span><span class="p">:</span><span class="w"> </span><span class="err">Groups</span><span class="w"> </span><span class="err">Reauth</span><span class="w">
+  </span><span class="err">evaluationOrder</span><span class="p">:</span><span class="w"> </span><span class="mi">1100</span><span class="w">
+  </span><span class="err">accessStrategy</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="err">@class</span><span class="p">:</span><span class="w"> </span><span class="err">org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy</span><span class="w">
+    </span><span class="err">ssoEnabled</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Our application, protected by <a href="https://github.com/apereo/mod_auth_cas">mod-auth-cas</a> has the following configuration:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;Location</span> <span class="err">/groups/reauth</span><span class="nt">&gt;</span>
+    AuthType CAS
+    AuthName "CAS"
+    CASScope /groups/reauth
+    CASAuthNHeader SOME_LoginID
+    CASScrubRequestHeaders On
+    CASCookie MOD_AUTH_CAS_REAUTH
+    Options None
+    require valid-user
+    Order allow, deny
+    Allow from all
+<span class="nt">&lt;/Location&gt;</span>
+
+<span class="nt">&lt;Location</span> <span class="err">/groups</span><span class="nt">&gt;</span>
+    AuthType CAS
+    AuthName "CAS"
+    CASScope /
+    CASAuthNHeader SOME_LoginID
+    CASScrubRequestHeaders On
+    CASCookie MOD_AUTH_CAS
+    Options None
+    require valid-user
+    Order allow, deny
+    Allow from all
+<span class="nt">&lt;/Location&gt;</span>
+</code></pre></div></div>
+
+<p>At first glance, this should do exactly as you would expect if only it weren’t for a small caveat.</p>
+
+<h2 id="the-caveat">The Caveat</h2>
+
+<p>If the request begins with <code class="highlighter-rouge">https://secure-dev.example.org/groups/reauth/</code> first and then goes to <code class="highlighter-rouge">https://secure-dev.example.org/groups/</code>, the user would be prompted to log in - as expected because those locations use different cookie names.  However, once logged in, the user would get caught in a redirect loop between <code class="highlighter-rouge">mod_auth_cas</code> and CAS.  It turns out that there were two issues.  One was that more precise location is placed first in the config:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;Location</span> <span class="err">/groups/reauth</span><span class="nt">&gt;</span>
+   CASCookie MOD_AUTH_CAS_REAUTH
+   CASScope /groups/reauth/
+   ...
+<span class="nt">&lt;Location&gt;</span>
+
+<span class="nt">&lt;Location</span> <span class="err">/groups</span><span class="nt">&gt;</span>
+   CASCookie MOD_AUTH_CAS
+   CASScope /
+   …
+<span class="nt">&lt;Location&gt;</span>
+</code></pre></div></div>
+
+<p>This made mod_auth_cas use the last applicable <code class="highlighter-rouge">CASScope</code> directive which meant that the <code class="highlighter-rouge">MOD_AUTH_CAS_REAUTH</code> cookie was being set at <code class="highlighter-rouge">Path=/</code> instead of <code class="highlighter-rouge">Path=/groups/reauth/</code>.</p>
+
+<p>This might have been fine except for the way mod_auth_cas parses the values in the <code class="highlighter-rouge">Cookie</code> header.  It <em>tokenizes</em> the header on <code class="highlighter-rouge">;</code> then iterates through each cookie string by matching the number of characters equal to the length of the expected cookie name defined by the <code class="highlighter-rouge">CASCookie</code> directive.  If the cookie string starts with the <code class="highlighter-rouge">CASCookie</code> name, it skips the next character,  assuming that it’s <code class="highlighter-rouge">=</code> and takes all remaining characters. So what was happening was that, given the cookie header <code class="highlighter-rouge">Cookie: BLARG=WuzzleWuzzle;MOD_AUTH_CAS_REAUTH=foofoofoofoo;</code>, mod_auth_cas was matching the cookie string <code class="highlighter-rouge">MOD_AUTH_CAS_REAUTH=foofoofoofoo</code> with the <code class="highlighter-rouge">CASCookie</code> name of <code class="highlighter-rouge">MOD_AUTH_CAS</code>.  Finding that, it skipped the <code class="highlighter-rouge">_</code> and returned <code class="highlighter-rouge">REAUTH=foofoofoofoo</code> as the CAS cookie value.  That isn’t a valid format for a CAS cookie so it redirected back to CAS.  CAS, finding a valid <code class="highlighter-rouge">TGC</code>, then performed SSO and redirected back to the service.  The service ticket was never validated because mod_auth_cas checks for the presence of a cookie before it checks for the ticket parameter.  Finding the invalid cookie again, it redirected back to CAS and so on until the browser threw up its hands in defeat.</p>
+
+<p>So, just something to look out for:</p>
+
+<ul>
+  <li>When using mod_auth_cas, configuration elements that share a scope (e.g. <code class="highlighter-rouge">/groups</code>, <code class="highlighter-rouge">/groups/reauth</code>) <strong>MUST be listed in order of least to most precise</strong>.</li>
+  <li>The <code class="highlighter-rouge">CASCookie</code> directives that share a scope <strong>MUST NOT be substrings of each other</strong>.</li>
+</ul>
+
+<h1 id="summary">Summary</h1>
+
+<p>I hope this review was of some help to you and I am sure that both this post as well as the functionality it attempts to explain can be improved in any number of ways. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p>…and of course, a very special thanks to all colleagues who took part in this post, exchanged dialogue, verified behavior and generously took the time to share their analysis and findings. Thank you.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F26%2Fforcedauth-modauth-cas%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Forced+Authentication+with+Apereo+CAS&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F26%2Fforcedauth-modauth-cas%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F26%2Fforcedauth-modauth-cas%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F26%2Fforcedauth-modauth-cas%2F&amp;title=Forced+Authentication+with+Apereo+CAS" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F26%2Fforcedauth-modauth-cas%2F&amp;title=Forced+Authentication+with+Apereo+CAS" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F26%2Fforcedauth-modauth-cas%2F&amp;name=Forced+Authentication+with+Apereo+CAS" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F26%2Fforcedauth-modauth-cas%2F&amp;title=Forced+Authentication+with+Apereo+CAS" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F26%2Fforcedauth-modauth-cas%2F&amp;title=Forced+Authentication+with+Apereo+CAS" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F26%2Fforcedauth-modauth-cas%2F&amp;t=Forced+Authentication+with+Apereo+CAS" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

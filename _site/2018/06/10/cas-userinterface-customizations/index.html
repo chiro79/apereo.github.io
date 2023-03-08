@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Apereo CAS - User Interface Customizations &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A short tutorial on Apereo CAS user interface customizations, including themes, localization and dynamic views for all those who enjoy front-end development and suffer from instant gratification.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/06/10/cas-userinterface-customizations/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apereo CAS - User Interface Customizations">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/06/10/cas-userinterface-customizations/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Apereo CAS - User Interface Customizations" />
+    <meta name="twitter:description" content="A short tutorial on Apereo CAS user interface customizations, including themes, localization and dynamic views for all those who enjoy front-end development and suffer from instant gratification." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/06/10/cas-userinterface-customizations/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Apereo CAS - User Interface Customizations</h1>
+  <span class="post-meta">Sunday, Jun 10, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    12 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+<strong>Collaborate</strong><br />This blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<h1 id="overview">Overview</h1>
+
+<p>When it comes to implementing CAS user interface customizations, there are many options and strategies one can use to deliver a unique user experience. There are ways one can customize the default views to overlay changes top of provided HTML files. These views may then be customized and loaded from a variety of locations, and just as well, could be themed using both static and dynamic strategies either globally or on a per-application basis. In this post, we shall review such customization strategies at a high-level, and also touch upon developer tools and methods that allow the changes to quickly go into effect and get deployed.</p>
+
+<p>Our starting position is based on the following:</p>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">5.3.0</code></li>
+  <li>Java 8</li>
+  <li><a href="https://github.com/apereo/cas-overlay-template">Maven</a></li>
+</ul>
+
+<h1 id="overlay-setup">Overlay Setup</h1>
+
+<p>Let’s assume that application registration records are going to be managed as <a href="https://apereo.github.io/cas/development/installation/JSON-Service-Management.html">flat JSON files</a>:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.apereo.cas<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>cas-server-support-json-service-registry<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>${cas.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>Next, you must teach CAS how to load JSON registration records from disk. This is done in the <code class="highlighter-rouge">cas.properties</code> file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.serviceRegistry.initFromJson</span><span class="p">=</span><span class="s">false</span>
+<span class="py">cas.serviceRegistry.json.location</span><span class="p">=</span><span class="s">file:/etc/cas/services</span>
+</code></pre></div></div>
+
+<p>…where a sample <code class="highlighter-rouge">ApplicationName-1001.json</code> would then be placed inside <code class="highlighter-rouge">/etc/cas/services</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://app.example.org"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"ApplicationName"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"evaluationOrder"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Fairly simple, thus far. Now, let’s customize the user interface.</p>
+
+<h1 id="overlaying-views">Overlaying Views</h1>
+
+<p>CAS application views are found at <code class="highlighter-rouge">src/main/resources/templates</code> which is a location within the CAS web application itself. In order to modify the CAS HTML views, each view file first needs to be brought over into the overlay. You can use the <code class="highlighter-rouge">build.sh listviews</code> command to see what HTML views are available for customizations. Note that CAS views are broken up into smaller fragments, allowing you to customize and change specific portions of a particular page if needed. At any rate, once the file is chosen simply use <code class="highlighter-rouge">build.sh getview $NAME</code> to bring the <code class="highlighter-rouge">$NAME</code> view into your overlay:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>build.sh getview footer.html
+
+Exploded the CAS web application file.
+Searching <span class="k">for </span>view name footer.html...
+Found view<span class="o">(</span>s<span class="o">)</span>:
+/cas-overlay-template/target/cas/WEB-INF/classes/templates/fragments/footer.html
+Created view at /cas-overlay-template/src/main/resources/templates/fragments/footer.html
+/cas-overlay-template/src/main/resources/templates/fragments/footer.html
+</code></pre></div></div>
+
+<p>Now that you have the <code class="highlighter-rouge">footer.html</code> brought into the overlay, you can simply modify the file at <code class="highlighter-rouge">cas-overlay-template/src/main/resources/templates/fragments/footer.html</code> to introduce your own footer-related changes, and then get the CAS web application deployed to finesse.</p>
+
+<h1 id="deploying-views">Deploying Views</h1>
+
+<p>The quickest way to test such changes is by using the <code class="highlighter-rouge">bootrun</code> command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>build.sh bootrun
+</code></pre></div></div>
+
+<p>This command simply runs the CAS web application in an isolated sandboxed mode where local resources such as HTML, CSS, Javascript and other components are <em>watched</em> and <em>reloaded</em> dynamically when changes are detected. In our above example, you can continue to make changes to the <code class="highlighter-rouge">footer.html</code> file and keep refreshing the browser to see the change in action.</p>
+
+<div class="alert alert-success">
+<strong>The CAS Watch</strong><br />Files must exist in the overlay before they can be watched. If you add a new local resource into the overlay, you may need to run the <code>bootrun</code> command again so the file becomes watchable.
+</div>
+
+<p>Note that view definitions and files are by default cached where the file content is processed and rendered once and then cached for maximum performance. If you wish for changes to be picked up automatically, you do need to disable the cache via the following setting in your <code class="highlighter-rouge">cas.properties</code> file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">spring.thymeleaf.cache</span><span class="p">=</span><span class="s">false</span>
+</code></pre></div></div>
+
+<h1 id="externalized-views">Externalized Views</h1>
+
+<h2 id="spring-boot">Spring Boot</h2>
+
+<p>The location of CAS views is by default expected to be found at <code class="highlighter-rouge">src/main/resources/templates</code> which is the sort of behavior controlled and provided by Spring Boot. This location can be controlled using the following setting:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">spring.thymeleaf.prefix</span><span class="p">=</span><span class="s">classpath:/templates/</span>
+</code></pre></div></div>
+
+<p>This instructs CAS to locate views at the specified location. This location can be externalized to a directory outside the cas web application. Via this option, <em>all CAS views</em> are expected to be found at the specified location and there is no fallback strategy. (Note that multiple prefixes may be specified in comma-separated syntax).</p>
+
+<h2 id="cas">CAS</h2>
+
+<p>As a native CAS feature, Views and HTML files also may be externalized outside the web application conditionally and individually, provided the external path via CAS settings is defined. If a view template file is not found at the externalized path, the default one that ships with CAS will be used as the fallback.</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">cas.view.templatePrefixes[0]=</span><span class="py">file</span><span class="p">:</span><span class="s">///etc/cas/templates</span>
+</code></pre></div></div>
+
+<p>With the above setting, I can try the following command to let CAS pick up the <code class="highlighter-rouge">footer.html</code> file from the above location:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">mv</span> <span class="err">src/main/resources/templates/fragments</span> <span class="err">/etc/cas/templates</span>
+</code></pre></div></div>
+
+<p>Of course, changes should continue to get picked up and deployed dynamically just like before!</p>
+
+<h2 id="restful-views">RESTful Views</h2>
+
+<p>CAS views may also be 100% externalized using a REST API of your own implementation. You will be tasked to design an API endpoint which CAS may contact in order to resolve a particular view specified using a request header. Upon a successful <code class="highlighter-rouge">200</code> status result, the response body of the endpoint is expected to contain the HTML view that will be rendered by CAS in the browser.</p>
+
+<p>To activate RESTful resolution of views, specify the URL endpoint in your CAS properties:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.view.rest.url</span><span class="p">=</span><span class="s">https://rest.somewhere.org/userinterface</span>
+</code></pre></div></div>
+
+<h1 id="default-service-url">Default Service URL</h1>
+
+<p>In the event that no <code class="highlighter-rouge">service</code> is submitted to CAS, you may specify a default service URL to which CAS will redirect. Note that this default service, much like all other services, MUST be authorized and registered with CAS and is taught to CAS using the following setting:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.view.defaultRedirectUrl</span><span class="p">=</span><span class="s">https://www.github.com</span>
+</code></pre></div></div>
+
+<p>Of course, you can also the opposite of this behavior which is to disallow CAS to accept authentication requests if no <code class="highlighter-rouge">service</code> parameter is provided:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.sso.allowMissingServiceParameter</span><span class="p">=</span><span class="s">false</span>
+</code></pre></div></div>
+
+<h1 id="localization">Localization</h1>
+
+<p>The CAS Web application includes a number of localized message files for a variety of languages. While the user interface reacts dynamically as <code class="highlighter-rouge">locale</code> is detected automatically, you may forcefully switch the locale and localize the contents of the page using the <code class="highlighter-rouge">locale</code> parameter.</p>
+
+<p>For example, the following URL:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://cas.server.edu/login?locale<span class="o">=</span>it
+</code></pre></div></div>
+
+<p>…allows CAS to render the page using the Italian language.</p>
+
+<div class="alert alert-success">
+<strong>Remember</strong><br />Note that not all languages are complete and accurate across CAS server releases as translations are entirely dependent upon community contributions. For an accurate and complete list of localized messages, always refer to the English language bundle.
+</div>
+
+<p>The default language bundle is for the English language and is thus called <code class="highlighter-rouge">messages.properties</code> found at <code class="highlighter-rouge">src/main/resources</code> which you may need to pull into your own overlay but there may be an easier option. If there are any custom messages that need to be presented into views, they may also be formatted under <code class="highlighter-rouge">custom_messages.properties</code> files which allow you to both defined custom messages as well as those by CAS that need to be overwritten.</p>
+
+<p>So this means I can simply create the language bundle for custom changes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch src/main/resources/custom_messages.properties
+</code></pre></div></div>
+
+<p>…and then add the following messages:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># CAS provided message
+</span><span class="py">cas.login.resources.contribguide</span><span class="p">=</span><span class="s">Contribute &amp; Engage</span>
+
+<span class="c"># Custom message
+</span><span class="py">my.custom.messaage</span><span class="p">=</span><span class="s">Hello, World!</span>
+</code></pre></div></div>
+
+<p>The first key is picked and used by CAS automatically since it’s referenced in the main login view. The second key, however, is a custom one specific to the deployment at hand that needs to be pulled into the CAS overlay and relevant views. For simplicity, let’s modify the same <code class="highlighter-rouge">footer.html</code> file we externalized to display this text:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+<span class="nt">&lt;footer</span> <span class="na">th:fragment=</span><span class="s">"footer"</span> <span class="na">class=</span><span class="s">"footer"</span> <span class="na">role=</span><span class="s">"contentinfo"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">"copyright"</span> <span class="na">th:utext=</span><span class="s">"#{copyright}"</span><span class="nt">&gt;&lt;/span&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">th:utext=</span><span class="s">"#{my.custom.messaage}"</span><span class="nt">&gt;</span>This is the text<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/footer&gt;</span>
+...
+</code></pre></div></div>
+
+<p>Now, if CAS is actively rendering the <code class="highlighter-rouge">footer.html</code> view then the text linked to the <code class="highlighter-rouge">my.custom.message</code> is displayed. But surely, you can view the HTML page directly inside a browser window without running CAS in which case you get the sample dummy text <em>This is the text</em>.</p>
+
+<p>By default, message bundles are expected to be found at <code class="highlighter-rouge">src/main/resources</code> and are cached just like the views. Let’s make sure the cache is disabled so that our changes to the message bundle can be picked up automatically:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.messageBundle.cacheSeconds</span><span class="p">=</span><span class="s">0</span>
+</code></pre></div></div>
+
+<h1 id="themes">Themes</h1>
+
+<p>CAS deployers are now able to switch the themes based on different services. For example, you may want to have different login screens (different styles) for staff applications and student applications. Or, you want to show two layouts for daytime and night time. This document could help you go through the basic settings to achieve this. Themes are generally defined statically either embedded with the CAS web application or externalized outside, and there are a number of strategies one can use to activate, trigger and switch to a theme.</p>
+
+<h2 id="static-themes">Static Themes</h2>
+
+<p>CAS is configured to decorate views based on the <code class="highlighter-rouge">theme</code> property of a given registered service in the Service Registry. The theme that is activated via this method will still preserve the default views for CAS but will simply apply decorations such as CSS and Javascript to the views. The physical structure of views cannot be modified via this method.</p>
+
+<p>To achieve this, add a <code class="highlighter-rouge">dracula.properties</code> placed to the root of <code class="highlighter-rouge">src/main/resources</code> folder. Contents of this file should match the following:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.standard.css.file</span><span class="p">=</span><span class="s">/themes/dracula/css/cas.css</span>
+<span class="py">cas.javascript.file</span><span class="p">=</span><span class="s">/themes/dracula/js/cas.js</span>
+<span class="py">cas.admin.css.file</span><span class="p">=</span><span class="s">/themes/dracula/css/admin.css</span>
+</code></pre></div></div>
+
+<p>Once you have created the above <code class="highlighter-rouge">/themes/dracula</code> directory structure with your own CSS and Javascript files, activate the theme for a relevant application in the registry:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://app.example.org"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"ApplicationName"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"evaluationOrder"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"theme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dracula"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>To see the theme in action, navigate to <code class="highlighter-rouge">https://sso.example.edu/cas/login?service=https://app.example.org</code>.</p>
+
+<h2 id="themed-views">Themed Views</h2>
+
+<p>CAS can also utilize a service’s associated <code class="highlighter-rouge">theme</code> property to selectively choose which set of UI views will be used to generate the standard views (i.e. <code class="highlighter-rouge">casLoginView.html</code>, etc). This is especially useful in cases where the set of pages for a theme that is targeted for a different type of audience are entirely different structurally, such that simply using a simple theme is not practical. So far, we have only seen basic CSS and Javascript files associated with a theme but what if you wanted the <code class="highlighter-rouge">dracula</code> theme activated for a service to present a different footer? Surely, the capabilities of a theme must go beyond CSS and Javascript, right? <a href="https://apereo.github.io/2017/02/18/onthe-theoryof-possibility/">Is that possible?</a></p>
+
+<p>Yes. Views associated with a particular theme by default are expected to be found at <code class="highlighter-rouge">src/main/resources/templates/&lt;theme-id&gt;</code>. For example, in addition, the CSS and Javascript files for the <code class="highlighter-rouge">dracula</code> theme, you can clone the default set of CAS views into a new directory at <code class="highlighter-rouge">src/main/resources/templates/dracula</code>. When CAS begins to render the UI for <code class="highlighter-rouge">https://app.example.org</code>, it would then look inside <code class="highlighter-rouge">src/main/resources/templates/dracula</code> to find the requested view (i.e. <code class="highlighter-rouge">casLoginView.html</code>) allowing you to control the HTML view on a per-application basis. A themed view will only be used if and once found; otherwise, the defaults will continue to run as expected.</p>
+
+<div class="alert alert-success">
+<strong>View vs Fragment</strong><br />Note that from a CAS and/or Thymeleaf perspective, there is a difference between a full view and a fragment. A view generally contains the full outline of a CAS page and may be composed of several smaller reusable fragments, typically found inside the <code>fragments</code> directory. When working with themes, you are tasked with theming the actual view such as <code>casLoginView.html</code> by pulling that file into the right location in the overlay. Attempting to only theme a fragment such as <code>footer.html</code> will not be successful.
+</div>
+
+<p>Note that CAS views and theme-based views may both be externalized out of the web application context. When externalized, themed views are expected to be found at the specified path via CAS properties under a directory named after the theme name. For instance, if the external path for CAS views is <code class="highlighter-rouge">/etc/cas/templates</code>, view template files for theme <code class="highlighter-rouge">dracula</code> may be located at <code class="highlighter-rouge">/etc/cas/templates/dracula/</code>.</p>
+
+<h2 id="dynamic-theme-selection">Dynamic Theme Selection</h2>
+
+<p>So far, we have been assigning themes to CAS services rather statically using the <code class="highlighter-rouge">theme</code> property but we can certainly take this to the next step and attempt to trigger themes based on a variety of conditions picked at runtime. Options for dynamic theme triggers are available based on Groovy scripts and/or REST endpoints. Let’s try one with a Groovy script as the trigger.</p>
+
+<p>First, let’s widen the definition of our service to be a slightly more forgiving and assign the groovy script as the <code class="highlighter-rouge">theme</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://.+.example.org"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"ApplicationName"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"evaluationOrder"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"theme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///etc/cas/config/themes.groovy"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The groovy script is tasked with the responsibility of figuring out the theme name. Of course, whatever the end result, it goes without saying that the theme must itself have been defined elsewhere since we are only controlling the switch here. The script more or less would match the following:</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.*</span>
+
+<span class="kt">def</span> <span class="n">String</span> <span class="nf">run</span><span class="o">(</span><span class="kd">final</span> <span class="n">Object</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">def</span> <span class="n">service</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+    <span class="kt">def</span> <span class="n">registeredService</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span>
+    <span class="kt">def</span> <span class="n">queryStrings</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span>
+    <span class="kt">def</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span>
+    <span class="kt">def</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span>
+
+    <span class="cm">/*
+      Stuff happens...
+    */</span>
+
+    <span class="k">return</span> <span class="s2">"dracula"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>In the above script, you have access to the <code class="highlighter-rouge">service</code> object that represents the requesting application (i.e. <code class="highlighter-rouge">service.id</code> would get you the service URL) as well as the current request query strings and headers and of course, a pointer to the entire body of the registered service definition just in case you need to run some additional checks or control the behavior even more dynamically via <a href="https://apereo.github.io/cas/development/installation/Configuring-Service-Custom-Properties.html">CAS custom properties</a>.</p>
+
+<h1 id="so">So…</h1>
+
+<p>I hope this review was of some help to you and I am sure that both this post as well as the functionality it attempts to explain can be improved in any number of ways. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p>Happy Coding,</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F10%2Fcas-userinterface-customizations%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Apereo+CAS+-+User+Interface+Customizations&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F10%2Fcas-userinterface-customizations%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F10%2Fcas-userinterface-customizations%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F10%2Fcas-userinterface-customizations%2F&amp;title=Apereo+CAS+-+User+Interface+Customizations" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F10%2Fcas-userinterface-customizations%2F&amp;title=Apereo+CAS+-+User+Interface+Customizations" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F10%2Fcas-userinterface-customizations%2F&amp;name=Apereo+CAS+-+User+Interface+Customizations" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F10%2Fcas-userinterface-customizations%2F&amp;title=Apereo+CAS+-+User+Interface+Customizations" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F10%2Fcas-userinterface-customizations%2F&amp;title=Apereo+CAS+-+User+Interface+Customizations" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F10%2Fcas-userinterface-customizations%2F&amp;t=Apereo+CAS+-+User+Interface+Customizations" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

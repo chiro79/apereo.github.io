@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Apereo CAS Best [Mal]Practice - Supercharged Overlays &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An overview of how a CAS overlay prepped for deployment can tap into internal components, altering logic and behavior for good and evil...but mostly evil.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/04/01/cas-overlays-supercharged/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apereo CAS Best [Mal]Practice - Supercharged Overlays">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/04/01/cas-overlays-supercharged/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Apereo CAS Best [Mal]Practice - Supercharged Overlays" />
+    <meta name="twitter:description" content="An overview of how a CAS overlay prepped for deployment can tap into internal components, altering logic and behavior for good and evil...but mostly evil." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/04/01/cas-overlays-supercharged/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Apereo CAS Best [Mal]Practice - Supercharged Overlays</h1>
+  <span class="post-meta">Sunday, Apr 1, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    9 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+<strong>Collaborate</strong><br />This blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<h1 id="overview">Overview</h1>
+
+<p>There are a number of <a href="https://apereo.github.io/tags/#CAS">tutorials and overviews</a> that describe the purpose and anatomy of a <a href="https://apereo.github.io/cas/development/installation/Maven-Overlay-Installation.html">CAS Overlay</a>. What is often left unsaid in these posts is the note that a CAS overlay, regardless of how it is orchestrated by your favorite hipster build tool of the week, can be used to override <em>any and all</em> CAS components that are configured and available at runtime where this not only includes somewhat static configuration such as property files, HTML views, and YAML configuration but also Java classes, solid source code and beyond.</p>
+
+<p>This brief walkthrough aims to uncover the magical ways one can tap into and alter the CAS source code from an overlay perspective, without quite dealing with the CAS codebase, for good and evil…but mostly evil.</p>
+
+<h1 id="why">Why</h1>
+
+<p>The most immediate question to address is along the lines of…</p>
+
+<blockquote>
+  <p>Why would anyone ever want to do this?</p>
+</blockquote>
+
+<p>It more or less comes down to the following categories of rationale:</p>
+
+<ul>
+  <li>
+    <p>There may be cases where analysis and troubleshooting of a CAS feature are not quite possible by simply reviewing <code class="highlighter-rouge">DEBUG</code> logs or changing configuration. You may need to access the source code to put in additional diagnostic information, include extra conditions to validate values, enforce availability of systems, etc.</p>
+  </li>
+  <li>
+    <p>Likewise, there may be requirements whose implementation may need tapping into an internal CAS component for a change in behavior. This is the case where things work as intended, but not quite the way you envision the change to execute for your deployment. So you step in to change a <code class="highlighter-rouge">false</code> to <code class="highlighter-rouge">true</code>, remove an extra condition or add minimal behavior to support a new syntax for a configuration value, rename a field, etc.</p>
+  </li>
+</ul>
+
+<p>In <em>almost</em> all cases the changes that go into the overlay, specifically dealing with core components, are decent candidates for contributions and pull requests and ultimately should be removed from the overlay.</p>
+
+<h1 id="why-not">Why Not</h1>
+
+<p>Any time you are about to tap into CAS internals, you should pause and reconsider alternative approaches and subsequently the overall maintenance strategy of the change, especially if the reason for the change has to do with the second category of modifications noted above. Depending on scope and component, the change may not be forward-compatible at all, the original component may be heavily refactored or removed in future versions without mercy, the feature may get removed entirely and you may be forever left with local customizations that require maintenance and care for every build and future upgrade. This is the power of open-source where modifications come freely with code at hand…with the understanding that <em>“You can do things on your own, but then, you would [mostly] be on your own”</em>.</p>
+
+<p>Though put in somewhat extreme terms, consider this a best malpractice that if your CAS deployment overlay contains any <code class="highlighter-rouge">.java</code> code, chances are you are doing something <em>wrong</em>. There should be <a href="https://apereo.github.io/2017/09/10/stop-writing-code/">better routes and strategies</a> on how to deliver the same end result and those should not solely and exclusively belong to your deployment. You are not that special. Given timeline and budget if you find no other strategy, always label the changes to be temporary and work as hard as you can to remove it. I could not tell you how many times I have been involved in deployments where the prospect has made significant modifications to CAS internals and…</p>
+
+<ul>
+  <li>Has no clue how the changes work.</li>
+  <li>…or the person responsible for the changes is no longer with the organization.</li>
+  <li>…or there is no documentation and rationale for the now-outdated change.</li>
+  <li>…or the organization has completely lost the original source code.</li>
+  <li>…or the change is implemented in such a way that is not sustainable without major editorials.</li>
+  <li>…or the change opens up the deployment to a security vulnerability.</li>
+  <li>…or the change prevents the deployment from gaining a fix for a security vulnerability.</li>
+  <li>etc.</li>
+</ul>
+
+<div class="alert alert-success">
+<strong>A Pinch of Salt</strong><br />Of course, there are reasonable exceptions here especially in areas where there are documented and/or recommended approaches to customizations and extending system behavior. The point is, consider all alternatives before stepping into a development mood.</div>
+
+<h1 id="having-said-that">Having Said That</h1>
+
+<p>Let’s consider a quick hypothetical use case with CAS <code class="highlighter-rouge">5.2.x</code> and its support for <a href="https://apereo.github.io/cas/5.2.x/integration/Configuring-Google-reCAPTCHA.html">Google reCAPTCHA</a>. Suppose that you have an overlay that is adequately prepped with relevant intention modules and properties to make reCAPTCHA work. Things have been running just fine. Then comes a change in protocol from Google that changes the validation response to include the now-renamed field <code class="highlighter-rouge">successful</code> instead of the old <code class="highlighter-rouge">success</code>. The reCAPTCHA module in CAS obviously has not had a chance to catch up to this change and is still looking out for <code class="highlighter-rouge">success</code> in the validation response and begins to error out. What to do?</p>
+
+<ul>
+  <li>Step #1: Identify the need to tap into the source code.</li>
+  <li>Step #2: Rename the flag in the right <code class="highlighter-rouge">.java</code> component.</li>
+  <li>Step #3: Build and test the behavior.</li>
+</ul>
+
+<p>A quick analysis of the reCAPTCHA module in CAS reveals <code class="highlighter-rouge">src/main/java/org/apereo/cas/web/flow/ValidateCaptchaAction.java</code> that in fact handles the validation by checking for the value of the <code class="highlighter-rouge">success</code> field in the response. Here is the relevant code snippet:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">...</span>
+<span class="kd">final</span> <span class="n">String</span> <span class="n">response</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">lines</span><span class="o">().</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">joining</span><span class="o">());</span>
+<span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Google captcha response received: [{}]"</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+<span class="kd">final</span> <span class="n">JsonNode</span> <span class="n">node</span> <span class="o">=</span> <span class="n">READER</span><span class="o">.</span><span class="na">readTree</span><span class="o">(</span><span class="n">response</span><span class="o">);</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">has</span><span class="o">(</span><span class="s">"success"</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">node</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"success"</span><span class="o">).</span><span class="na">booleanValue</span><span class="o">())</span> <span class="o">{</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+<span class="o">...</span>
+</code></pre></div></div>
+
+<p>The above snippet attempts read and transform the response into a JSON object, checking for the trueness of the <code class="highlighter-rouge">success</code> field. How do we apply the source code change in the overlay to now examine for <code class="highlighter-rouge">successful</code>?</p>
+
+<h1 id="overlay-the-code">Overlay The Code</h1>
+
+<p>In the root directory of the overlay project, (assuming a Maven overlay), run the following commands:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the directory path to match the component's package name</span>
+mkdir <span class="nt">-p</span> src/main/java/org/apereo/cas/web/flow
+
+<span class="c"># Download the source file for the CAS version</span>
+wget https://raw.githubusercontent.com/apereo/cas/5.2.x/support/cas-server-support-captcha
+        /src/main/java/org/apereo/cas/web/flow/ValidateCaptchaAction.java <span class="se">\</span>
+        <span class="nt">-P</span> src/main/java/org/apereo/cas/web/flow/
+
+<span class="c"># Run a sanity build to ensure the overlay is functional</span>
+./mvnw clean package
+</code></pre></div></div>
+
+<div class="alert alert-info">
+<strong>Remember</strong><br />All source code that is put into the overlay must be housed inside the <code>src/main/java</code> directory, followed by the exact path to the component noted by its package name. If the package name, for instance, is <code>org.apereo.cas.support.web.flow</code>, then the full path for the overlaid component would be <code>src/main/java/org/apereo/cas/support/web/flow</code>. All source code is compiled and placed inside the <code>WEB-INF/classes</code> parent directory.</div>
+
+<p>Notice there are a number of failures now reported by the Maven build complaining about missing symbols. This is due to the fact that the build is now trying to compile our downloaded version of <code class="highlighter-rouge">ValidateCaptchaAction.java</code> which itself depends on a number of other components and libraries that must be available at compile-time for the task to succeed. So we need to locate what and where the missing items are and get them added to the build script.</p>
+
+<h1 id="add-dependencies">Add Dependencies</h1>
+
+<p>Modify the <code class="highlighter-rouge">pom.xml</code> to include the following:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apereo.cas<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>cas-server-support-captcha<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${cas.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apereo.cas<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>cas-server-core-web<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${cas.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apereo.cas<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>cas-server-core-webflow<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${cas.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apereo.cas<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>cas-server-core-configuration<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${cas.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>javax.servlet<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>javax.servlet-api<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>3.1.0<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+...
+</code></pre></div></div>
+
+<div class="alert alert-info">
+<strong>Good Dependency Hunting</strong><br />To know which dependencies and versions should be included when the build reports back errors on missing symbols, you will need to become familiar with the CAS codebase and the dependencies upon which this particular module (i.e. reCACAPTCHA) depends, both locally and globally. At this point, the code itself is the best documentation you could have available.</div>
+
+<p>Now we run the build again:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run a sanity build to ensure the overlay is functional</span>
+./mvnw clean package
+</code></pre></div></div>
+
+<p>…and the build should proceed normally. Great! Let’s make the change now.</p>
+
+<h1 id="make-the-change">Make The Change</h1>
+
+<p>Our next step is to find our Java code snippet above and make the following change:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">...</span>
+<span class="kd">final</span> <span class="n">String</span> <span class="n">response</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">lines</span><span class="o">().</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">joining</span><span class="o">());</span>
+<span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Google captcha response received: [{}]"</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+<span class="kd">final</span> <span class="n">JsonNode</span> <span class="n">node</span> <span class="o">=</span> <span class="n">READER</span><span class="o">.</span><span class="na">readTree</span><span class="o">(</span><span class="n">response</span><span class="o">);</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="na">has</span><span class="o">(</span><span class="s">"successful"</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">node</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"successful"</span><span class="o">).</span><span class="na">booleanValue</span><span class="o">())</span> <span class="o">{</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+<span class="o">...</span>
+</code></pre></div></div>
+
+<p>Rebuild and deploy. Things should now work as expected with the above change. Cool, eh?</p>
+
+<h1 id="waithow">Wait…How?</h1>
+
+<p>The short and simplified answer is that similar to how static content is overlaid and then <em>preferred</em> over what’s provided by default, local source code components are also made available in a similar fashion on a classpath route that is slightly prioritized over what is buried in some CAS <code class="highlighter-rouge">.jar</code> file. Due to this <em>trick</em>, when the runtime begins to locate the compiled <code class="highlighter-rouge">ValidateCaptchaAction.class</code> file, it scans the specialized classpath route first and thus finds our overlaid copy of it, deferring the default for later use. If you end up deleting the <code class="highlighter-rouge">ValidateCaptchaAction.java</code> from the overlay and thus removing its binary brother from the packaged build, the runtime will simply fall back onto what is provided by the <code class="highlighter-rouge">cas-server-support-captcha</code> module.</p>
+
+<h1 id="so-now-what">So, Now What?</h1>
+
+<p>As you can see, there are inherent dangers in this approach:</p>
+
+<ul>
+  <li>The original contents of <code class="highlighter-rouge">ValidateCaptchaAction</code> could change from CAS version to version, thus invalidating your local copy of it.</li>
+  <li>Your build is now that more complicated with the inclusion of a handful of extra modules to make a simple one-liner change work.</li>
+  <li>Any of the now-included modules can be renamed or removed from CAS version to version, thus making your build dysfunctional in the future.</li>
+  <li>…and just to demonstrate the problem, our change as it is most often the case, is completely undocumented! Without comparison against the original source file, it is entirely unclear why this source file exists in an overlay which would make it difficult for the next person in line to pick up the maintenance effort, two years into the deployment.</li>
+</ul>
+
+<p>But there is light at the end of the tunnel. Now that you have made a reasonable change and are satisfied with its behavior, the next best course of action would be to remove the file altogether (and every other change you made along with it) and contribute the fix back to the CAS codebase. This is <em>NOT</em> the sort of change that should be specialized for any single deployment and in the interest of “<em>It Should Just Work</em>”, the behavior of <code class="highlighter-rouge">ValidateCaptchaAction</code> should just do the correct thing by default, removing any learning curve or need for one to make changes.</p>
+
+<p>As a <a href="https://apereo.github.io/2018/04/05/cas-codebase-feature-build">follow-up to this blog post</a>, I will outline how the change can be developed and tested from the perspective of the CAS codebase itself.</p>
+
+<p>Stay tuned!</p>
+
+<h1 id="finale">Finale</h1>
+
+<p>I hope this review was of some help to you and I am sure that both this post as well as the functionality it attempts to explain can be improved in any number of ways. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p>Happy Coding,
+<a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F04%2F01%2Fcas-overlays-supercharged%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Apereo+CAS+Best+%5BMal%5DPractice+-+Supercharged+Overlays&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F04%2F01%2Fcas-overlays-supercharged%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F04%2F01%2Fcas-overlays-supercharged%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F04%2F01%2Fcas-overlays-supercharged%2F&amp;title=Apereo+CAS+Best+%5BMal%5DPractice+-+Supercharged+Overlays" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F04%2F01%2Fcas-overlays-supercharged%2F&amp;title=Apereo+CAS+Best+%5BMal%5DPractice+-+Supercharged+Overlays" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F04%2F01%2Fcas-overlays-supercharged%2F&amp;name=Apereo+CAS+Best+%5BMal%5DPractice+-+Supercharged+Overlays" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F04%2F01%2Fcas-overlays-supercharged%2F&amp;title=Apereo+CAS+Best+%5BMal%5DPractice+-+Supercharged+Overlays" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F04%2F01%2Fcas-overlays-supercharged%2F&amp;title=Apereo+CAS+Best+%5BMal%5DPractice+-+Supercharged+Overlays" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F04%2F01%2Fcas-overlays-supercharged%2F&amp;t=Apereo+CAS+Best+%5BMal%5DPractice+-+Supercharged+Overlays" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CAS 5.0.x Deployment - WAR Overlays &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Learn how to configure and build your own CAS deployment via the WAR overlay method, get rich quickly, stay healthy indefinitely and respect family and friends in a few very easy steps.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/03/28/cas5-gettingstarted-overlay/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CAS 5.0.x Deployment - WAR Overlays">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/03/28/cas5-gettingstarted-overlay/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="CAS 5.0.x Deployment - WAR Overlays" />
+    <meta name="twitter:description" content="Learn how to configure and build your own CAS deployment via the WAR overlay method, get rich quickly, stay healthy indefinitely and respect family and friends in a few very easy steps." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/03/28/cas5-gettingstarted-overlay/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>CAS 5.0.x Deployment - WAR Overlays</h1>
+  <span class="post-meta">Tuesday, Mar 28, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    10 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>This is a short and sweet tutorial on how to deploy CAS via <a href="https://apereo.github.io/cas/5.0.x/installation/Maven-Overlay-Installation.html">the WAR Overlay method</a>.</p>
+
+<p>This tutorial specifically requires and focuses on:</p>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">5.0.x</code></li>
+  <li>Java 8</li>
+</ul>
+
+<!--
+Furthermore, this tutorial assumes that you are running CAS in its `standalone` mode, [described here](https://apereo.github.io/cas/5.0.x/installation/Configuration-Server-Management.html).
+-->
+
+<h1 id="overlaywhat">Overlay…What?</h1>
+
+<p>Overlays are a strategy to combat repetitive code and/or resources. Rather than downloading the CAS codebase and building it from source, overlays allow you to download a pre-built vanilla CAS web application server provided by the project itself, override/insert specific behavior into it and then merge it all back together to produce the final (web application) artifact. You can find a lot more about how overlays work <a href="https://apereo.github.io/cas/5.0.x/installation/Maven-Overlay-Installation.html">here</a>.</p>
+
+<p>The concept of the WAR Overlay is NOT a CAS invention. It’s specifically an Apache Maven eature and of course there are techniques and plugins available to apply the same concept to Gradle-based builds as well.You are free to choose between Maven or Gradle. For this tutorial I opted into the <a href="https://github.com/apereo/cas-overlay-template">Maven WAR overlay</a>.</p>
+
+<p>Once you have forked and cloned the repository locally, you’re ready to begin.</p>
+
+<div class="alert alert-info">
+  <strong>Note</strong><br />Remember to switch to the appropriate branch. Today, the <code>master</code> branch of the repository applies to CAS <code>5.0.x</code> deployments. That may not necessarily remain true when you start your own deployment. So examine the branches and make sure you <code>checkout</code> the one matching your intended CAS version.
+</div>
+
+<h1 id="overlays-anatomy">Overlay’s Anatomy</h1>
+
+<p>Similar to Grey’s, a <em>Maven</em> WAR overlay is composed of several facets the most important of which is the <code class="highlighter-rouge">pom.xml</code> file. This is a build descriptor file whose job is to teach Apache Maven how to obtain, build, configure (and in certain cases deploy) artifacts.</p>
+
+<div class="alert alert-info">
+  <strong>KISS</strong><br />You do not need to download Apache Maven separately. The project provides one for you automatically with the embedded Maven Wrapper.
+</div>
+
+<p>The <code class="highlighter-rouge">pom.xml</code> is composed of several sections. The ones you need to worry about are the following.</p>
+
+<h2 id="properties">Properties</h2>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;properties&gt;</span>
+    <span class="nt">&lt;cas.version&gt;</span>5.0.4<span class="nt">&lt;/cas.version&gt;</span>
+    <span class="nt">&lt;springboot.version&gt;</span>1.4.2.RELEASE<span class="nt">&lt;/springboot.version&gt;</span>
+    <span class="nt">&lt;maven.compiler.source&gt;</span>1.8<span class="nt">&lt;/maven.compiler.source&gt;</span>
+    <span class="nt">&lt;maven.compiler.target&gt;</span>1.8<span class="nt">&lt;/maven.compiler.target&gt;</span>
+    <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+</code></pre></div></div>
+
+<p>This is the bit that describes build settings, and specifically here, what versions of CAS, Spring Boot and Java are required for the deployment. You are in practice mostly concerned with the <code class="highlighter-rouge">&lt;cas.version&gt;</code> setting and as new (maintenance) releases come out, it would be sufficient to simply update that version and re-run the build.</p>
+
+<p>This might be a good time to review the CAS project’s <a href="https://apereo.github.io/cas/developer/Release-Policy.html">Release Policy</a> as well as <a href="https://apereo.github.io/cas/developer/Maintenance-Policy.html">Maintenance Policy</a>.</p>
+
+<h2 id="dependencies">Dependencies</h2>
+
+<p>The next piece describes the <em>dependencies</em> of the overlay build. These are the set of components almost always provided by the CAS project that will be packaged up and put into the final web application artifact. At a minimum, you need to have the <code class="highlighter-rouge">cas-server-webapp</code> module available because that is the web application into which you intend to inject your settings and customizations, if any. Also, note that the module declarations are typically configured to download the CAS version instructed by the property <code class="highlighter-rouge">${cas.version}</code>.</p>
+
+<p>Here is an example:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.apereo.cas<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>cas-server-webapp<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>${cas.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;type&gt;</span>war<span class="nt">&lt;/type&gt;</span>
+        <span class="nt">&lt;scope&gt;</span>runtime<span class="nt">&lt;/scope&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+
+<p>Including a CAS module/dependency in the <code class="highlighter-rouge">pom.xml</code> simply advertises to CAS <em>your intention</em> of turning on a new feature or a variation of a current behavior. Do NOT include something in your build just because it looks and sounds cool. Remember that the point of an overlay is to only keep track of things you actually need and care about, and no more.</p>
+
+<div class="alert alert-warning">
+  <strong>Remember</strong><br />Keep your build clean and tidy. A messy build often leads to a messy deployment, complicates your upgrade path and is a documented cause of early hair loss. Keep changes down to the absolute essentials and document their need for your deployment. If you review the configuration a year from now, you should have an idea of why things are the way they are.
+</div>
+
+<h2 id="and-what-about">And What About…?</h2>
+
+<p>There are many other pieces in the <code class="highlighter-rouge">pom.xml</code>, such as repositories, profiles, plugins, etc that I skipped. For everything else, there is MasterCard…and of course the official <a href="http://maven.apache.org/guides/">Apache Maven guides</a>. Enjoy!</p>
+
+<h1 id="the-build">The Build</h1>
+
+<p>Now that you have a basic understanding of the build descriptor, it’s time to actually run the build. An Apache Maven build is often executed by passing specific goals/commands to Apache Maven itself, aka <code class="highlighter-rouge">mvn</code>. So for instance in the the terminal and once inside the project directory you could execute things like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>cas-overlay-template
+mvn clean
+</code></pre></div></div>
+
+<p>…which may be a problem if you don’t have already have Apache Maven downloaded and installed. While you can do that separate install, the WAR Overlay project provides you with an embedded Apache Maven instance whose job is to first determine whether you have Maven installed and if not, download and configure one for you based on the project’s needs. So you can replace that command above with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>cas-overlay-template
+mvnw clean
+</code></pre></div></div>
+
+<p>…which may be a problem because, how are you supposed to know what commands/goals can be passed to the build? You can <a href="https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">study them</a> for sure, but the project provides you with a shell script that wraps itself around the Maven wrapper and provides an easy facade for you to remember commands and their use. This is the <code class="highlighter-rouge">build.sh</code> file, which you can run as such:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>cas-overlay-template
+./build.sh <span class="nb">help
+</span>Usage: build.sh <span class="o">[</span>copy|clean|package|run|debug|bootrun]
+</code></pre></div></div>
+
+<p>What do these commands do?</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">copy</code></td>
+      <td>Copies the configuration from the local <code class="highlighter-rouge">etc/cas/config</code> directory to <code class="highlighter-rouge">/etc/cas/config</code>. <a href="https://apereo.github.io/cas/5.0.x/installation/Configuration-Server-Management.html">See this guide</a> to learn more.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">clean</code></td>
+      <td>Deletes any previously-built and leftover artifacts from the <code class="highlighter-rouge">target</code> directory.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">package</code></td>
+      <td>Runs <code class="highlighter-rouge">clean</code> and <code class="highlighter-rouge">copy</code>. Then packages the CAS web application artifact and run through the overlay to inject local customizations. The outcome is a <code class="highlighter-rouge">target/cas.war</code> file which is ready to be deployed.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">run</code></td>
+      <td>Invokes <code class="highlighter-rouge">package</code> and then deploys and runs the CAS web application via its own embedded server container.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">debug</code></td>
+      <td>Same thing as <code class="highlighter-rouge">run</code>, except that you can remote-debug the CAS web application over port <code class="highlighter-rouge">5000</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">bootrun</code></td>
+      <td>Same thing as <code class="highlighter-rouge">run</code>, except the deployment is managed by the <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html">Spring Boot Maven plugin</a>. This command has very specialized and limited use cases. Please <a href="https://github.com/apereo/cas/issues/2334">review this issue</a> to learn more.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="alert alert-info">
+  <strong>Remember</strong><br />Docs grow old. Always consult the overlay project's <code>README</code> file to keep to date.
+</div>
+
+<p>As an example, here’s what I see if I were to run the <code class="highlighter-rouge">package</code> command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh package
+
+Creating configuration directory under /etc/cas
+Copying configuration files from etc/cas to /etc/cas/config
+etc/cas/config/application.yml -&gt; /etc/cas/config/application.yml
+etc/cas/config/cas.properties -&gt; /etc/cas/config/cas.properties
+etc/cas/config/log4j2.xml -&gt; /etc/cas/config/log4j2.xml
+
+<span class="o">[</span>INFO] Scanning <span class="k">for </span>projects...
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] Using the MultiThreadedBuilder implementation with a thread count of 5
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] Building cas-overlay 1.0
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] <span class="nt">---</span> maven-clean-plugin:2.5:clean <span class="o">(</span>default-clean<span class="o">)</span> @ cas-overlay <span class="nt">---</span>
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] <span class="nt">---</span> maven-resources-plugin:2.6:resources <span class="o">(</span>default-resources<span class="o">)</span> @ cas-overlay <span class="nt">---</span>
+<span class="o">[</span>INFO] Using <span class="s1">'UTF-8'</span> encoding to copy filtered resources.
+<span class="o">[</span>INFO] skip non existing resourceDirectory /cas-overlay-template/src/main/resources
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] <span class="nt">---</span> maven-compiler-plugin:3.3:compile <span class="o">(</span>default-compile<span class="o">)</span> @ cas-overlay <span class="nt">---</span>
+<span class="o">[</span>INFO] No sources to compile
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] <span class="nt">---</span> maven-resources-plugin:2.6:testResources <span class="o">(</span>default-testResources<span class="o">)</span> @ cas-overlay <span class="nt">---</span>
+<span class="o">[</span>INFO] Using <span class="s1">'UTF-8'</span> encoding to copy filtered resources.
+<span class="o">[</span>INFO] skip non existing resourceDirectory /cas-overlay-template/src/test/resources
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] <span class="nt">---</span> maven-compiler-plugin:3.3:testCompile <span class="o">(</span>default-testCompile<span class="o">)</span> @ cas-overlay <span class="nt">---</span>
+<span class="o">[</span>INFO] No sources to compile
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] <span class="nt">---</span> maven-surefire-plugin:2.12.4:test <span class="o">(</span>default-test<span class="o">)</span> @ cas-overlay <span class="nt">---</span>
+<span class="o">[</span>INFO] No tests to run.
+<span class="o">[</span>INFO]
+<span class="o">[</span>INFO] <span class="nt">---</span> maven-war-plugin:2.6:war <span class="o">(</span>default-war<span class="o">)</span> @ cas-overlay <span class="nt">---</span>
+<span class="o">[</span>INFO] Packaging webapp
+<span class="o">[</span>INFO] Assembling webapp <span class="o">[</span>cas-overlay] <span class="k">in</span> <span class="o">[</span>/cas-overlay-template/target/cas]
+<span class="o">[</span>info] Copying manifest...
+<span class="o">[</span>INFO] Processing war project
+<span class="o">[</span>INFO] Processing overlay <span class="o">[</span> id org.apereo.cas:cas-server-webapp]
+<span class="o">[</span>INFO] Webapp assembled <span class="k">in</span> <span class="o">[</span>786 msecs]
+<span class="o">[</span>INFO] Building war: /cas-overlay-template/target/cas.war
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] BUILD SUCCESS
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] Total <span class="nb">time</span>: 2.504 s <span class="o">(</span>Wall Clock<span class="o">)</span>
+<span class="o">[</span>INFO] Finished at: 2017-03-23T14:57:11+04:30
+<span class="o">[</span>INFO] Final Memory: 12M/441M
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+</code></pre></div></div>
+
+<p>You can see that the build attempts to download, clean, compile and package all artifacts, and finally it produces a <code class="highlighter-rouge">/cas-overlay-template/target/cas.war</code> which you can then use for actual deployments.</p>
+
+<div class="alert alert-info">
+  <strong>Remember</strong><br />You are allowed to pass any of Maven's native command-line arguments to the <code>build.sh</code> file. Things like <code>-U</code> or <code>-X</code> might be useful to have handy.
+</div>
+
+<h1 id="configuration">Configuration</h1>
+
+<p>I am going to skip over the configuration of <code class="highlighter-rouge">/etc/cas/config</code> and all that it deals with. If you need the reference, you may always <a href="https://apereo.github.io/cas/5.0.x/installation/Configuration-Management.html">use this guide</a> to study various aspects of CAS configuration.</p>
+
+<p>Suffice it to say that, quite simply, CAS deployment expects <em>the main</em> configuration file to be found under <code class="highlighter-rouge">/etc/cas/config/cas.properties</code>. This is a key-value store that is able to dictate and alter behavior of the running CAS software.</p>
+
+<p>As an example, you might encouter something like:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.server.name</span><span class="p">=</span><span class="s">https://cas.example.org:8443</span>
+<span class="py">cas.server.prefix</span><span class="p">=</span><span class="s">https://cas.example.org:8443/cas</span>
+<span class="py">logging.config</span><span class="p">=</span><span class="s">file:/etc/cas/config/log4j2.xml</span>
+</code></pre></div></div>
+
+<p>…which at a minimum, identifies the CAS server’s url and prefix and instructs the running server to locate the logging configuration at <code class="highlighter-rouge">file:/etc/cas/config/log4j2.xml</code>. The overlay by default ships with a <code class="highlighter-rouge">log4j2.xml</code> that you can use to customize logging locations, levels, etc. Note that the presence of all that is contained inside <code class="highlighter-rouge">/etc/cas/config/</code> is optional. CAS will continue to fall back onto defaults if the directory and the files within are not found.</p>
+
+<h2 id="keep-track">Keep Track</h2>
+
+<p>It is <strong>VERY IMPORTANT</strong> that you contain and commit the entire overlay directory (save the obvious exclusions such as the <code class="highlighter-rouge">target</code> directory) into some sort of source control system, such as <code class="highlighter-rouge">git</code>. Treat your deployment just like any other project with tags, releases and functional baselines.</p>
+
+<h1 id="overlay-customization">Overlay Customization</h1>
+
+<p>If I <code class="highlighter-rouge">cd</code> into the <code class="highlighter-rouge">target/cas</code> directory, I can see an <em>exploded</em> version of the <code class="highlighter-rouge">cas.war</code> file. This is the directory that contains the results of the overlay process. Since I have not actually customized and overlaid anything yet, all configuration files simply match their default and are packaged as such. So as an example, let’s change something.</p>
+
+<p>Digging further down, I notice there exists a <code class="highlighter-rouge">/target/cas/WEB-INF/classes/messages.properties</code> file, which is <a href="https://apereo.github.io/cas/5.0.x/installation/User-Interface-Customization-Localization.html">the default message bundle</a>. I decide that I am going to change the text associated with <code class="highlighter-rouge">screen.welcome.instructions</code>.</p>
+
+<div class="alert alert-warning">
+  <strong>Remember</strong><br />Do NOT ever make changes in the <code>target</code> directory. The changesets will be cleaned out and set back to defaults every time you do a build. Follow the overlay process to avoid surprises.
+</div>
+
+<p>First, I will need to move the file to my project directory so that Apache Maven during the overlay process can use that instead of what is provided by default.</p>
+
+<p>Here we go:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>cas-overlay-template
+mkdir <span class="nt">-p</span> src/main/resources
+cp target/cas/WEB-INF/classes/messages.properties src/main/resources/
+</code></pre></div></div>
+
+<p>Then I’ll leave everything in that file alone, except the line I want to change.</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span>
+<span class="py">screen.welcome.instructions</span><span class="p">=</span><span class="s">Speak Friend and you shall enter.</span>
+<span class="err">...</span>
+</code></pre></div></div>
+
+<p>Then I’ll package things up as usual.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh package
+
+...
+<span class="o">[</span>INFO] <span class="nt">---</span> maven-war-plugin:2.6:war <span class="o">(</span>default-war<span class="o">)</span> @ cas-overlay <span class="nt">---</span>
+<span class="o">[</span>INFO] Packaging webapp
+<span class="o">[</span>INFO] Assembling webapp <span class="o">[</span>cas-overlay] <span class="k">in</span> <span class="o">[</span>/cas-overlay-template/target/cas]
+<span class="o">[</span>info] Copying manifest...
+<span class="o">[</span>INFO] Processing war project
+<span class="o">[</span>INFO] Processing overlay <span class="o">[</span> id org.apereo.cas:cas-server-webapp]
+<span class="o">[</span>INFO] Webapp assembled <span class="k">in</span> <span class="o">[</span>1005 msecs]
+<span class="o">[</span>INFO] Building war: /cas-overlay-template/target/cas.war
+<span class="o">[</span>INFO] <span class="nt">------------------------------------------------------------------------</span>
+<span class="o">[</span>INFO] BUILD SUCCESS
+...
+
+</code></pre></div></div>
+
+<p>If I look at <code class="highlighter-rouge">target/cas/WEB-INF/classes/messages.properties</code> after the build, I should see that the overlay process has picked and overlaid onto the default <em>my version</em> of the file.</p>
+
+<div class="alert alert-info">
+  <strong>Remember</strong><br />Only overlay and modify files you actually need, and try to use externalized resources and configuration as much as possible. Just because you CAN override something in the default package, it doesn't mean that you should.
+</div>
+
+<h1 id="deploy">Deploy</h1>
+
+<p>You have a number of options when it comes to deploying the final <code class="highlighter-rouge">cas.war</code> file. <a href="https://apereo.github.io/2016/10/04/casbootoverlay/">This post</a> should help.</p>
+
+<h1 id="so">So…</h1>
+
+<p>I hope this brief tutorial was of some assistance to you. It’s important that you start off simple and make changes one step at a time. Once you have a functional environment, you can gradually and slowly add customizations to move files around.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F28%2Fcas5-gettingstarted-overlay%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=CAS+5.0.x+Deployment+-+WAR+Overlays&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F28%2Fcas5-gettingstarted-overlay%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F28%2Fcas5-gettingstarted-overlay%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F28%2Fcas5-gettingstarted-overlay%2F&amp;title=CAS+5.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F28%2Fcas5-gettingstarted-overlay%2F&amp;title=CAS+5.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F28%2Fcas5-gettingstarted-overlay%2F&amp;name=CAS+5.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F28%2Fcas5-gettingstarted-overlay%2F&amp;title=CAS+5.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F28%2Fcas5-gettingstarted-overlay%2F&amp;title=CAS+5.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F28%2Fcas5-gettingstarted-overlay%2F&amp;t=CAS+5.0.x+Deployment+-+WAR+Overlays" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

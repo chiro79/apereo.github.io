@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CAS 5.1.x User Swap - Cause and Analysis &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Travis Schmidt shares an analysis of chasing down a bug in CAS 5.1.x where user identities were swapped.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/08/31/cas5-userswap-buganalysis/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CAS 5.1.x User Swap - Cause and Analysis">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/08/31/cas5-userswap-buganalysis/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="CAS 5.1.x User Swap - Cause and Analysis" />
+    <meta name="twitter:description" content="Travis Schmidt shares an analysis of chasing down a bug in CAS 5.1.x where user identities were swapped." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/08/31/cas5-userswap-buganalysis/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>CAS 5.1.x User Swap - Cause and Analysis</h1>
+  <span class="post-meta">Thursday, Aug 31, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    5 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-info">
+  <strong>Contributed Content</strong><br /><a href="mailto:travis.schmidt@gmail.com">Travis Schmidt</a>, an active member of the CAS community, was kind enough to share this analysis.
+</div>
+
+<h1 id="problem">Problem</h1>
+
+<p>Shortly after deploying CAS <code class="highlighter-rouge">5.1.2</code> to our production environment, we received incident reports of users signing into various systems as themselves, but were presented with the accounts of other random users.  The first applications we received reports on were GMail and Box, which both used Shibboleth and the ShibCAS plugin to authenticate, so that is where we first focused our attention. Later that day after investigating the first incidents, another was reported on a system that only used CAS to authenticate and our attention switched solely to CAS.  After the CAS only incident was reported we did an emergency roll back to our previous CAS <code class="highlighter-rouge">4.2.6</code> version.  After the rollback, no new incidents have been reported.</p>
+
+<h1 id="reproducing-the-error">Reproducing the Error</h1>
+
+<h2 id="first-attempt">First Attempt</h2>
+
+<p>In order to try and identify a cause we looked at the differences between our development environment and our production environment.  The most obvious difference is that production is four nodes while development is only three nodes.  Since it appeared user info was swapped, the Hazelcast ticket registry was our first suspect and we focused our initial efforts there.  We added a fourth node to match production and began load testing again, but were not able to reproduce the error with just this added.</p>
+
+<h2 id="second-attempt">Second Attempt</h2>
+
+<p>We next focused on our JMeter script used to load test the application.  We modified it to put random delays between users being presented with the login page and posting the login page, calls to all three service validate protocols, and a delayed logout to about half the user threads.  We still did not produce the error with this new script.</p>
+
+<h2 id="third-attempt">Third Attempt</h2>
+
+<p>Lastly we tried a massive amount of load, significant factor higher than what we expect in production.  We saw significant amount of timeout errors and where the system could not keep up, but not the user swap error.</p>
+
+<h2 id="finally">Finally</h2>
+
+<p>I realized that a significant difference between this deployment and our previous deployment was the removal of the <code class="highlighter-rouge">statistics/ping</code> endpoint.  This meant that the F5 load balancer, and the monitoring systems were changed to call the <code class="highlighter-rouge">cas/status</code> endpoint.  In production this meant that the <code class="highlighter-rouge">cas/status</code> endpoint was being called on each node once every 2-3 seconds.  For all the load testing we did before deployment and after, the development nodes were removed from the load balancer and a static page was being sent to the F5 from Apache.  This extra load was never present when running load test before deployment. After running the load test with this <code class="highlighter-rouge">cas/status</code> being called by the F5, we started to see the timeouts happen earlier in the run.</p>
+
+<p>For all test runs to this point I was stopping the test at the first error, and then trying to exam the state of the system.  No real information was gleamed from looking at logs.  After one test had stopped I tried doing a <code class="highlighter-rouge">cas/login</code> to the node that produced the error.  This is where our breakthrough came.  Instead of being presented with the login page, I was looking at the status page. I set the tests to only stop the thread that caused the error and continued running the test.  This is when we started to see the responses start to be mixed.  It would always start with AJP timeouts, but after a bit we start seeing responses being mixed, and eventually two service validate calls would hit just right and <code class="highlighter-rouge">tesuserYYY</code> would be validated as <code class="highlighter-rouge">testuserXXX</code>.</p>
+
+<p>Now we were able to consistently reproduce the error.</p>
+
+<h1 id="identifying-the-cause">Identifying the Cause</h1>
+
+<h2 id="deployment-infrastructure">Deployment Infrastructure</h2>
+
+<p>CAS is run on Apache Tomcat servers that are fronted on each instance by an Apache httpd web server that uses AJP to proxy request to the application.  I think this configuration is quite normal and probably used widely elsewhere.  We focused our attention on Apache, firstly because they were upgraded the same time as the deployment, and secondly because restarting the web server on an affected node cleared the swapping issue.  We tried downgrading, and applying even newer updates, but the problem still persisted.</p>
+
+<p>We then tried to upgrade Tomcat to <code class="highlighter-rouge">8.5.x</code> from our current <code class="highlighter-rouge">8.0.x</code> version that we are using, but the problem still persisted.</p>
+
+<h2 id="analyzing-customizations">Analyzing Customizations</h2>
+
+<p>We have quite a few customizations that we make to the CAS application.  In order to rule out that we introduced the issue with our code, we created clean version of the CAS <code class="highlighter-rouge">5.1.x</code> branch with <a href="https://apereo.github.io/cas/5.1.x/installation/Hazelcast-Ticket-Registry.html">Hazelcast</a>, <a href="https://apereo.github.io/cas/5.1.x/installation/LDAP-Authentication.html">LDAP</a> and <a href="https://apereo.github.io/cas/5.1.x/installation/DuoSecurity-Authentication.html">Duo Security</a> modules compiled in.  The error still occurred with this version of CAS.</p>
+
+<h2 id="analyzing-the-network">Analyzing the Network</h2>
+
+<p>We next focused on the AJP proxy between Apache and Tomcat.  We reconfigured Tomcat to accept connections on <code class="highlighter-rouge">8443</code> and called it directly bypassing Apache.  This somewhat mitigated the issue.  After several runs this way we always saw swapping occur, but it always seemed to just swap the status page with a login or service validate call, but never saw the CAS protocol endpoints swap, or a user swap on validate.</p>
+
+<h2 id="viola">Viola!</h2>
+
+<p>Our focus was then on to the component that produces the status page, <code class="highlighter-rouge">HealthCheckController</code>.  After numbly staring at the code for a while, and trying a few things, we finally noticed that the mapped method for the status page was coded to return a <code class="highlighter-rouge">WebAsyncTask</code>. How the callable object was being used would turn out to be the cause of our issue.</p>
+
+<h1 id="fixing-the-problem">Fixing the Problem</h1>
+
+<p>I <a href="https://github.com/apereo/cas/pull/2891">put together a patch</a> targeted at the next CAS <code class="highlighter-rouge">5.1.x</code> release (<code class="highlighter-rouge">5.1.4</code> at the time of this writing) to address this problem. The patch is of course merged, and it is also brought forward to <code class="highlighter-rouge">master</code>. You should be able to mitigate this problem, the very next time you upgrade your CAS <code class="highlighter-rouge">5.1.x</code> instance.</p>
+
+<p>To see the CAS release schedule, please <a href="https://github.com/apereo/cas/milestones">click here</a>.</p>
+
+<p><a href="mailto:travis.schmidt@gmail.com">Travis Schmidt</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F31%2Fcas5-userswap-buganalysis%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=CAS+5.1.x+User+Swap+-+Cause+and+Analysis&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F31%2Fcas5-userswap-buganalysis%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F31%2Fcas5-userswap-buganalysis%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F31%2Fcas5-userswap-buganalysis%2F&amp;title=CAS+5.1.x+User+Swap+-+Cause+and+Analysis" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F31%2Fcas5-userswap-buganalysis%2F&amp;title=CAS+5.1.x+User+Swap+-+Cause+and+Analysis" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F31%2Fcas5-userswap-buganalysis%2F&amp;name=CAS+5.1.x+User+Swap+-+Cause+and+Analysis" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F31%2Fcas5-userswap-buganalysis%2F&amp;title=CAS+5.1.x+User+Swap+-+Cause+and+Analysis" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F31%2Fcas5-userswap-buganalysis%2F&amp;title=CAS+5.1.x+User+Swap+-+Cause+and+Analysis" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F31%2Fcas5-userswap-buganalysis%2F&amp;t=CAS+5.1.x+User+Swap+-+Cause+and+Analysis" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

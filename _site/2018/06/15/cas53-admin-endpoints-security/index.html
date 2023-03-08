@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Apereo CAS - Administrative Endpoints & Monitoring &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Gain insight into your running Apereo CAS deployment in production. Learn how to monitor and manage the server by using HTTP endpoints and gather metrics to diagnose issues and improve performance.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/06/15/cas53-admin-endpoints-security/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apereo CAS - Administrative Endpoints &amp; Monitoring">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/06/15/cas53-admin-endpoints-security/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Apereo CAS - Administrative Endpoints & Monitoring" />
+    <meta name="twitter:description" content="Gain insight into your running Apereo CAS deployment in production. Learn how to monitor and manage the server by using HTTP endpoints and gather metrics to diagnose issues and improve performance." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/06/15/cas53-admin-endpoints-security/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Apereo CAS - Administrative Endpoints & Monitoring</h1>
+  <span class="post-meta">Friday, Jun 15, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    12 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+<strong>Collaborate</strong><br />This blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>CAS, being a Spring-Boot application at heart, includes a number of additional features to help you monitor and manage the server when it’s pushed to production. You can choose to manage and monitor the deployment using HTTP endpoints, referred to as <em>actuators</em>. This tutorial provides a basic overview of the endpoints provided by both Spring Boot and CAS and also provides instructions on how such endpoints can be secured for access and win.</p>
+
+<p>This tutorial specifically requires and focuses on:</p>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">5.3.x</code></li>
+  <li>Java 8</li>
+  <li><a href="https://stedolan.github.io/jq/">CLI JSON Processor <code class="highlighter-rouge">jq</code></a></li>
+  <li><a href="https://apereo.github.io/cas/development/installation/Maven-Overlay-Installation.html">Maven WAR Overlay</a></li>
+</ul>
+
+<h1 id="actuawhat">Actua…What?</h1>
+
+<p>In essence, actuator endpoints bring production-ready features to CAS. Monitoring a running CAS instance, gathering metrics, understanding traffic or the state of our database becomes trivial with such endpoints. The main benefit of these endpoints is that we can get production grade tools without having to actually implement these features ourselves. Actuators are mainly used to expose operational information about the running application – health, metrics, info, dump, env, etc. These are HTTP endpoints or JMX beans to enable us to interact with it.</p>
+
+<div class="alert alert-info">
+<strong>Definition</strong><br />An actuator is a manufacturing term, referring to a mechanical device for moving or controlling something. Actuators can generate a large amount of motion from a small change.</div>
+
+<p>The full list of endpoints provided to your CAS deployment <a href="https://apereo.github.io/cas/development/installation/Monitoring-Statistics.html">is posted here</a>. Note that you do not need to do anything extra special to get these endpoints added to your deployment; these are all available by default and just need to be turned on and secured for access.</p>
+
+<h1 id="endpoints">Endpoints</h1>
+
+<p>Each endpoint, whether provided by CAS or Spring Boot, is generally given two special properties:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">enabled</code>: Turn on the endpoint and make it available for access by outsiders.</li>
+  <li><code class="highlighter-rouge">sensitive</code>: Determines whether endpoint security should be controlled via the likes of <a href="https://spring.io/projects/spring-security">Spring Security</a> with extra configuration.</li>
+</ul>
+
+<p>So as an example, if you wish to turn on the <code class="highlighter-rouge">status</code> endpoint in CAS you need to simply turn on the following settings:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.monitor.endpoints.status.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">cas.monitor.endpoints.status.sensitive</span><span class="p">=</span><span class="s">false</span>
+</code></pre></div></div>
+
+<p>What the above settings indicate is that the <code class="highlighter-rouge">status</code> endpoint should be turned on at runtime and it’s one whose security is <em>NOT</em> controlled by the Spring Security library.</p>
+
+<div class="alert alert-info">
+<strong>Sensitivity</strong><br />The <code>sensitive</code> flag is a rather loaded and confusing term presented by the Spring Boot library that has since been revamped and redesigned, starting with Spring Boot v2. It's quite possible that once and if CAS switches Spring Boot v2, the above property pair get cleaned up too.
+</div>
+
+<p>So in summary, access to our <code class="highlighter-rouge">status</code> endpoint above is purely dictated by CAS itself which by default is controlled by an IP pattern. So here’s a rule that allows access to all CAS endpoints from everywhere:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.adminPagesSecurity.ip</span><span class="p">=</span><span class="s">.+</span>
+</code></pre></div></div>
+
+<p>Once you have the above in place, simply open up a command prompt and execute:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># You might need the -k flag if the server's certificate is untrusted...</span>
+<span class="nv">$ </span>curl https://login.example.org/cas/status
+
+Health: UP
+
+Host:       misaghmoayyed
+Server:     https://login.example.org
+Version:    5.3.0
+</code></pre></div></div>
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<p>For easier diagnostics, you need to turn on the following logging configuration in your <code class="highlighter-rouge">log4j2.xml</code> file:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;AsyncLogger</span> <span class="na">name=</span><span class="s">"org.pac4j"</span> <span class="na">level=</span><span class="s">"debug"</span> <span class="na">additivity=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;AppenderRef</span> <span class="na">ref=</span><span class="s">"console"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;AppenderRef</span> <span class="na">ref=</span><span class="s">"file"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/AsyncLogger&gt;</span>
+<span class="nt">&lt;AsyncLogger</span> <span class="na">name=</span><span class="s">"org.springframework.security"</span> <span class="na">level=</span><span class="s">"debug"</span> <span class="na">additivity=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;AppenderRef</span> <span class="na">ref=</span><span class="s">"console"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;AppenderRef</span> <span class="na">ref=</span><span class="s">"file"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/AsyncLogger&gt;</span>
+</code></pre></div></div>
+
+<p>…which then help you diagnose issues if access to an endpoint is blocked with:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.adminPagesSecurity.ip</span><span class="p">=</span><span class="s">192</span><span class="se">\.</span><span class="s">168</span><span class="se">\.</span><span class="s">3</span><span class="se">\.</span><span class="s">1</span>
+</code></pre></div></div>
+
+<p>…and then when you run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl https://login.example.org/cas/status | jq
+</code></pre></div></div>
+
+<p>…you might get:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1529124120075</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unauthorized"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"No message available"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/cas/status"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>…where the logs would indicate:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INFO <span class="o">[</span>IpClient] - &lt;Failed to retrieve or validate credentials: Unauthorized IP address: 0:0:0:0:0:0:0:1&gt;
+DEBUG <span class="o">[</span>IpClient] - &lt;Failed to retrieve or validate credentials&gt;
+org.pac4j.core.exception.CredentialsException: Unauthorized IP address: 0:0:0:0:0:0:0:1
+    at org.pac4j.http.credentials.authenticator.IpRegexpAuthenticator.validate...
+</code></pre></div></div>
+
+<h1 id="endpoint-security">Endpoint Security</h1>
+
+<p>CAS endpoints prior to the adoption of Spring Boot and family (i.e. CAS v4 and priors) were always protected by an IP pattern which more or less was a regular expression pattern. Today and by default, this same protection mechanism is kept as well where all CAS endpoints are considered disabled whose security is exclusively controlled by the IP pattern noted above. In other words, in the event that access to an endpoint is allowed, (i.e endpoint is enabled and is not marked as sensitive), CAS will attempt to control access by enforcing rules via IP address matching, delegating to itself, etc.</p>
+
+<p>Note that while almost all CAS endpoints can be secured via other means (such as a CAS server), the <code class="highlighter-rouge">/status</code> endpoint is always protected by an IP pattern allowing monitoring and CLI tools to easily query the endpoint from a protected recognized IP address.</p>
+
+<h1 id="lets-boot">Let’s Boot</h1>
+
+<p>As an exercise, let us enable the Spring Boot’s <code class="highlighter-rouge">health</code> &amp; <code class="highlighter-rouge">info</code> endpoints and compare them with CAS’ own <code class="highlighter-rouge">status</code> endpoint. We are also going to secure the <code class="highlighter-rouge">health</code> endpoint using the <a href="https://spring.io/projects/spring-security">Spring Security library</a> by taking advantage of the basic authentication scheme.</p>
+
+<p>So, the first order of business is to simply enable the endpoints:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.adminPagesSecurity.ip</span><span class="p">=</span><span class="s">192</span><span class="se">\.</span><span class="s">168</span><span class="se">\.</span><span class="s">3</span><span class="se">\.</span><span class="s">1</span>
+
+<span class="py">endpoints.health.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">endpoints.health.sensitive</span><span class="p">=</span><span class="s">false</span>
+
+<span class="py">endpoints.info.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">endpoints.info.sensitive</span><span class="p">=</span><span class="s">false</span>
+</code></pre></div></div>
+
+<p>…and with executing a request from a trusted IP address that would match the above pattern:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl https://login.example.org/cas/status/health | jq
+</code></pre></div></div>
+
+<p>…we shall receive:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>…or we can try the <code class="highlighter-rouge">info</code> endpoint too:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl https://login.example.org/cas/status/info | jq
+</code></pre></div></div>
+
+<p>…which results in a lot of information, summarized here for sanity:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w"> </span><span class="s2">"cas"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5.3.0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"java"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"home"</span><span class="p">:</span><span class="w"> </span><span class="s2">"../jdk1.8.0_171.jdk/Contents/Home/jre"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.8.0_171"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"vendor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Oracle Corporation"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CAS"</span><span class="p">,</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Nice. Two questions:</p>
+
+<ul>
+  <li>How could we get more information from the <code class="highlighter-rouge">health</code> endpoint?</li>
+  <li>Weren’t we going to enable basic authentication for some of these endpoints? What happened there?</li>
+</ul>
+
+<h1 id="lets-health">Let’s Health</h1>
+
+<p>According to the documentation, the <code class="highlighter-rouge">health</code> endpoint shows application health information (when the application is secure, a simple “status” when accessed over an unauthenticated connection or full message details when authenticated). That has been the case since our requests are not exactly authenticated. We have simply honored the IP rules when submitting requests but we need to take this one step further and ask for credentials. Fancier modes of authenticating requests to such endpoints are provided by Spring Security (a library Spring Boot depends upon to auto-configure the access rules for endpoints marked as <code class="highlighter-rouge">sensitive</code>). So, let’s get that configured.</p>
+
+<div class="alert alert-info">
+<strong>Remember</strong><br />Regardless of your method of authentication, the IP access rules are always in effect and do not back off once you turn on Spring Security and family. If you need the IP access restrictions to go away, simply open up the pattern to allow <code>.+</code> where that would allow you to exclusively rely upon the protection offered by Spring Boot and its authentication strategy.
+</div>
+
+<p>The first task is to configure our CAS overlay to include the relevant dependency:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.apereo.cas<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>cas-server-webapp-config-security<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>${cas.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>…and then, mark the endpoint as <code class="highlighter-rouge">sensitive</code> in our CAS properties:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">endpoints.health.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">endpoints.health.sensitive</span><span class="p">=</span><span class="s">true</span>
+</code></pre></div></div>
+
+<p>Next order of business is to define our <em>master</em> credentials that would be asked of all requests. Note that if the password is left blank, a random password will be generated/printed in the logs by default. We can define our own using the following:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">security.user.name</span><span class="p">=</span><span class="s">wade</span>
+<span class="py">security.user.password</span><span class="p">=</span><span class="s">de@dp00L</span>
+</code></pre></div></div>
+
+<p>With the above settings, if you try the same request as before:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl https://login.example.org/cas/status/health | jq
+</code></pre></div></div>
+
+<p>…you might see the following:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1529126720131</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unauthorized"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Full authentication is required to access this resource"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/cas/status/health"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>So we need to be fully authenticated. Let’s present credentials:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-u</span> wade:de@dp00L https://login.example.org/cas/status/health | jq
+</code></pre></div></div>
+
+<p>…and the full output shall then be something as follows where CAS presents some additional health information regarding <code class="highlighter-rouge">session</code> and <code class="highlighter-rouge">memory</code> which correspond to its own health indicators monitoring the runtime memory status as well as the ticket registry repository:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"memory"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"freeMemory"</span><span class="p">:</span><span class="w"> </span><span class="mi">3006834288</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"totalMemory"</span><span class="p">:</span><span class="w"> </span><span class="mi">3817865216</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"session"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sessionCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ticketCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OK"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"diskSpace"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">500068036608</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"free"</span><span class="p">:</span><span class="w"> </span><span class="mi">115889942528</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">10485760</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"refreshScope"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>…and if you happen to submit an incorrect authentication request with bad credentials, you might be presented with:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1529127019737</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unauthorized"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bad credentials"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/cas/status/health"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Of course, this is just basic authentication with a pre-defined pair of credentials. You can get the endpoints secured with a CAS server as well, or you can try basic authentication with an underlying account store backed by LDAP or JDBC…or as always, you can take full advantage of Spring Security in all its glory and design your authentication scheme for the win.</p>
+
+<h1 id="looking-ahead">Looking Ahead</h1>
+
+<p>As an FYI, as of this writing, the CAS version at hand depends on Spring Boot <code class="highlighter-rouge">1.5.x</code> to deliver endpoints and get them secured. Starting with Spring Boot v2, there is no separate auto-configuration for user-defined endpoints and actuator endpoints. Security is strictly controlled and provided by Spring Security if the library is included in CAS and found on the classpath whereby the auto-configuration secures all endpoints by default. Spring Boot then relies on Spring Security’s content-negotiation strategy to determine whether to use a basic authentication mode or form-based login and just like before, a user with a default username and generated password is added, which can be used to log in.</p>
+
+<p>All of that is to say, endpoint security is one area that might get heavily refactored and redesigned in the future once CAS upgrades to Spring Boot v2. This would basically affect CAS configuration in the way that <code class="highlighter-rouge">enabled</code> or <code class="highlighter-rouge">sensitive</code> properties are defined; they might get removed or renamed, etc. There will be follow-up announcements and notes on the subject once the upgrade is available in due time and for now.</p>
+
+<h1 id="monitors">Monitors</h1>
+
+<p>CAS monitors may be defined to report back the health status of the ticket registry and other underlying connections to systems that are in use by CAS. Spring Boot offers a number of monitors known as <code class="highlighter-rouge">HealthIndicator</code>s that are activated given the presence of specific settings (i.e. <code class="highlighter-rouge">spring.mail.*</code>). CAS itself provides a number of other monitors based on the same component whose action may require a combination of a particular dependency module and its relevant settings.</p>
+
+<p>As you saw in the output of the <code class="highlighter-rouge">health</code> endpoint, the default monitors report back brief memory and ticket stats. As an exercise, we shall configure CAS to monitor and report health information on the status of a mail server (the monitor is provided by Spring Boot natively) and we may also let CAS monitor the status of an LDAP server provided where the monitor is this time brought to you by CAS.</p>
+
+<h2 id="mail-server-monitor">Mail Server Monitor</h2>
+
+<p>First, let’s get the mail server configured in CAS:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">spring.mail.host</span><span class="p">=</span><span class="s">localhost</span>
+<span class="py">spring.mail.port</span><span class="p">=</span><span class="s">25000</span>
+<span class="py">spring.mail.testConnection</span><span class="p">=</span><span class="s">true</span>
+</code></pre></div></div>
+
+<p>With the above settings, at runtime CAS begins to create and bootstrap components that need to deal with a mail server and just as well, a special health monitor will get auto-configured to watch the server status and report back results via the <code class="highlighter-rouge">health</code> endpoint.</p>
+
+<div class="alert alert-info">
+<strong>Saving Lives</strong><br />This is the power of auto-configuration, saving you time and energy and abstracting you away from all the confusing internal details. Talk about improving productivity and saving lives, the entire configuration of a mail server connector as well as its relevant monitor is done using just a few simple settings!</div>
+
+<p>So, let’s get us a health report:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-u</span> wade:de@dp00L https://login.example.org/cas/status/health | jq
+</code></pre></div></div>
+
+<p>…and we shall receive the same sort of report except for this time we have a small blob for <code class="highlighter-rouge">mail</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span><span class="w">
+</span><span class="s2">"mail"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost:25000"</span><span class="w">
+</span><span class="p">},</span><span class="w">
+</span><span class="err">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>…and if you shut the server down, you might receive:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span><span class="w">
+</span><span class="s2">"mail"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DOWN"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost:25000"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.sun.mail.util.MailConnectException: Couldn't connect to host, port: localhost, 25000; timeout -1"</span><span class="w">
+</span><span class="p">},</span><span class="w">
+</span><span class="err">...</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="ldap-monitor">LDAP Monitor</h2>
+
+<p>First, let’s add the following dependency to ensure CAS can connect to an LDAP server:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apereo.cas<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>cas-server-support-ldap-monitor<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${cas.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>…and let’s teach CAS where our LDAP server lives:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.monitor.ldap.ldapUrl</span><span class="p">=</span><span class="s">ldap://localhost:389</span>
+<span class="py">cas.monitor.ldap.useSsl</span><span class="p">=</span><span class="s">false</span>
+</code></pre></div></div>
+
+<div class="alert alert-info">
+<strong>Use What You Need</strong><br />Do <b>NOT</b> copy/paste the entire collection of LDAP settings, etc into your CAS configuration; rather pick only the properties that you need. If you do not know what a setting does or means, it's generally safe to ignore it and trust the defaults. This is similar to ordering food; if you have never tried jellyfish, it would be fairly adventurous or dangerous to put that in your burger! Go with what you know and adjust as necessary.</div>
+
+<p>So, once again let’s get us a health report:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-u</span> wade:de@dp00L https://login.example.org/cas/status/health | jq
+</code></pre></div></div>
+
+<p>…and we shall receive the same sort of report except for this time we have a small blob for <code class="highlighter-rouge">pooledLdapConnectionFactory</code>:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span><span class="w">
+</span><span class="s2">"pooledLdapConnectionFactory"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OK"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"activeCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"idleCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span><span class="p">},</span><span class="w">
+</span><span class="err">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Additional monitors and health indicators may get added in future CAS versions. Consult the CAS documentation for more info.</p>
+
+<h1 id="what-about">What About…?</h1>
+
+<ul>
+  <li><a href="https://apereo.github.io/2018/06/09/cas53-gettingstarted-overlay/">CAS WAR Overlays</a></li>
+  <li><a href="https://apereo.github.io/2018/01/08/cas-mfa-duosecurity/">CAS Multifactor Authentication with Duo Security</a></li>
+  <li><a href="https://apereo.github.io/2017/03/24/cas51-ldapauthnjasypt-tutorial/">CAS 5 LDAP AuthN and Jasypt Configuration</a></li>
+  <li><a href="https://apereo.github.io/2017/03/22/cas51-delauthn-tutorial/">CAS 5 SAML2 Delegated AuthN Tutorial</a></li>
+  <li><a href="http://localhost:4000/2018/06/10/cas-userinterface-customizations/">CAS User Interface Customizations</a></li>
+  <li><a href="https://apereo.github.io/2018/06/10/cas-mfa-google-authenticator/">CAS Multifactor Authentication with Google Authenticator</a></li>
+</ul>
+
+<h1 id="so">So…</h1>
+
+<p>It’s important that you start off simple and make changes one step at a time. Once you have a functional environment, you can gradually and slowly add customizations to move files around.</p>
+
+<p>I hope this review was of some help to you and I am sure that both this post as well as the functionality it attempts to explain can be improved in any number of ways. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F15%2Fcas53-admin-endpoints-security%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Apereo+CAS+-+Administrative+Endpoints+%26+Monitoring&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F15%2Fcas53-admin-endpoints-security%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F15%2Fcas53-admin-endpoints-security%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F15%2Fcas53-admin-endpoints-security%2F&amp;title=Apereo+CAS+-+Administrative+Endpoints+%26+Monitoring" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F15%2Fcas53-admin-endpoints-security%2F&amp;title=Apereo+CAS+-+Administrative+Endpoints+%26+Monitoring" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F15%2Fcas53-admin-endpoints-security%2F&amp;name=Apereo+CAS+-+Administrative+Endpoints+%26+Monitoring" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F15%2Fcas53-admin-endpoints-security%2F&amp;title=Apereo+CAS+-+Administrative+Endpoints+%26+Monitoring" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F15%2Fcas53-admin-endpoints-security%2F&amp;title=Apereo+CAS+-+Administrative+Endpoints+%26+Monitoring" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F15%2Fcas53-admin-endpoints-security%2F&amp;t=Apereo+CAS+-+Administrative+Endpoints+%26+Monitoring" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

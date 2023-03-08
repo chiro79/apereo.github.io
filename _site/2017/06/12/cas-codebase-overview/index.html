@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CAS Codebase Overview &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An overview of the CAS codebase organization and layout in which I also dig into the rationale behind project's efforts on modularization and code decomposition.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/06/12/cas-codebase-overview/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CAS Codebase Overview">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/06/12/cas-codebase-overview/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="CAS Codebase Overview" />
+    <meta name="twitter:description" content="An overview of the CAS codebase organization and layout in which I also dig into the rationale behind project's efforts on modularization and code decomposition." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/06/12/cas-codebase-overview/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>CAS Codebase Overview</h1>
+  <span class="post-meta">Monday, Jun 12, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    6 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Over the past couple of weeks, I have received a lot of positive feedback on CAS codebase organization and management. This blog post attempts to provide an overview of the current codebase status and offers to explain the supporting rationale and the decisions made to cleanup, break down and decompose the monolithic structure of the CAS project whose latest release as of today is <a href="https://github.com/apereo/cas/releases/tag/v5.1.0">available here</a>.</p>
+
+<h1 id="the-1000-foot-view">The 1000-Foot View</h1>
+
+<p>If you were to clone <a href="https://github.com/apereo/cas/">the CAS project on Github</a> and count the provided subprojects, as of this writing you might see something like the following snippet:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">cd </span>cas-server
+<span class="o">&gt;</span> gradlew projects | wc <span class="nt">-l</span>
+221
+</code></pre></div></div>
+
+<p>That’s a lot of projects! How is this managed and who can make sense of this beast?</p>
+
+<p>At a very high-level, the project is broken into the following categories:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">api</code></td>
+      <td>CAS APIs that generically define the outline of a given behavior, such as authentication.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">core</code></td>
+      <td>Implementations of said APIs. The presence of <em>almost everything</em> under this category is absolutely required for the CAS runtime to function correctly.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">docker</code></td>
+      <td>Build configuration for automatic builds invoked by <a href="https://cloud.docker.com/">Docker Cloud</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">docs</code></td>
+      <td><a href="https://apereo.github.io/cas">Project documentation</a> artifacts managed by <a href="https://pages.github.com/">Github Pages</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">etc</code></td>
+      <td>Miscellaneous configuration files used by the build or the documentation site.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">gradle</code></td>
+      <td>Houses <a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html">the gradle wrapper</a> used for internal builds.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">style</code></td>
+      <td>Guidelines and rules enforced and consumed by project’s various static analysis checkers, such as Checkstyle and Findbugs.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">support</code></td>
+      <td>Extensions that enrich one’s CAS experience with lots and lots of functionality and integrations. (i.e. LDAP, MFA, etc)</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">travis</code></td>
+      <td>Configuration artifacts used by <a href="travis-ci.org/apereo/cas/builds">Travis CI</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">webapp-mgmt</code></td>
+      <td>Artifacts that pertain to the configuration and deployment of the <a href="https://apereo.github.io/cas/5.1.x/installation/Installing-ServicesMgmt-Webapp.html">CAS Service Management Web Application</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">webapp</code></td>
+      <td>Artifacts that pertain to the deployment of the core CAS web application and its many sisters.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As you drill into each category, you are presented with a hierarchy and a naming scheme that intends to explain what each project folder is all about. Note that the above organization is not only rather <em>pleasing</em> to the eye, but it also tries to reduce the initial <em>scare factor</em> to some degree. All visitors, friend and foe alike, who happen to step into the project space on Github are not immediately greeted with a structure that demonstrates 221+ things, forcing them to endlessly scroll downward to finally get to the actual <code class="highlighter-rouge">README.md</code> file. So, this model is a representation of the project’s organization and essential components, gently and without risk to gradually boil the proverbial frog and get one acclimated for contributions.</p>
+
+<p>After all, that is what we want we to do.</p>
+
+<h1 id="no-feature-left-behind">No Feature Left Behind</h1>
+
+<p>Core CAS components aside, there are a lot of other individual modules (i.e. <code class="highlighter-rouge">JAR</code> artifacts) which act as support modules or more accurately put, <em>intentions</em>. What is that about?</p>
+
+<p>In order to ease the maintenance burden of both code and documentation and to create a sustainable development environment for the project to grow and keep up with the times and additions of new [more complicated] features (i.e. multifactor authentication), CAS 5 took an orthogonal approach where most if not all CAS features are <a href="https://apereo.github.io/2017/02/21/cas-autocfg-strategy/">automatically configured</a> by CAS itself, given deployer’s consent, relieving the deployer from having to deal with manual configuration. This is a model referred to as <strong>Intention-driven configuration</strong>.</p>
+
+<p>Each support module essentially focuses on a single feature or intention or a particular variation of one. It latches onto the runtime and does what it should, inserting itself in all the right places dynamically in order to provide the intended functionality in an automated way. It’s nice that one can fiddle with a variety of configuration files to make something work. It’s a whole lot better though ambitious to <em>automate once, run everywhere</em>.</p>
+
+<p>Modules are super cheap and modest. Sometimes they only provide the necessary dependencies to provide functionality. Sometimes they provide a specific implementation for an existing feature, such as the ability to store device registrations into a relational database during multifactor authentication flows. Sometimes they actually provide essential functionality, such as multifactor authentication support via Google Authenticator.</p>
+
+<p>Whatever it may be, the question ultimately for the deployer is:</p>
+
+<blockquote>
+  <p>I intend to do X with the software and there is a module that lets me.</p>
+</blockquote>
+
+<p>You want the feature? Drop the module in and it does stuff. You don’t want the feature? Remove the module and it will stop doing that. 
+Is it perfect? Surely not, but it should be THAT simple.</p>
+
+<div class="alert alert-info">
+<strong>Not OSGi</strong><br />The project structure might seemingly have you suppose that this all somehow stemmed from or was inspired by OSGi principals. While that claim is not entirely false, you should know that CAS today does [and has] nothing to do with OSGi.
+</div>
+
+<h1 id="delete-such-joy">Delete: Such Joy</h1>
+
+<p>One of the more important advantages of such decomposition is that it allows one to write code that is very easy, nay, a joy to delete. If the configuration and logic of a given behavior are all housed inside a subproject, you should be able to press delete at any given time without causing mass chaos in other parts of the codebase. This is the concept of encapsulation and self-containment. With proper design and organization, removing cruft should be as easy as striking the appropriate key on the keyboard.</p>
+
+<h1 id="challenges">Challenges</h1>
+
+<p>Of course, not everything is peachy all the time. There are a number of concerns that one needs to take into account. Summarily, here are a few:</p>
+
+<h2 id="circular-dependencies">Circular Dependencies</h2>
+
+<p>As the codebase is broken apart, it will slowly become apparent that certain modules require a dependency on other modules. If not done carefully, these relationships very quickly turn into an unending cat-and-mouse game. Tread lightly.</p>
+
+<h2 id="when-enough-is-enough">When Enough Is Enough</h2>
+
+<p>In certain literatures, it is argued that managing one big thing is much easier, conceptually, than managing 100 small things. That’s not entirely false. It, decomposition, requires not only skill and command but also capacity, availability and self-control. All good things are usually done in moderation; so do not overdo. The boundaries of where one module stops and another begins should be designed and apparent at reasonable granular levels and no more, where you decide what <em>reasonable</em> and <em>granular</em> mean.</p>
+
+<h2 id="talk-is-cheap-show-me-the-code">Talk Is Cheap; Show Me The Code</h2>
+
+<blockquote>
+  <p>Don’t suggest code improvements. Code your suggested improvements.</p>
+</blockquote>
+
+<p>Remember that nothing is perfect; Improve and iterate as often as possible. There will always be better ways. There will always be better ideas. Jot them down and encourage friend and foe to starting executing on such ideas rather than merely suggesting them.</p>
+
+<h1 id="so">So…</h1>
+
+<p>I hope this brief overview was of some assistance to you. If you happen to come across other ideas and innovative solutions that would make all our CAS lives easier, by all means and without hesitation, <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">please get involved</a>.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F06%2F12%2Fcas-codebase-overview%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=CAS+Codebase+Overview&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F06%2F12%2Fcas-codebase-overview%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F06%2F12%2Fcas-codebase-overview%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F06%2F12%2Fcas-codebase-overview%2F&amp;title=CAS+Codebase+Overview" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F06%2F12%2Fcas-codebase-overview%2F&amp;title=CAS+Codebase+Overview" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F06%2F12%2Fcas-codebase-overview%2F&amp;name=CAS+Codebase+Overview" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F06%2F12%2Fcas-codebase-overview%2F&amp;title=CAS+Codebase+Overview" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F06%2F12%2Fcas-codebase-overview%2F&amp;title=CAS+Codebase+Overview" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F06%2F12%2Fcas-codebase-overview%2F&amp;t=CAS+Codebase+Overview" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

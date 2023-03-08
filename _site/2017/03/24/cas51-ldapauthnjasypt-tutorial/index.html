@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CAS 5 LDAP AuthN and Jasypt Configuration &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Learn how to configure LDAP AuthN with CAS and secure LDAP credentials via Jasypt.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/03/24/cas51-ldapauthnjasypt-tutorial/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CAS 5 LDAP AuthN and Jasypt Configuration">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/03/24/cas51-ldapauthnjasypt-tutorial/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="CAS 5 LDAP AuthN and Jasypt Configuration" />
+    <meta name="twitter:description" content="Learn how to configure LDAP AuthN with CAS and secure LDAP credentials via Jasypt." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/03/24/cas51-ldapauthnjasypt-tutorial/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>CAS 5 LDAP AuthN and Jasypt Configuration</h1>
+  <span class="post-meta">Friday, Mar 24, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    3 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>This is a short and sweet tutorial on how to configure CAS for LDAP authentication and secure bind credentials via Jasypt encryption.
+Most of the material is based on the available documentation <a href="https://apereo.github.io/cas/development/installation/Configuration-Properties-Security.html">here</a> and <a href="https://apereo.github.io/cas/development/installation/LDAP-Authentication.html">here</a>.</p>
+
+<p>This tutorial specifically focuses on:</p>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">5.1.0-RC3-SNAPSHOT</code></li>
+  <li>Java 8</li>
+  <li>Docker 1.13.x</li>
+  <li>Apache Tomcat <code class="highlighter-rouge">8.5.x</code></li>
+  <li><a href="http://www.jasypt.org/cli.html">Jasypt CLI</a>. You can download the distribution <a href="http://www.jasypt.org/download.html">from here</a>.</li>
+</ul>
+
+<p>This tutorial assumes that you are running CAS in its <code class="highlighter-rouge">standalone</code> mode, <a href="https://apereo.github.io/cas/development/installation/Configuration-Server-Management.html">described here</a>.</p>
+
+<h1 id="ldap-setup">LDAP Setup</h1>
+
+<p>For this tutorial, I am using a 398-ds LDAP server <a href="https://github.com/jtgasper3/docker-images/tree/master/389-ds">from this docker image</a>.
+Once you have the image running, you can connect to the underlying LDAP server at <code class="highlighter-rouge">localhost:10389</code> with <code class="highlighter-rouge">cn=Directory Manager</code> and <code class="highlighter-rouge">password</code>. The LDAP server is also prepped with a <code class="highlighter-rouge">users.ldif</code> file that contains the test account <code class="highlighter-rouge">jsmith:password</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps
+
+CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                    NAMES
+0f2a75441fb5        jtgasper3/389ds-basic   <span class="s2">"/bin/sh -c '/usr/..."</span>   11 days ago         Up 6 minutes        0.0.0.0:10389-&gt;389/tcp   ldap-server
+</code></pre></div></div>
+
+<p>Sweet! Moving on…</p>
+
+<h1 id="deploy-cas">Deploy CAS</h1>
+
+<p>Hop over to <a href="https://apereo.github.io/cas/development/installation/Maven-Overlay-Installation.html">the overlay installation</a> and get CAS built and deployed. The CAS version I am using today is <code class="highlighter-rouge">5.1.0-RC3-SNAPSHOT</code>. It does not matter whether you end up using Maven or Gradle. Choose what fits you best. When you have a baseline functioning build, continue on.</p>
+
+<h1 id="configure-cas">Configure CAS</h1>
+
+<p>Once you have added the LDAP module to your build as is described <a href="https://apereo.github.io/cas/development/installation/LDAP-Authentication.html">here</a>, you then need to teach CAS about the running LDAP server.</p>
+
+<p>Here is what I did in the <code class="highlighter-rouge">cas.properties</code> file, along with all the other usual suspects:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">cas.authn.ldap[0]</span><span class="py">.type</span><span class="p">=</span><span class="s">AUTHENTICATED</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.ldapUrl</span><span class="p">=</span><span class="s">ldap://localhost:10389</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.useSsl</span><span class="p">=</span><span class="s">false</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.baseDn</span><span class="p">=</span><span class="s">ou=People,dc=example,dc=edu</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.userFilter</span><span class="p">=</span><span class="s">uid={user}</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.bindDn</span><span class="p">=</span><span class="s">cn=Directory Manager</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.bindCredential</span><span class="p">=</span><span class="s">password</span>
+</code></pre></div></div>
+
+<p>I also need to disable static authentication. It would also be very nice if I could turn on <code class="highlighter-rouge">DEBUG</code> logs and see what CAS attempts to do:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">logging.level.org.apereo</span><span class="p">=</span><span class="s">DEBUG</span>
+<span class="py">cas.authn.accept.users</span><span class="p">=</span>
+</code></pre></div></div>
+
+<h1 id="build-and-deploy">Build and Deploy</h1>
+
+<p>Once you get CAS built and deployed, logs should indicate something like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2017-03-22 16:01:06,915 INFO <span class="o">[</span>o.a.c.c.LdapAuthenticationConfiguration] - &lt;Ldap authentication <span class="k">for</span> <span class="o">[</span>LdapAuthenticationHandler] is to chain principal resolvers via <span class="o">[[</span>org.apereo.cas.authentication.principal.resolvers.ChainingPrincipalResolver@1452f4cb[chain<span class="o">=[</span>org.apereo.cas.authentication.principal.resolvers.PersonDirectoryPrincipalResolver@1b7c5e6a[returnNullIfNoAttributes<span class="o">=</span><span class="nb">false</span>,principalAttributeName<span class="o">=</span>&lt;null&gt;], org.apereo.cas.authentication.principal.resolvers.EchoingPrincipalResolver@6824495c[]]]]] <span class="k">for </span>attribute resolution&gt;
+</code></pre></div></div>
+
+<p>Great. Next, pull up CAS in your browser and log in with <code class="highlighter-rouge">jsmith</code> and <code class="highlighter-rouge">password</code> and you should be in. Viola!</p>
+
+<h1 id="jasypt-encryption">Jasypt Encryption</h1>
+
+<p>You may have noted that the LDAP <code class="highlighter-rouge">bindCredential</code> is put into the <code class="highlighter-rouge">cas.properties</code> file in plain-text. As the next steps:</p>
+
+<ul>
+  <li>We will first encrypt the <code class="highlighter-rouge">bindCredential</code> value via Jasypt and put it into CAS.</li>
+  <li>We will instruct CAS to decrypt the setting at runtime invisibly and resume as usual.</li>
+</ul>
+
+<p>Note that there is nothing stopping you from encrypting any other setting!</p>
+
+<h2 id="encrypt-via-jasypt">Encrypt via Jasypt</h2>
+
+<p>Once you download the <a href="http://www.jasypt.org/cli.html">Jasypt CLI</a>, at a minimum you need to decide which algorithm you want to use for encryption and what your encryption key/password should be which is the thing that is later taught to CAS to decode the value. In the <code class="highlighter-rouge">bin</code> directory of the distribution, you can invoke <code class="highlighter-rouge">./listAlgorithms.sh|bat</code> to see what may be possible for algorithms and then use the <code class="highlighter-rouge">./encrypt.sh|bat</code> to encrypt values.</p>
+
+<p>So for me to encrypt the value of <code class="highlighter-rouge">bindCredential</code>, I ran the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./encrypt.sh <span class="nv">input</span><span class="o">=</span>password <span class="nv">algorithm</span><span class="o">=</span>PBEWithMD5AndTripleDES <span class="nv">password</span><span class="o">=</span>MySuperPassword
+
+<span class="nt">----ENVIRONMENT-----------------</span>
+Runtime: Oracle Corporation Java HotSpot<span class="o">(</span>TM<span class="o">)</span> 64-Bit Server VM 25.121-b13 
+
+<span class="nt">----ARGUMENTS-------------------</span>
+algorithm: PBEWithMD5AndTripleDES
+input: password
+password: MySuperPassword
+
+<span class="nt">----OUTPUT----------------------</span>
+mqWuN+/U7oofNhdSVNcEgmVcwGmxiOaS
+</code></pre></div></div>
+
+<p>I can also confirm that this value can be decoded as well:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./decrypt.sh <span class="nv">input</span><span class="o">=</span>mqWuN+/U7oofNhdSVNcEgmVcwGmxiOaS <span class="nv">algorithm</span><span class="o">=</span>PBEWithMD5AndTripleDES <span class="nv">password</span><span class="o">=</span>MySuperPassword
+
+<span class="nt">----ENVIRONMENT-----------------</span>
+Runtime: Oracle Corporation Java HotSpot<span class="o">(</span>TM<span class="o">)</span> 64-Bit Server VM 25.121-b13 
+
+<span class="nt">----ARGUMENTS-------------------</span>
+algorithm: PBEWithMD5AndTripleDES
+input: mqWuN+/U7oofNhdSVNcEgmVcwGmxiOaS
+password: MySuperPassword
+
+<span class="nt">----OUTPUT----------------------</span>
+password
+</code></pre></div></div>
+
+<p>Cool. Let’s move on.</p>
+
+<h2 id="configure-cas-1">Configure CAS</h2>
+
+<p>So now that I have encrypted value in the <code class="highlighter-rouge">OUTPUT</code> section, I am going to slightly massage my configuration as such:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span>
+<span class="err">cas.authn.ldap[0]</span><span class="py">.bindCredential</span><span class="p">=</span><span class="s">{cipher}mqWuN+/U7oofNhdSVNcEgmVcwGmxiOaS</span>
+<span class="err">...</span>
+</code></pre></div></div>
+
+<p>Finally, we need to teach CAS to handle the reverse of this operation. Consulting the docs <a href="https://apereo.github.io/cas/development/installation/Configuration-Properties-Security.html">here</a>, I ended up adjusting my configuration as such:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.standalone.config.security.alg</span><span class="p">=</span><span class="s">PBEWithMD5AndTripleDES</span>
+</code></pre></div></div>
+
+<p>Using the embedded tomcat container, I configured my “run CAS” command to pass along the encryption key as a command-line parameter. If you prefer, you could do the same thing with environment variables and system properties.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-jar</span> target/cas.war <span class="nt">--cas</span>.standalone.config.security.psw<span class="o">=</span>MySuperPassword
+</code></pre></div></div>
+
+<p>Next time when attempt to deploy and run CAS, you should be able to bind and connect to LDAP and authenticate as before.</p>
+
+<p>That’s it!</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F24%2Fcas51-ldapauthnjasypt-tutorial%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=CAS+5+LDAP+AuthN+and+Jasypt+Configuration&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F24%2Fcas51-ldapauthnjasypt-tutorial%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F24%2Fcas51-ldapauthnjasypt-tutorial%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F24%2Fcas51-ldapauthnjasypt-tutorial%2F&amp;title=CAS+5+LDAP+AuthN+and+Jasypt+Configuration" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F24%2Fcas51-ldapauthnjasypt-tutorial%2F&amp;title=CAS+5+LDAP+AuthN+and+Jasypt+Configuration" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F24%2Fcas51-ldapauthnjasypt-tutorial%2F&amp;name=CAS+5+LDAP+AuthN+and+Jasypt+Configuration" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F24%2Fcas51-ldapauthnjasypt-tutorial%2F&amp;title=CAS+5+LDAP+AuthN+and+Jasypt+Configuration" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F24%2Fcas51-ldapauthnjasypt-tutorial%2F&amp;title=CAS+5+LDAP+AuthN+and+Jasypt+Configuration" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F03%2F24%2Fcas51-ldapauthnjasypt-tutorial%2F&amp;t=CAS+5+LDAP+AuthN+and+Jasypt+Configuration" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

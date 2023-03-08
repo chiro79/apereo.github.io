@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Apereo CAS - Custom Authentication & Attribute Sources &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Master writing custom authentication handlers/schemes in CAS and learn how to design custom data sources that can produce user claims and attributes.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/06/12/cas53-authn-handlers/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apereo CAS - Custom Authentication &amp; Attribute Sources">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/06/12/cas53-authn-handlers/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Apereo CAS - Custom Authentication & Attribute Sources" />
+    <meta name="twitter:description" content="Master writing custom authentication handlers/schemes in CAS and learn how to design custom data sources that can produce user claims and attributes." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/06/12/cas53-authn-handlers/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Apereo CAS - Custom Authentication & Attribute Sources</h1>
+  <span class="post-meta">Tuesday, Jun 12, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    8 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+<strong>Collaborate</strong><br />This blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>While <a href="https://apereo.github.io/cas/development/installation/Configuring-Authentication-Components.html">authentication support</a>
+in CAS for a variety of systems is somewhat comprehensive and complex, a common deployment use case
+is the task of designing custom authentication schemes.</p>
+
+<p>This post:</p>
+
+<ul>
+  <li>Describes the necessary steps needed to design and register a custom authentication strategy (i.e. <code class="highlighter-rouge">AuthenticationHandler</code>).</li>
+  <li>Provides an implementation overview of designing customized attribute repository sources (i.e. <code class="highlighter-rouge">IPersonAttributeDao</code>) to fetch user claims.</li>
+</ul>
+
+<h1 id="audience">Audience</h1>
+
+<p>This post is intended for Java developers with a basic-to-medium familiarity with Spring, Spring Boot, and Spring Webflow. This is <strong>NOT</strong> a tutorial to be used verbatim via copy/paste. It is instead a recipe for developers to extend CAS based on specialized requirements.</p>
+
+<p>This tutorial specifically requires and focuses on:</p>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">5.3.x</code></li>
+  <li>Java 8</li>
+  <li><a href="https://apereo.github.io/cas/development/installation/Maven-Overlay-Installation.html">Maven WAR Overlay</a></li>
+</ul>
+
+<h1 id="customized-authentication">Customized Authentication</h1>
+
+<p>The overall tasks may be categorized as such:</p>
+
+<ol>
+  <li>Design the authentication handler</li>
+  <li>Register the authentication handler with the CAS authentication engine.</li>
+  <li>Tell CAS to recognize the registration record and authentication configuration.</li>
+</ol>
+
+<div class="alert alert-success">
+<strong>Collaborate</strong><br />Before stepping into a development mode, consider whether your choice of authentication handler or attribute repository implementation may be contributed back to CAS as a first-class feature, specially if the system with which you are interfacing is somewhat mainstream, robust and in reasonable demand.</div>
+
+<h2 id="design-authentication-handlers">Design Authentication Handlers</h2>
+
+<p>The first step is to define the skeleton for the authentication handler itself. This is the core principal component whose job is to declare support for a given type of credential only to then attempt to validate it and produce a successful result. The core parent component from which all handlers extend is the <code class="highlighter-rouge">AuthenticationHandler</code> interface.</p>
+
+<p>With the assumption that the type of credentials used here deal with the traditional username and password, noted by the infamous <code class="highlighter-rouge">UsernamePasswordCredential</code> below, a more appropriate skeleton to define for a custom authentication handler may seem like the following:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyAuthenticationHandler</span> <span class="kd">extends</span> <span class="n">AbstractUsernamePasswordAuthenticationHandler</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="kd">protected</span> <span class="n">HandlerResult</span> <span class="nf">authenticateUsernamePasswordInternal</span><span class="o">(</span><span class="kd">final</span> <span class="n">UsernamePasswordCredential</span> <span class="n">credential</span><span class="o">,</span>
+                                                                 <span class="kd">final</span> <span class="n">String</span> <span class="n">originalPassword</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">everythingLooksGood</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nf">createHandlerResult</span><span class="o">(</span><span class="n">credential</span><span class="o">,</span>
+                    <span class="k">this</span><span class="o">.</span><span class="na">principalFactory</span><span class="o">.</span><span class="na">createPrincipal</span><span class="o">(</span><span class="n">username</span><span class="o">),</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;());</span>
+        <span class="o">}</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">FailedLoginException</span><span class="o">(</span><span class="s">"Sorry, you have failed!"</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Note that:</p>
+
+<ul>
+  <li>
+    <p>Authentication handlers have the ability to produce a fully resolved principal along with attributes. If you have the ability to retrieve attributes
+from the same place as the original user/principal account store, the final <code class="highlighter-rouge">Principal</code> object that is resolved here must then be able to carry all
+those attributes and claims inside it at construction time.</p>
+  </li>
+  <li>
+    <p>The last parameter, <code class="highlighter-rouge">new ArrayList&lt;&gt;()</code>, is effectively a collection of warnings that are eventually worked into the authentication chain and conditionally shown to the user. Examples of such warnings include password status nearing an expiration date, etc.</p>
+  </li>
+  <li>
+    <p>Authentication handlers also have the ability to block authentication by throwing a number of specific exceptions. A more common exception to throw
+back is <code class="highlighter-rouge">FailedLoginException</code> to note authentication failure. Other specific exceptions may be thrown to indicate abnormalities with the account status
+itself, such as <code class="highlighter-rouge">AccountDisabledException</code>.</p>
+  </li>
+  <li>
+    <p>Various other components such as <code class="highlighter-rouge">PrincipalNameTransformer</code>s, <code class="highlighter-rouge">PasswordEncoder</code>s and such may also be injected into our handler if need be, though these are skipped for now in this post for simplicity.</p>
+  </li>
+</ul>
+
+<h2 id="register-authentication-handlers">Register Authentication Handlers</h2>
+
+<p>Once the handler is designed, it needs to be registered with CAS and put into the authentication engine.
+This is done via the magic of <code class="highlighter-rouge">@Configuration</code> classes that are picked up automatically at runtime, per your approval,
+whose job is to understand how to dynamically modify the application context.</p>
+
+<p>So let’s design our own <code class="highlighter-rouge">@Configuration</code> class:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">cas</span><span class="o">;</span>
+
+<span class="nd">@Configuration</span><span class="o">(</span><span class="s">"MyAuthenticationEventExecutionPlanConfiguration"</span><span class="o">)</span>
+<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="n">CasConfigurationProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyAuthenticationEventExecutionPlanConfiguration</span>
+                    <span class="kd">implements</span> <span class="n">AuthenticationEventExecutionPlanConfigurer</span> <span class="o">{</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="n">CasConfigurationProperties</span> <span class="n">casProperties</span><span class="o">;</span>
+
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="n">AuthenticationHandler</span> <span class="nf">myAuthenticationHandler</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">MyAuthenticationHandler</span> <span class="n">handler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyAuthenticationHandler</span><span class="o">();</span>
+        <span class="cm">/*
+            Configure the handler by invoking various setter methods.
+            Note that you also have full access to the collection of resolved CAS settings.
+            Note that each authentication handler may optionally qualify for an 'order`
+            as well as a unique name.
+        */</span>
+        <span class="k">return</span> <span class="n">h</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">configureAuthenticationExecutionPlan</span><span class="o">(</span><span class="kd">final</span> <span class="n">AuthenticationEventExecutionPlan</span> <span class="n">plan</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">feelingGoodOnASundayMorning</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">plan</span><span class="o">.</span><span class="na">registerAuthenticationHandler</span><span class="o">(</span><span class="n">myAuthenticationHandler</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="register-configuration">Register Configuration</h2>
+
+<p>Now that we have properly created and registered our handler with the CAS authentication machinery, we just need to ensure that CAS is able to pick up our special configuration. To do so, create a <code class="highlighter-rouge">src/main/resources/META-INF/spring.factories</code> file and reference the configuration class in it as such:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span><span class="p">=</span><span class="s">com.example.cas.MyAuthenticationEventExecutionPlanConfiguration</span>
+</code></pre></div></div>
+
+<p>Note that the configuration registration step is not of CAS doing. It’s a mechanism provided to CAS via <a href="http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html">Spring Boot</a>
+and it’s an efficient way to pick up and register components into the runtime application context without the additional overhead of component-scanning and such.</p>
+
+<p>At runtime, CAS will try to automatically detect all components and beans that advertise themselves as <code class="highlighter-rouge">AuthenticationEventExecutionPlanConfigurer</code>s. Each detected <code class="highlighter-rouge">AuthenticationEventExecutionPlanConfigurer</code> is then invoked to register its own authentication execution plan. The result of this operation at the end will produce a ready-made collection of authentication handlers that are ready to be invoked by CAS in the given order defined if any.</p>
+
+<h1 id="customized-attribute-repository">Customized Attribute Repository</h1>
+
+<p>Sometimes the method of authentication at hand is unable to produce user attributes, or perhaps you may want to fetch user claims and attributes from a variety of other sources and combine them with the what’s fetched from the authentication source. In either scenario, CAS provides a separate component called <em>Attribute Repository</em> whose task to establish a link between CAS and the <em>real</em> attribute source and its execution is simply tied to the authentication flow somewhat invisibly. There are a lot of attribute repository options supported in CAS by default, and if support for your particular attribute source is absent in CAS, you can certainly build support for that system using the following instructions.</p>
+
+<h2 id="design-attribute-repository">Design Attribute Repository</h2>
+
+<p>Attribute repository implementations need to be based on top of the <a href="https://github.com/apereo/person-directory">Person Directory</a> project, which is a toolkit for resolving persons and attributes from a variety of underlying sources. It consists of a collection of <code class="highlighter-rouge">IPersonAttributeDao</code>s that retrieve, cache, resolve, aggregate and merge person attributes.</p>
+
+<p>The following represents a simple outline of a given attribute repository implementation:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">cas</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FancyPersonAttributeDao</span> <span class="kd">extends</span> <span class="n">BasePersonAttributeDao</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">IUsernameAttributeProvider</span> <span class="n">usernameAttributeProvider</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleUsernameAttributeProvider</span><span class="o">();</span>
+
+    <span class="nd">@Override</span>
+    <span class="nd">@SneakyThrows</span>
+    <span class="kd">public</span> <span class="n">IPersonAttributes</span> <span class="nf">getPerson</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">uid</span><span class="o">)</span> <span class="o">{</span>
+        <span class="cm">/*
+            Stuff happens to contact the downstream system and fetch attributes for [uid]...
+        */</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">CaseInsensitiveNamedPersonImpl</span><span class="o">(</span><span class="n">uid</span><span class="o">,</span> <span class="n">attributes</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">IPersonAttributes</span><span class="o">&gt;</span> <span class="nf">getPeople</span><span class="o">(</span><span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">map</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">getPeopleWithMultivaluedAttributes</span><span class="o">(</span><span class="n">stuffAttributesIntoList</span><span class="o">(</span><span class="n">map</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">IPersonAttributes</span><span class="o">&gt;</span> <span class="nf">getPeopleWithMultivaluedAttributes</span><span class="o">(</span><span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;&gt;</span> <span class="n">map</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">IPersonAttributes</span><span class="o">&gt;</span> <span class="n">people</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashSet</span><span class="o">();</span>
+        <span class="kd">final</span> <span class="n">String</span> <span class="n">username</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">usernameAttributeProvider</span><span class="o">.</span><span class="na">getUsernameFromQuery</span><span class="o">(</span><span class="n">map</span><span class="o">);</span>
+        <span class="kd">final</span> <span class="n">IPersonAttributes</span> <span class="n">person</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getPerson</span><span class="o">(</span><span class="n">username</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">person</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">people</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">person</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">people</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getPossibleUserAttributeNames</span><span class="o">()</span> <span class="o">{</span>
+        <span class="o">...</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getAvailableQueryAttributes</span><span class="o">()</span> <span class="o">{</span>
+        <span class="o">...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="register-attribute-repository">Register Attribute Repository</h2>
+
+<p>Once the repository is designed, it needs to be registered with CAS and put into the runtime engine. This is done via the magic of <code class="highlighter-rouge">@Configuration</code> classes that are picked up automatically at runtime, per your approval, whose job is to understand how to dynamically modify the application context. To do this, we can reuse the configuration class as above to declare our <code class="highlighter-rouge">IPersonAttributeDao</code> bean:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ConditionalOnMissingBean</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"fancyPersonAttributeDao"</span><span class="o">)</span>
+<span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="n">IPersonAttributeDao</span> <span class="nf">fancyPersonAttributeDao</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">FancyPersonAttributeDao</span><span class="o">(...);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Note that each attribute repository implementation may be assigned a specific <em>order</em> which is a numeric weight that determines its execution position once attribute resolution kicks into action. This is a bit you can usually ignore, but it becomes rather important if you decide to design multiple repository implementations whose execution depends on one another’s results. (i.e one repository might need an attribute value from another before it can run its own query).</p>
+
+<p>So, once defined we can register it with CAS inside the same configuration class:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ConditionalOnMissingBean</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"fancyAttributeRepositoryPlanConfigurer"</span><span class="o">)</span>
+<span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="n">PersonDirectoryAttributeRepositoryPlanConfigurer</span> <span class="nf">fancyAttributeRepositoryPlanConfigurer</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">PersonDirectoryAttributeRepositoryPlanConfigurer</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">configureAttributeRepositoryPlan</span><span class="o">(</span><span class="kd">final</span> <span class="n">PersonDirectoryAttributeRepositoryPlan</span> <span class="n">plan</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">mustRegisterAttributeRepositoryForTheWin</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">plan</span><span class="o">.</span><span class="na">registerAttributeRepository</span><span class="o">(</span><span class="n">fancyPersonAttributeDao</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">};</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Of course, if you decide to move the definition and registration steps into a separate <code class="highlighter-rouge">@Configuration</code> class, then the location of that component will need to be taught to the runtime using the same <code class="highlighter-rouge">src/main/resources/META-INF/spring.factories</code> file noted above.</p>
+
+<h1 id="what-about">What About…?</h1>
+
+<ul>
+  <li><a href="https://apereo.github.io/2018/01/08/cas-mfa-duosecurity/">CAS Multifactor Authentication with Duo Security</a></li>
+  <li><a href="https://apereo.github.io/2017/03/24/cas51-ldapauthnjasypt-tutorial/">CAS 5 LDAP AuthN and Jasypt Configuration</a></li>
+  <li><a href="https://apereo.github.io/2017/03/22/cas51-delauthn-tutorial/">CAS 5 SAML2 Delegated AuthN Tutorial</a></li>
+  <li><a href="https://apereo.github.io/2018/04/20/cas-delegated-authn-account-linking/">CAS 5 Linking Accounts with Delegated AuthN</a></li>
+  <li><a href="https://apereo.github.io/2018/06/10/cas-mfa-google-authenticator/">CAS Multifactor Authentication with Google Authenticator</a></li>
+</ul>
+
+<h1 id="so">So…</h1>
+
+<p>It’s important that you start off simple and make changes one step at a time. Once you have a functional environment, you can gradually and slowly add customizations to move files around.</p>
+
+<p>I hope this review was of some help to you and I am sure that both this post as well as the functionality it attempts to explain can be improved in any number of ways. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F12%2Fcas53-authn-handlers%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Apereo+CAS+-+Custom+Authentication+%26+Attribute+Sources&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F12%2Fcas53-authn-handlers%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F12%2Fcas53-authn-handlers%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F12%2Fcas53-authn-handlers%2F&amp;title=Apereo+CAS+-+Custom+Authentication+%26+Attribute+Sources" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F12%2Fcas53-authn-handlers%2F&amp;title=Apereo+CAS+-+Custom+Authentication+%26+Attribute+Sources" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F12%2Fcas53-authn-handlers%2F&amp;name=Apereo+CAS+-+Custom+Authentication+%26+Attribute+Sources" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F12%2Fcas53-authn-handlers%2F&amp;title=Apereo+CAS+-+Custom+Authentication+%26+Attribute+Sources" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F12%2Fcas53-authn-handlers%2F&amp;title=Apereo+CAS+-+Custom+Authentication+%26+Attribute+Sources" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F06%2F12%2Fcas53-authn-handlers%2F&amp;t=Apereo+CAS+-+Custom+Authentication+%26+Attribute+Sources" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

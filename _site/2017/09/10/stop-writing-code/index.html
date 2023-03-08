@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Stop Writing Code &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A legitimate, comprehensive and inescapably detailed account of the spiderweb of deceit in today’s technology scene; The open-source software ecosystem where victims fall prey to the Goldilocks Syndrome of software customizations and home-grown functionality. This guide aims to uncover the deepest darkest secrets of this treacherous path and yet intentionally offers no hopes or viable solutions at all…except one.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/09/10/stop-writing-code/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Stop Writing Code">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/09/10/stop-writing-code/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Stop Writing Code" />
+    <meta name="twitter:description" content="A legitimate, comprehensive and inescapably detailed account of the spiderweb of deceit in today’s technology scene; The open-source software ecosystem where victims fall prey to the Goldilocks Syndrome of software customizations and home-grown functionality. This guide aims to uncover the deepest darkest secrets of this treacherous path and yet intentionally offers no hopes or viable solutions at all…except one." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/09/10/stop-writing-code/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Stop Writing Code</h1>
+  <span class="post-meta">Sunday, Sep 10, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    8 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>As a fellow somewhat active in the technology space and that of open-source identity and access management, a reasonable portion of my time throughout the week is loaned to conference calls reviewing and discussing the viability of software upgrades and feature deployments. Much of this is spent on reviewing what already exists, analyzing any and all available documentation at luck’s behest and finally enumerating approaches to the ultimate upgrade goal. Take note that in the majority of these conversations, the underlying motivation first and foremost is to fall back to stock functionality and try-remove most if not all of the existing <em>local</em> customizations for which at one point significant time and investment was made.</p>
+
+<p>“Why?” That is an excellent question. This post intends to provide a local and customized answer.</p>
+
+<h1 id="the-trap">The Trap</h1>
+
+<p>Amongst many other factors, a significant and common motivation for one to adopt and deploy open-source software is to avoid vendor lock-in and feel empowered by a permitting license to tailor the packaging to one’s needs. Indeed, the source is open and you are for the most part allowed and encouraged to ride the freedom train and turn the package inside out where needed. As time marches on with more applications on-boarded and newer systems integrated, your deployment would be bombarded with all sorts of new and unfamiliar requirements whose successful delivery at times would undoubtedly require writing code.</p>
+
+<p>Take a deep breath and pause when you get to this stage, for there be dragons here.</p>
+
+<h1 id="customizations">Customizations</h1>
+
+<p>Let’s get the obvious out of the way; not all customizations are “evil”. In my experience, the opposite is usually far truer. In fact, most open-source projects likely have a documented set of guidelines where a certain batch of changes in particular areas of the system is recommended or even expected. In such scenarios, the <em>internals</em> of the deployment are treated very much like a black-box and the software is considered <strong>more like a product rather than a platform</strong>. Common examples include providing one’s  own strategy for authentication, content, user interface and logging where you are expected to make the system uniquely yours. So long as you stay within these boundaries, you will do perfectly fine.</p>
+
+<p>It’s when you have to step out of bounds that things get more interesting.</p>
+
+<h1 id="let-there-be-change">Let There Be Change</h1>
+
+<p>As much as you would try to avoid this, there will be requirements and integrations whose implementation requires you to step out of bounds and write the code. These are the most common rationales I have learned:</p>
+
+<ul>
+  <li>Integration with home-grown legacy system/behavior.</li>
+  <li>NIH syndrome.</li>
+  <li><em>“But that’s how we have always done things”</em>.</li>
+  <li>Integration with black box whose design philosophy is immune to reasonable thought and suggestion.</li>
+  <li>Inability or unwillingness to reason with certain stakeholders with sensitive requirements.</li>
+  <li><em>“Meh…it was faster this way”</em>.</li>
+  <li>Toying around with an exciting new idea with merit for wider adoption. (By far, the most prevalent).</li>
+</ul>
+
+<p>So you step into it. Deadlines begin to breath down your neck. Management continues to push for 5am Saturday production deployments to minimize downtime and risk. The inner-child in you continues to have reservations about the nature of the change, the rightness of it all pondering if there is a better path yet you keep reminding yourself to side-step doubt and consider the code and change a <em>temporary</em> solution that would surely be revisited, refactored and hopefully removed some day after production.</p>
+
+<p>Of course, that day rarely comes. What’s more alarming is that over time, you continue this exercise again and again…and again such that a year from now, the thing no longer resembles anything of its original nature.</p>
+
+<h1 id="potential-problems">Potential Problems</h1>
+
+<p>Such extensions to software are like bad roommates that rarely move out. They sit on your couch all day, eat your food and insist on watching Grey’s Anatomy all day fascinated by life and love. They require continuous care to ensure the system as a whole would not remain stale and maintenance to warrant unbroken paths to future upgrades. Substantial effort may need to be spent during the design phase as you have to account for best security/coding/deployment practices; Then you would need to document the behavior and share, review and teach it to other coworkers who one day might step into your position. All of this is a very long way of saying: hidden cost. 
+But on the other hand, let’s not forget though that you might have immense satisfaction once you deliver because you very proudly were able to analyze, understand, design, implement and deliver a useful practical needed change. So, good for you. Very well done!</p>
+
+<p>It’s quite obvious that none of us can stop change. The legacy systems, the vendors, the integrations, the requirements…they will continue to come and as much as you may disagree with intent or behavior, <em>thou shall deliver</em>. When you start to make changes, the <em>Why</em> and the <em>How</em> are important but those are not this post’s concern. For the purposes of this rant, the Where is where it’s at.</p>
+
+<p>Literally.</p>
+
+<h1 id="the-where">The Where</h1>
+
+<p>Let me reemphasize that I think the majority of all changes are well intentioned, solve an underlying pain point and on the surface look reasonable and attractive. As a colleague, my personal and professional position is to just evaluate and yet never argue the Why with you, because after all I am just a guest in your house and once I leave, you are responsible for the mortgage. So I might express concerns about the validity and soundness of the use case, but ultimately, it is always and forever will be your decision.</p>
+
+<p>Now that we have gotten that out of the way, let’s figure out how we are going to implement the change together. Rather than firing up your workstation immediately to redefine HTTP, exchange passwords in plain-text, design your own message queue or REST-based content protocol and replace XML with JSON because <em>readability</em> or any other creative solutions, I recommend you take the following approach instead.</p>
+
+<h2 id="talk">Talk</h2>
+
+<p>It is likely that someone else in your open-source community has already coded and delivered the very same thing. Nowadays, it’s very difficult to come up with something that hasn’t already been thought of and <a href="https://www.wikiwand.com/en/Simpsons_Already_Did_It">done by the Simpsons</a>.</p>
+
+<p>Ask around. Chances are you will find similarities and opportunities for collaboration.</p>
+
+<h2 id="negotiate">Negotiate</h2>
+
+<p>So it might turn out that you essentially need to start from <em>scratch</em>. Great. This is your moment in the spotlight to negotiate a contribution agreement with the community. Questions you should be asking might include <em>“Is anyone else interested in this functionality? Is anyone else interested to collaborate on this? Is the community interested in adopting this if and when we deliver?”</em></p>
+
+<p>These are excellent questions.</p>
+
+<p>As I have repeatedly outlined, it most often does not matter what <em>this</em> is. Maybe you are working on a brand new capability absent in the current software stack…or maybe you’re adding a new variation to an existing feature, like the ability to use a relational database instead of a NoSQL database…or perhaps you want the system to dance for you based on the native and traditional customs of the end-user’s current region determined by the browser’s locale…who knows.</p>
+
+<p>Ordinarily, <a href="https://apereo.github.io/2017/02/18/onthe-theoryof-possibility/">it’s all good</a>. The worst that could happen is, <em>“No, sorry. Code this for you only”</em>.</p>
+
+<h2 id="execute">Execute</h2>
+
+<p>Assuming positive reception and answers to the above questions, the task would then turn into one of contributing back and figuring out the quirks and the specifics as to make the intended behavior and feature generic and useful enough for the masses. Do not overdo. Do not pre-optimize. Remove institution-specific assumptions, write a bit of documentation and share. Do it all out in the open, from the start without fear. Others will step up to adopt, collaborate and improve the functionality over time, or else it’s perfect just as you intended it to be.</p>
+
+<p>With time it will either get better, or <a href="http://matrix.wikia.com/wiki/The_Trainman">the trainman</a> will take it back to the machine world.</p>
+
+<h2 id="wip">WIP</h2>
+
+<p><a href="https://ben.straub.cc/2015/04/02/wip-pull-request/">Read this</a>.</p>
+
+<h1 id="so">So</h1>
+
+<p>What this post is trying to say, if it’s saying anything, is that your goal in all such endeavors should be to avoid marooning changes on islands whose only citizens are you and your company. At rare times, it might be that the change is so unique enough for others to dissuade them from ever bunking with you on that island and that might be just fine, but most usually the use case is objective, shareable and reasonable. So avoid making <em>custom</em> changes; Being a single parent is tough, so avoid carrying the maintenance burden solely on your own. Avoid treating your deployment unreasoningly unique. You are not that special.</p>
+
+<p>Stop writing code. Write it where it belongs.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F09%2F10%2Fstop-writing-code%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Stop+Writing+Code&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F09%2F10%2Fstop-writing-code%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F09%2F10%2Fstop-writing-code%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F09%2F10%2Fstop-writing-code%2F&amp;title=Stop+Writing+Code" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F09%2F10%2Fstop-writing-code%2F&amp;title=Stop+Writing+Code" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F09%2F10%2Fstop-writing-code%2F&amp;name=Stop+Writing+Code" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F09%2F10%2Fstop-writing-code%2F&amp;title=Stop+Writing+Code" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F09%2F10%2Fstop-writing-code%2F&amp;title=Stop+Writing+Code" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F09%2F10%2Fstop-writing-code%2F&amp;t=Stop+Writing+Code" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

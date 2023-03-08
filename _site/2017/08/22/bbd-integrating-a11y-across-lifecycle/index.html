@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Better by design 2017: Integrating accessibility across design and development lifecycle &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Notes from Karl Groves workshop on integrating a11y across design and development lifecycle at Better By Design 2017.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/08/22/bbd-integrating-a11y-across-lifecycle/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Better by design 2017: Integrating accessibility across design and development lifecycle">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/08/22/bbd-integrating-a11y-across-lifecycle/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Better by design 2017: Integrating accessibility across design and development lifecycle" />
+    <meta name="twitter:description" content="Notes from Karl Groves workshop on integrating a11y across design and development lifecycle at Better By Design 2017." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/08/22/bbd-integrating-a11y-across-lifecycle/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Better by design 2017: Integrating accessibility across design and development lifecycle</h1>
+  <span class="post-meta">Tuesday, Aug 22, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    4 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>I recently attended a day-long workshop on <a href="http://betterbydesignconference.com/workshops/workshop-accessibility-design-development-life-cycle/">Integrating accessibility across the design and development lifecycle</a> by <a href="http://www.karlgroves.com/">Karl Groves</a> at <a href="http://betterbydesignconference.com/">Better By Design</a> 2017.</p>
+
+<p>The most important point I took from the workshop was a reminder to <strong>automate functionally testing the front end for those usability characteristics and WCAG targets amenable to automated testing</strong>.</p>
+
+<p>Mostly the workshop was a call-to-action to care about accessibility, to comply with law and regulation about accessibility, and to avoid expensive legal liability. The workshop motivated thinking about accessibility and usability through the lens of fictional startups wherein, contrary to our typical lived developer experience, accessibility would be prioritized in product vision, design, hiring, corporate priorities, technical support, etc. A healthy thought experiment perhaps too far from my lived reality to be fully relatable.</p>
+
+<h2 id="automate-front-end-testing">Automate front-end testing.</h2>
+
+<p>Suggested tech stack:</p>
+
+<ul>
+  <li><a href="http://www.seleniumhq.org/projects/webdriver/">Selenium WebDriver</a> : drive web browsers via automation</li>
+  <li><a href="https://mochajs.org/">Mocha</a>: JavaScript test framework</li>
+  <li><a href="http://chaijs.com/">Chai</a>: assertion library</li>
+  <li><a href="https://github.com/shouldjs/should.js">Should</a>: another assertion library</li>
+  <li><a href="https://cucumber.io/">Cucumber</a> : executable specifications</li>
+</ul>
+
+<p>The speaker’s product, <a href="https://tenon.io/">tenon.io</a> , has something to offer for a11y checking automation.</p>
+
+<h2 id="its-usability">It’s usability</h2>
+
+<p>Don’t primarily think of it as a11y, as extra stuff to do to accommodate disability. Think of it as making your app usable for everyone.</p>
+
+<p>Focusing on a11y and disability is useful for legal compliance and to help broaden thinking of all the users and all their needs. If it takes thinking about blindness specifically to get you to pay attention to screen reader experiences, so be it. But mostly if you build it right, if it’s clear <strong>what things are and what they do</strong>, if it’s usable and thoughtful and high quality, accessibility takes care of itself.</p>
+
+<p>And of course automate testing for any code quality characteristics that can be automatically detected, because that’s what computers are for.</p>
+
+<h2 id="software-development-has-a-quality-and-a-culture-problem">Software development has a quality and a culture problem</h2>
+
+<p>The problem is</p>
+
+<ul>
+  <li>Software products are of agonizingly poor quality.</li>
+  <li>Software development culture is often broken, with lack of empathy, empowerment, attention to quality and detail, resources.</li>
+</ul>
+
+<p>Of course low quality software built in agonizing culture has poor usability and poor accessibility.</p>
+
+<p>Do less. Do it with radically higher quality. Win.</p>
+
+<h2 id="the-different-versions-and-levels-of-wcag">The different versions and levels of WCAG</h2>
+
+<p>WCAG 1: three priority levels (1, 2, 3) organized by importance to the usability.</p>
+
+<p>WCAG 2: A, AA, and AAA levels organized by expected cost to implement.</p>
+
+<p>WCAG A is no-UI-impact stuff that you have no excuse not to do. Very low cost.</p>
+
+<p>WCAG AA is modest-impact stuff that you really ought to do but it comes at a cost. This is de-facto where the industry has landed as acceptable. You’re liable to suit if you don’t meet WCAG AA; remediation will likely be to meet WCAG AA.</p>
+
+<p>WCAG AAA is potentially tremendously expensive stuff.</p>
+
+<p>All of A, AA, and AAA are important to accessibility, usability. It’s not that the AAA stuff isn’t important, it’s that it’s potentially expensive to comply.</p>
+
+<p>Good practice: <strong>meet all of AA. Meet parts of AAA that you can feasibly</strong> achieve.
+Good practice: <strong>don’t volunteer to meet AAA</strong> – you’re probably just not going to do it.</p>
+
+<p>Recommendation: lurk or participate directly in WCAG 3 standard development. ( <a href="https://www.w3.org/community/silver/">community group</a>)</p>
+
+<h2 id="performance-budget-analogy">Performance budget analogy</h2>
+
+<p>Concept: performance budget. From the outset, how slow will we allow our site / application / pages to be? By what measures? Then work within that budget.</p>
+
+<p>Analogous concept: accessibility budget. How un-usable will we allow our site / application / pages to be? Then work within that budget.  Don’t remediate to WCAG AA. Decide WCAG AA is your “accessibility budget” from the outset and anything violating WCAG AA, it’s just not in your project’s budget.</p>
+
+<h2 id="drag-and-drop-re-ordering-as-a11y-challenge">Drag-and-drop re-ordering as a11y challenge</h2>
+
+<p>Almost any UI control can be made usable and accessible for all users.</p>
+
+<p>Drag-and-drop re-ordering is a notorious exception to this. Provide an alternative experience so that users who cannot easily use visual drag-and-drop controls can instead re-order or re-arrange objects in another way.</p>
+
+<h2 id="misc">Misc</h2>
+
+<p>Other grab bag of points made, references.</p>
+
+<ul>
+  <li><strong>Accessibility</strong> as differentiator on resume. a11y is important and getting more important; companies are hiring for it.</li>
+  <li>Paciello Group: <a href="http://inclusivedesignprinciples.org/">inclusive design principles</a>.</li>
+  <li>Inclusive Design Patterns book by Heydon Pickering . Seems to be <a href="http://smashingconf.com/pdf/inclusive-design-patterns.pdf">available online as a PDF</a>.</li>
+  <li><a href="http://atomicdesign.bradfrost.com/">Brad Frost atomic design</a>, <a href="http://patternlab.io/">pattern lab</a></li>
+  <li><a href="http://inclusivedesignprinciples.org/">Inclusive Design Principles</a></li>
+  <li><a href="http://www.joshblue.com/">Josh Blue</a> (comedian)</li>
+  <li><a href="https://www.dhs.gov/trusted-tester">DHS Trusted Tester program</a></li>
+  <li><a href="http://uiaccess.com/accessucd/">Just Ask: Integrated Accessibility throughout Design</a> (book) (contents available online)</li>
+  <li><a href="http://www.jeffgothelf.com/lean-ux-book/">Lean UX</a> (book)</li>
+  <li><a href="https://github.com/w3c/aria-practices">ARIA practices guide</a> , <a href="https://www.w3.org/TR/wai-aria-practices-1.1/">as published</a></li>
+</ul>
+
+<h2 id="planning-to-automate-myuw-accessibility-testing">Planning to automate MyUW accessibility testing</h2>
+
+<p>Added to draft Q4 MyUW roadmap an item to automate functionally testing a11y criteria in MyUW as deployed to a test tier. This doesn’t guarantee we’ll actually do this in Q4 – it just places a reminder to consider it when tightening up Q4 planning.</p>
+
+<p>-<a href="https://apetro.ghost.io">Andrew</a></p>
+
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F22%2Fbbd-integrating-a11y-across-lifecycle%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Better+by+design+2017%3A+Integrating+accessibility+across+design+and+development+lifecycle&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F22%2Fbbd-integrating-a11y-across-lifecycle%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F22%2Fbbd-integrating-a11y-across-lifecycle%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F22%2Fbbd-integrating-a11y-across-lifecycle%2F&amp;title=Better+by+design+2017%3A+Integrating+accessibility+across+design+and+development+lifecycle" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F22%2Fbbd-integrating-a11y-across-lifecycle%2F&amp;title=Better+by+design+2017%3A+Integrating+accessibility+across+design+and+development+lifecycle" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F22%2Fbbd-integrating-a11y-across-lifecycle%2F&amp;name=Better+by+design+2017%3A+Integrating+accessibility+across+design+and+development+lifecycle" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F22%2Fbbd-integrating-a11y-across-lifecycle%2F&amp;title=Better+by+design+2017%3A+Integrating+accessibility+across+design+and+development+lifecycle" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F22%2Fbbd-integrating-a11y-across-lifecycle%2F&amp;title=Better+by+design+2017%3A+Integrating+accessibility+across+design+and+development+lifecycle" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F08%2F22%2Fbbd-integrating-a11y-across-lifecycle%2F&amp;t=Better+by+design+2017%3A+Integrating+accessibility+across+design+and+development+lifecycle" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

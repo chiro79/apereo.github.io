@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Link CAS OIDC user to existing Database user &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="In which we show to link OIDC id to LDAP database user.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/02/02/OIDC-link-account/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Link CAS OIDC user to existing Database user">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/02/02/OIDC-link-account/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Link CAS OIDC user to existing Database user" />
+    <meta name="twitter:description" content="In which we show to link OIDC id to LDAP database user." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/02/02/OIDC-link-account/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Link CAS OIDC user to existing Database user</h1>
+  <span class="post-meta">Friday, Feb 2, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    9 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-info">
+  <strong>Contributed Content</strong><br />Francis Le Coq was kind enough to share this guide.
+</div>
+
+<div class="alert alert-success">
+  <strong>Collaborate</strong><br />This blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>This example is here to show an example of our try to use CAS in order to authenticate users via France Connect, by registering them to our own database linked with an user that is already registered.</p>
+
+<h1 id="what-we-want">What we want</h1>
+
+<p>The first thing is that the user register only internally via our own services, not via a public page but via our private system. That means that the user on first usage already has an account and can log into CAS via the Login Form.</p>
+
+<p>The second thing is that we want to give the possibility for the user to connect an OIDC, in our example it would be France Connect, but only if the user has already access to our website via Login Form.</p>
+
+<p>In conclusion, on first connect via France Connect, the user will have to log onto France Connect and log onto Login Form in second in order to be recognized as the owner of the France Connect account used. On next France Connect login, the user will directly have access.</p>
+
+<p>Form Login is the basic, login and password form from CAS.</p>
+
+<h1 id="our-environment">Our environment</h1>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">5.2.2</code></li>
+  <li><a href="https://github.com/apereo/cas-overlay-template">CAS Maven WAR Overlay</a></li>
+</ul>
+
+<h1 id="what-is-our-configuration">What is our configuration</h1>
+
+<p>We use an LDAP server and an OIDC CAS configuration. Not more than that. The user has two choices when on the CAS interface, the Login Form and the France Connect button.</p>
+
+<p>We will use “cas.authn.pac4j.oidc” for configuring our OIDC to authenticate our user using France Connect.
+We will use “cas.authn.ldap” to authenticate our user using LDAP database.
+We will use “cas.authn.attributeRepository.ldap” to retrieve some attributes after user authentication.</p>
+
+<h1 id="what-do-we-need">What do we need</h1>
+
+<p>We need to :</p>
+<ul>
+  <li>Connect to France Connect on the behalf of the user (when the user click on the button) and get the OIDC ID</li>
+  <li>Take this ID and store it</li>
+  <li>Ask the user to identify via Login Form</li>
+  <li>Link the UserId and OIDC ID and store into our LDAP database</li>
+  <li>Send back the user to its final destination which is the asked service</li>
+</ul>
+
+<p>Simple !</p>
+
+<h1 id="how-to-do-it">How to do it</h1>
+
+<h2 id="define-our-first-service">Define our first service</h2>
+<p>We will use CAS services, by asking a “requiredAttributes”</p>
+
+<p>Create a file into your <a href="https://apereo.github.io/cas/5.2.x/installation/Configuration-Properties.html#json-service-registry">service folder</a> or equivalent, https-01.json :</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">//On</span><span class="w"> </span><span class="err">any</span><span class="w"> </span><span class="err">service</span><span class="p">,</span><span class="w"> </span><span class="err">it</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">ask</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">UID</span><span class="p">,</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="err">not</span><span class="w"> </span><span class="err">redirect</span><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"^(https|imaps)://.*"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">9997</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Welcome in here"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"evaluationOrder"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">9998</span><span class="p">,</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">The</span><span class="w"> </span><span class="err">usernameAttribute</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">always</span><span class="w"> </span><span class="err">uid</span><span class="w"> </span><span class="err">attribute</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">this</span><span class="w"> </span><span class="err">service</span><span class="w">
+  </span><span class="s2">"usernameAttributeProvider"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"usernameAttribute"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"uid"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"accessStrategy"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="err">//</span><span class="w"> </span><span class="err">We</span><span class="w"> </span><span class="err">created</span><span class="w"> </span><span class="err">and</span><span class="w"> </span><span class="err">changed</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">AccessStrategy</span><span class="p">,</span><span class="w"> </span><span class="err">see</span><span class="w"> </span><span class="err">below</span><span class="w"> </span><span class="err">why</span><span class="w">
+    </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.esupportail.cas.services.ClaExternalIDRegisteredServiceAccessStrategy"</span><span class="p">,</span><span class="w">
+    </span><span class="err">//</span><span class="w"> </span><span class="err">If</span><span class="w"> </span><span class="err">doesn't</span><span class="w"> </span><span class="err">find</span><span class="w"> </span><span class="err">'uid'</span><span class="w"> </span><span class="err">it</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">redirect</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">URL</span><span class="w"> </span><span class="err">that</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">link</span><span class="w"> </span><span class="err">and</span><span class="w"> </span><span class="err">store</span><span class="w"> </span><span class="err">IDs</span><span class="w">
+    </span><span class="s2">"unauthorizedRedirectUrl"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://my-jetty-server/claExternalID/"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"requiredAttributes"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+	    </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"java.util.HashMap"</span><span class="p">,</span><span class="w">
+	    </span><span class="s2">"uid"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"java.util.HashSet"</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">".*"</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">]</span><span class="w">
+	  </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>On first OIDC authentication, France Connect transmit some attributes, but none of them are named ‘uid’, so at this moment CAS redirect the user to <code class="highlighter-rouge">"unauthorizedRedirectUrl": "https://my-jetty-server/claExternalID/"</code>.</p>
+
+<p>In this simple URL we are missing some information that we need in our use case, the OIDC Id and the service target. It is not implemented into CAS to add those parameters automatically to the URL.</p>
+
+<p>The second service configuration is</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"^https?://.*/claExternalID/associate/.*"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Votre identité FranceConnect n'est pas connu dans l'établissement"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">55</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"theme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cla"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Veuillez vous authentifier auprès de l'université pour confirmer votre identité"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"evaluationOrder"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">55</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"usernameAttributeProvider"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"usernameAttribute"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"uid"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"attributeReleasePolicy"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.ReturnAllAttributeReleasePolicy"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"principalAttributesRepository"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.authentication.principal.cache.CachingPrincipalAttributesRepository"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"mergingStrategy"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"ADD"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>This is when your standalone server send back to the second login Form, you need to give the theme.</p>
+
+<h2 id="force-cas-to-give-oidc-id">Force CAS to give OIDC ID</h2>
+
+<p>When CAS check “requiredAttributes”, if an attribute is missing it will throw an Exception and a handler will catch this exception in order to redirect to the URL we added inside our service configuration.</p>
+
+<p>So we will add a new Exception inside the StrategyAccess and the ExceptionHandler will customize the Url.</p>
+
+<p>For that part we need to add our new <code class="highlighter-rouge">ClaExternalIDPrincipalException</code> that will store the attributes coming  from our <code class="highlighter-rouge">ClaExternalIDRegisteredServiceAccessStrategy</code>. Second part, we need to override the handler <code class="highlighter-rouge">AuthenticationExceptionHandlerAction</code> and replace it by our own <code class="highlighter-rouge">ClaExternalIDAuthenticationExceptionHandlerAction</code>.</p>
+
+<p>First our <code class="highlighter-rouge">ClaExternalIDRegisteredServiceAccessStrategy</code>, this class is used into service configuration. It allows us to throw the exception, it needs as well to store the attributes needed later on.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ClaExternalIDRegisteredServiceAccessStrategy</span> <span class="kd">extends</span> <span class="n">DefaultClaExternalIDRegisteredServiceAccessStrategy</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">ClaExternalIDRegisteredServiceAccessStrategy</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="c1">//this function is used to check "requiredAttributes"</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">doPrincipalAttributesAllowServiceAccess</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">principal</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">principalAttributes</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">enoughAttributesAvailableToProcess</span><span class="o">(</span><span class="n">principal</span><span class="o">,</span> <span class="n">principalAttributes</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Access is denied. enoughAttributesAvailableToProcess"</span><span class="o">);</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">doRejectedAttributesRefusePrincipalAccess</span><span class="o">(</span><span class="n">principalAttributes</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Access is denied. doRejectedAttributesRefusePrincipalAccess"</span><span class="o">);</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(!</span><span class="n">doRequiredAttributesAllowPrincipalAccess</span><span class="o">(</span><span class="n">principalAttributes</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">requiredAttributes</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Access is denied. doRequiredAttributesAllowPrincipalAccess"</span><span class="o">);</span>
+            <span class="n">principalAttributes</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"principal"</span><span class="o">,</span> <span class="n">principal</span><span class="o">);</span>
+            <span class="c1">//We throw our exception, it will be intercepted by the Handler inside the Webflow</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ClaExternalIDPrincipalException</span><span class="o">(</span><span class="s">"ClaExternalIDPrincipalException"</span><span class="o">,</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(),</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(),</span> <span class="n">principalAttributes</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Access is authorized"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>As you saw above, a new class appear <code class="highlighter-rouge">ClaExternalIDPrincipalException</code>, the handler will need it to recognize the situation.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ClaExternalIDPrincipalException</span> <span class="kd">extends</span> <span class="n">PrincipalException</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">ClaExternalIDPrincipalException</span><span class="o">(</span>
+            <span class="kd">final</span> <span class="n">String</span> <span class="n">message</span><span class="o">,</span>
+            <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">Throwable</span><span class="o">&gt;&gt;</span> <span class="n">handlerErrors</span><span class="o">,</span>
+            <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">HandlerResult</span><span class="o">&gt;</span> <span class="n">handlerSuccesses</span><span class="o">,</span>
+            <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">principalAttributes</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">message</span><span class="o">,</span> <span class="n">handlerErrors</span><span class="o">,</span> <span class="n">handlerSuccesses</span><span class="o">);</span>
+        <span class="n">setPrincipalAttributes</span><span class="o">(</span><span class="n">principalAttributes</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setPrincipalAttributes</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">principalAttributes</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">principalAttributes</span> <span class="o">=</span> <span class="n">principalAttributes</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="nf">getPrincipalAttributes</span><span class="o">(){</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">principalAttributes</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>To finish this part, the handler that will modify the Url</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ClaExternalIDAuthenticationExceptionHandlerAction</span> <span class="kd">extends</span> <span class="n">AuthenticationExceptionHandlerAction</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="n">String</span> <span class="nf">handleAuthenticationException</span><span class="o">(</span><span class="kd">final</span> <span class="n">AuthenticationException</span> <span class="n">e</span><span class="o">,</span>
+                                                   <span class="kd">final</span> <span class="n">RequestContext</span> <span class="n">requestContext</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="n">URI</span> <span class="n">url</span> <span class="o">=</span> <span class="n">WebUtils</span><span class="o">.</span><span class="na">getUnauthorizedRedirectUrlIntoFlowScope</span><span class="o">(</span><span class="n">requestContext</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getHandlerErrors</span><span class="o">().</span><span class="na">containsKey</span><span class="o">(</span><span class="n">UnauthorizedServiceForPrincipalException</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">()))</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">url</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Unauthorized service access for principal; CAS will be redirecting to [{}]"</span><span class="o">,</span> <span class="n">url</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">CasWebflowConstants</span><span class="o">.</span><span class="na">STATE_ID_SERVICE_UNAUTHZ_CHECK</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">//We add this part to catch the exception thrown and we customize the url,</span>
+        <span class="c1">// adding the attributes from OIDC and the url service asked</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">e</span> <span class="k">instanceof</span> <span class="n">ClaExternalIDPrincipalException</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">url</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="kd">final</span> <span class="n">ClaExternalIDPrincipalException</span> <span class="n">eClaExternalID</span> <span class="o">=</span> <span class="o">(</span><span class="n">ClaExternalIDPrincipalException</span><span class="o">)</span> <span class="n">e</span><span class="o">;</span>
+                <span class="kd">final</span> <span class="n">URI</span> <span class="n">url2</span> <span class="o">=</span> <span class="n">getUrl</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="n">eClaExternalID</span><span class="o">.</span><span class="na">getPrincipalAttributes</span><span class="o">(),</span> <span class="n">WebUtils</span><span class="o">.</span><span class="na">getService</span><span class="o">(</span><span class="n">requestContext</span><span class="o">).</span><span class="na">getOriginalUrl</span><span class="o">());</span>
+                <span class="n">WebUtils</span><span class="o">.</span><span class="na">putUnauthorizedRedirectUrlIntoFlowScope</span><span class="o">(</span><span class="n">requestContext</span><span class="o">,</span> <span class="n">url2</span><span class="o">);</span>
+
+                <span class="n">LOGGER</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"Unauthorized service access for principal; CAS will be redirecting to [{}]"</span><span class="o">,</span> <span class="n">url2</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">CasWebflowConstants</span><span class="o">.</span><span class="na">STATE_ID_SERVICE_UNAUTHZ_CHECK</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="kd">final</span> <span class="n">String</span> <span class="n">handlerErrorName</span> <span class="o">=</span> <span class="n">getErrors</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getHandlerErrors</span><span class="o">().</span><span class="na">values</span><span class="o">()::</span><span class="n">contains</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">Class:</span><span class="o">:</span><span class="n">getSimpleName</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">findFirst</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">orElseGet</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                    <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Unable to translate handler errors of the authentication exception [{}]. Returning [{}]"</span><span class="o">,</span> <span class="n">e</span><span class="o">,</span> <span class="n">UNKNOWN</span><span class="o">);</span>
+                    <span class="k">return</span> <span class="n">UNKNOWN</span><span class="o">;</span>
+                <span class="o">});</span>
+
+        <span class="kd">final</span> <span class="n">MessageContext</span> <span class="n">messageContext</span> <span class="o">=</span> <span class="n">requestContext</span><span class="o">.</span><span class="na">getMessageContext</span><span class="o">();</span>
+        <span class="kd">final</span> <span class="n">String</span> <span class="n">messageCode</span> <span class="o">=</span> <span class="n">DEFAULT_MESSAGE_BUNDLE_PREFIX</span> <span class="o">+</span> <span class="n">handlerErrorName</span><span class="o">;</span>
+        <span class="n">messageContext</span><span class="o">.</span><span class="na">addMessage</span><span class="o">(</span><span class="k">new</span> <span class="n">MessageBuilder</span><span class="o">().</span><span class="na">error</span><span class="o">().</span><span class="na">code</span><span class="o">(</span><span class="n">messageCode</span><span class="o">).</span><span class="na">build</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">handlerErrorName</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Create an URI object with attributes as paramaters in it
+     */</span>
+    <span class="kd">protected</span> <span class="n">URI</span> <span class="nf">getUrl</span><span class="o">(</span><span class="kd">final</span> <span class="n">URI</span> <span class="n">uri</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">principalAttributes</span><span class="o">,</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">target</span><span class="o">){</span>
+        <span class="n">MultiValueMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">queryParams</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedMultiValueMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;();</span>
+
+        <span class="n">principalAttributes</span><span class="o">.</span><span class="na">forEach</span><span class="o">((</span><span class="n">key</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">i</span> <span class="k">instanceof</span> <span class="n">Iterable</span><span class="o">){</span>
+                <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">y</span> <span class="o">:</span> <span class="o">(</span><span class="n">Iterable</span><span class="o">)</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">queryParams</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="n">y</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">queryParams</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="n">i</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+        <span class="n">queryParams</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"target"</span><span class="o">,</span> <span class="n">target</span><span class="o">);</span>
+
+        <span class="n">UriComponents</span> <span class="n">uriComponents</span> <span class="o">=</span> <span class="n">UriComponentsBuilder</span><span class="o">.</span><span class="na">newInstance</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">fromUri</span><span class="o">(</span><span class="n">uri</span><span class="o">).</span><span class="na">queryParams</span><span class="o">(</span><span class="n">queryParams</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">uriComponents</span><span class="o">.</span><span class="na">toUri</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+        <span class="o">}</span>
+
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"Failed to create the URL"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>At this moment, everything is good but our handler is not registered to be used by Spring.</p>
+
+<h2 id="register-the-newly-created-handler">Register the newly created handler</h2>
+
+<p>It is pretty simple, we will override the Bean <code class="highlighter-rouge">authenticationExceptionHandler</code> by creating our own customized configuration class.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span><span class="o">(</span><span class="s">"ClaExternalIDConfiguration"</span><span class="o">)</span>
+<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="n">CasConfigurationProperties</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ClaExternalIDConfiguration</span> <span class="o">{</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="n">CasConfigurationProperties</span> <span class="n">casProperties</span><span class="o">;</span>
+
+    <span class="nd">@RefreshScope</span>
+    <span class="nd">@Bean</span>
+    <span class="cm">/**
+     * This bean has the same name that the CAS "CasCoreWebflowConfiguration", so it will
+     *  overwrite that class, it will work only because it is implemeted inside
+     *  the gradle overlay in our example
+     */</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">authenticationExceptionHandler</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ClaExternalIDAuthenticationExceptionHandlerAction</span><span class="o">(</span><span class="n">handledAuthenticationExceptions</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">Exception</span><span class="o">&gt;&gt;</span> <span class="nf">handledAuthenticationExceptions</span><span class="o">()</span> <span class="o">{</span>
+        <span class="cm">/*
+         * Order is important here; We want the account policy exceptions to be handled
+         * first before moving onto more generic errors. In the event that multiple handlers
+         * are defined, where one failed due to account policy restriction and one fails
+         * due to a bad password, we want the error associated with the account policy
+         * to be processed first, rather than presenting a more generic error associated
+         */</span>
+        <span class="kd">final</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">Exception</span><span class="o">&gt;&gt;</span> <span class="n">errors</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashSet</span><span class="o">&lt;&gt;();</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">javax</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">auth</span><span class="o">.</span><span class="na">login</span><span class="o">.</span><span class="na">AccountLockedException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">javax</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">auth</span><span class="o">.</span><span class="na">login</span><span class="o">.</span><span class="na">CredentialExpiredException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">javax</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">auth</span><span class="o">.</span><span class="na">login</span><span class="o">.</span><span class="na">AccountExpiredException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">AccountDisabledException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">InvalidLoginLocationException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">AccountPasswordMustChangeException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">InvalidLoginTimeException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">javax</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">auth</span><span class="o">.</span><span class="na">login</span><span class="o">.</span><span class="na">AccountNotFoundException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">javax</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">auth</span><span class="o">.</span><span class="na">login</span><span class="o">.</span><span class="na">FailedLoginException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">UnauthorizedServiceForPrincipalException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">PrincipalException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">UnsatisfiedAuthenticationPolicyException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">UnauthorizedAuthenticationException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+        <span class="n">errors</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">casProperties</span><span class="o">.</span><span class="na">getAuthn</span><span class="o">().</span><span class="na">getExceptions</span><span class="o">().</span><span class="na">getExceptions</span><span class="o">());</span>
+
+        <span class="k">return</span> <span class="n">errors</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>A last file for the configuration is needed in order to declare the configuration file into Spring.</p>
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span><span class="p">=</span><span class="s">org.esupportail.cas.config.ClaExternalIDConfiguration</span>
+</code></pre></div></div>
+
+<h2 id="linking-the-oidc-id-and-uid">Linking the OIDC Id and UID</h2>
+
+<p>This part can be manage by a simple jetty server. Or with some work a spring Webflow implemented yourself.</p>
+
+<p>In our side we choose the first case. As explained above, the server will need to receive the first call with the url we constructed and store the OIDC id into the session for example.</p>
+
+<p>Next it will send back to a new page implementing a CAS client, that will ask for a new login form authentication. When that authentication is done and granted, it will send back to this page and receive the UID.</p>
+
+<p>At this moment, the server link both OIDC id and UID together into the database.</p>
+
+<p>And on next login, CAS will get automatically the UID based on the OIDC id received by the OIDC supplier and grant the access.</p>
+
+<h2 id="make-disappear-the-button-on-second-login">Make disappear the button on second login</h2>
+
+<p>For that, a theme has to be used via the service configuration, in our code we just replaced the casLoginView.html by one that <code class="highlighter-rouge">&lt;div th:replace="fragments/loginProviders" /&gt;</code> has been removed.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>This solution is not perfect and could be maybe improved by using the webflow in order to make the linking possible. As well it has been only tested via an java overlay and will need some improvements if that is transformed into a module.</p>
+
+<p>I hope it was instructive and it helped you to do what you wanted to do :)</p>
+
+<p>The source are available on Github of course !</p>
+
+<p>Find here our <a href="https://github.com/EsupPortail/cas-server-support-claExternalID/tree/5.2.x">Example source code</a>
+Plus our simple <a href="https://github.com/EsupPortail/claExternalID/tree/5.2.x">Standalone LDAP linking server</a></p>
+
+<p><a href="https://github.com/cifren">Francis Le Coq</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F02%2FOIDC-link-account%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Link+CAS+OIDC+user+to+existing+Database+user&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F02%2FOIDC-link-account%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F02%2FOIDC-link-account%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F02%2FOIDC-link-account%2F&amp;title=Link+CAS+OIDC+user+to+existing+Database+user" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F02%2FOIDC-link-account%2F&amp;title=Link+CAS+OIDC+user+to+existing+Database+user" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F02%2FOIDC-link-account%2F&amp;name=Link+CAS+OIDC+user+to+existing+Database+user" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F02%2FOIDC-link-account%2F&amp;title=Link+CAS+OIDC+user+to+existing+Database+user" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F02%2FOIDC-link-account%2F&amp;title=Link+CAS+OIDC+user+to+existing+Database+user" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F02%2FOIDC-link-account%2F&amp;t=Link+CAS+OIDC+user+to+existing+Database+user" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>feat(conventional_commits): signal breaking changes in commit titles &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="In which I suggest Conventional Commits should be enhanced to reflect the breakingness of commits in their commit message titles.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/07/07/indicate-breaks-in-conventional-commit-titles/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="feat(conventional_commits): signal breaking changes in commit titles">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/07/07/indicate-breaks-in-conventional-commit-titles/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="feat(conventional_commits): signal breaking changes in commit titles" />
+    <meta name="twitter:description" content="In which I suggest Conventional Commits should be enhanced to reflect the breakingness of commits in their commit message titles." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/07/07/indicate-breaks-in-conventional-commit-titles/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>feat(conventional_commits): signal breaking changes in commit titles</h1>
+  <span class="post-meta">Saturday, Jul 7, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    5 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <h2 id="short-version">Short version</h2>
+
+<ul>
+  <li>I like <a href="https://conventionalcommits.org/">Conventional Commits</a>.</li>
+  <li>Conventional Commits miss an important opportunity to signal the breakingness
+of change in the <em>title</em> rather than just the <em>body</em> of a commit message.</li>
+  <li>Introducing a <a href="https://github.com/conventional-changelog/conventionalcommits.org/pull/64">“BREAK: “ prefix</a> might be a good way to do
+this. There are other ideas.</li>
+  <li>Call to action: help make Conventional Commits better in this and other
+respects</li>
+</ul>
+
+<p>Status quo:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>feat: split `ROLE_VIEW_ABSENCE_HISTORIES`
+</code></pre></div></div>
+
+<p>(Is this a breaking change? You’ll have to read the exciting commit message body
+and footer to find out…)</p>
+
+<p>Better:</p>
+
+<p><a href="https://github.com/conventional-changelog/conventionalcommits.org/pull/64"><code class="highlighter-rouge">BREAK: feat: split ROLE_VIEW_ABSENCE_HISTORIES</code></a></p>
+
+<p>or</p>
+
+<p><a href="https://github.com/conventional-changelog/conventionalcommits.org/issues/43"><code class="highlighter-rouge">!feat: split ROLE_VIEW_ABSENCE_HISTORIES</code></a></p>
+
+<p>or</p>
+
+<p><a href="https://github.com/conventional-changelog/conventionalcommits.org/pull/63"><code class="highlighter-rouge">FEAT: split ROLE_VIEW_ABSENCE_HISTORIES</code></a></p>
+
+<h2 id="conventional-commits">Conventional Commits</h2>
+
+<p>I like <a href="https://conventionalcommits.org/">Conventional Commits</a>.</p>
+
+<p>Conventional Commits are a commit message format specification. Much of the
+value of Conventional Commits is in encouraging <em>semantic commits</em> that thoughtfully express carefully crafted units of meaning.</p>
+
+<p><a href="https://seesparkbox.com/foundry/semantic_commit_messages">Like Jeremy Mack</a>, I think that taking
+care to compose single-thought semantic commits makes me a better programmer.</p>
+
+<p>Conventional Commits look like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>feat: turbocharge the whatsit
+</code></pre></div></div>
+
+<p>That token at the front is the <em>type</em>, followed on the line by a super-brief
+<em>description</em>. This first line altogether is the <em>title</em> of the
+commit message.</p>
+
+<p>Conventional Commit messages have an optional body</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fix: correct the twinkle
+
+The twinkle was not previously astronomically correct;
+this fix corrects to a precision of six decimal places.
+
+Fixes #14
+</code></pre></div></div>
+
+<p>Conventional Commits thinks of the last part of the body as an optional
+<em>footer</em>.</p>
+
+<p>Conventional Commits can also express a <em>scope</em>, an area of the project where
+the change type is being applied.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docs(song): note that carbon stars are sort-of diamonds in the sky
+</code></pre></div></div>
+
+<h3 id="characterizing-breaking-changes-in-the-body-or-footer">Characterizing breaking changes in the body or footer</h3>
+
+<p>Conventional Commits are meant to help with [Semantic Versioning][]. A
+release containing only backwards-compatible fixes like</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fix: tighten the goober
+</code></pre></div></div>
+
+<p>would be a <em>patch</em> release (like 2.4.1).</p>
+
+<p>A <em>minor</em> release (like 2.5) introducing new features would include commits like</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>feat: expose HRS URLs in the JSON API at /api/urls
+</code></pre></div></div>
+
+<p>One is meant to be able to take a look at the commit log and thereby figure out
+what sort of Semantic Versioning bump is in order. An adopter faced with a major
+release is meant to be able to look at the commit history to inspect the
+breaking changes.</p>
+
+<p>Conventional commits of any type can be API-breaking changes. These changes
+occasion a <em>major</em> version change (5 to 6, say) in Semantic Versioning. An
+author notes the breakingness of a change (and advice for how clients of the
+library might adapt to the breaking change) in the <em>body</em> or <em>footer</em> of a
+Conventional Commit.</p>
+
+<p>So,</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fix: correct spelling of referrer in header
+
+BREAKING CHANGE: Rather than using misspelled "Referer" as name of header,
+instead use correct spelling "Referrer". Clients expecting "Referer" will no
+longer receive that header  and will presumably not honor the new "Referrer"
+until updated to support this new name for this header.
+</code></pre></div></div>
+
+<h2 id="improving-conventional-commits-signal-the-breakingness-in-the-commit-title">Improving Conventional Commits: signal the breakingness in the commit title</h2>
+
+<p>There are contexts in which only the <em>title</em> and not the <em>body</em> of commit
+messages display, e.g. in GitHub’s presentation of a branch’s history or in
+some Git command line tooling.</p>
+
+<p>Which of these are breaking changes?</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fix: correct spelling of referrer in header
+fix: correct spelling of referrer in label
+fix: tighten the wingnut
+feat: bolt on the blender
+</code></pre></div></div>
+
+<p>You can’t tell from the commit title. You’d have to look at the body of the
+message for each one to realize that e.g. the header spelling fix is a breaking
+change.</p>
+
+<p>I think Conventional Commits should be improved to reliably reflect the
+breakingness of change in the <em>title</em> of the commit rather than just in the
+<em>body</em>. There are a few ideas on how to do this:</p>
+
+<h3 id="the-sigil-idea">The <a href="https://github.com/conventional-changelog/conventionalcommits.org/issues/43">sigil idea</a></h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!fix: correct spelling of referrer in header
+</code></pre></div></div>
+
+<p>A sigil is delightfully succinct. However, it might not be immediately apparent
+to a naive reader what meaning that <code class="highlighter-rouge">!</code> is trying to convey.</p>
+
+<p>Question: how would a screen reader or other accessibility tool treat that
+sigil?</p>
+
+<h3 id="the-all-caps-idea">The <a href="https://github.com/conventional-changelog/conventionalcommits.org/pull/63">ALL-CAPS idea</a></h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FIX: correct spelling of referrer in header
+</code></pre></div></div>
+
+<p>This solution consumes zero characters. It’s also relatable in that ALL-CAPS ON
+THE INTERNET IS SHOUTING and that’s just the idea, to shout out the most
+important changes so that adopters can more readily identify the changes that
+are breaking their usages. I think it’s likely as readable and self-evident as
+a sigil, and it’s elegant that it consumes zero characters.</p>
+
+<p>However, Conventional Commits has not to date specified the capitalization of
+<em>type</em>. Some have argued for specifying the capitalization, or specifying that
+the capitalization is unspecified. In any case it’s the kind of thing developers
+might be inconsistent about. Any inadvertent ALL-CAPS commit messages will be
+false positives for this signal.</p>
+
+<p>Question: how well would a screen reader or other accessibility tool present the
+fact that the <em>type</em> is ALL-CAPS rather than lowercase?</p>
+
+<h3 id="the-prefix-idea">The <a href="https://github.com/conventional-changelog/conventionalcommits.org/pull/64">prefix idea</a></h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BREAK: fix: correct spelling of referrer in header
+</code></pre></div></div>
+
+<p>I like this solution best. It consumes 7 characters, but it’s also more
+self-documenting, more readily apparent even to someone unfamiliar with
+Conventional Commits what it’s trying to say. Which commits are the breaking
+changes? Oh yeah, the ones that are shouting at me “BREAK”.</p>
+
+<h2 id="call-to-action">Call to action</h2>
+
+<p>I think that some (required!) way of indicating the breakingness
+of change in Conventional Commit titles should be specified. What is often the
+most important thing to say about a breaking-change commit shouldn’t be only in
+the body of the message.</p>
+
+<p>Maybe you have other ideas for how to convey breakingness in Conventional Commit
+commit titles. Maybe you have some expertise to offer about how screen readers
+and other accessibility tools would present the title under the different
+options under consideration. Maybe you like one of these ideas. Maybe you too
+don’t know which solution should be adopted but really wish Conventional Commits
+would go ahead and accept <em>some solution</em> so that identifying breaking changes
+in repositories using Conventional Commits will get easier sooner. Maybe you
+like the status quo just fine and don’t want to see Conventional Commit titles
+change for this.</p>
+
+<p>However you think this ought to play out, engage
+<a href="https://github.com/conventional-changelog/conventionalcommits.org">in GitHub</a> to help make it happen.</p>
+
+<h2 id="references-and-learn-more">References and learn more</h2>
+
+<ul>
+  <li><a href="https://pinboard.in/u:microcline/t:conventional_commits/">Bookmarks about Conventional Commits</a></li>
+</ul>
+
+<p>Author: <a href="https://twitter.com/awpetro">Andrew Petro</a></p>
+
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F07%2Findicate-breaks-in-conventional-commit-titles%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=feat%28conventional_commits%29%3A+signal+breaking+changes+in+commit+titles&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F07%2Findicate-breaks-in-conventional-commit-titles%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F07%2Findicate-breaks-in-conventional-commit-titles%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F07%2Findicate-breaks-in-conventional-commit-titles%2F&amp;title=feat%28conventional_commits%29%3A+signal+breaking+changes+in+commit+titles" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F07%2Findicate-breaks-in-conventional-commit-titles%2F&amp;title=feat%28conventional_commits%29%3A+signal+breaking+changes+in+commit+titles" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F07%2Findicate-breaks-in-conventional-commit-titles%2F&amp;name=feat%28conventional_commits%29%3A+signal+breaking+changes+in+commit+titles" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F07%2Findicate-breaks-in-conventional-commit-titles%2F&amp;title=feat%28conventional_commits%29%3A+signal+breaking+changes+in+commit+titles" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F07%2Findicate-breaks-in-conventional-commit-titles%2F&amp;title=feat%28conventional_commits%29%3A+signal+breaking+changes+in+commit+titles" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F07%2F07%2Findicate-breaks-in-conventional-commit-titles%2F&amp;t=feat%28conventional_commits%29%3A+signal+breaking+changes+in+commit+titles" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

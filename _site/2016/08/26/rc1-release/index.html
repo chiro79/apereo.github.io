@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CAS 5.0.0-RC1 Release &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="...in which I present an overview of CAS 5 RC1 release.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2016/08/26/rc1-release/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CAS 5.0.0-RC1 Release">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2016/08/26/rc1-release/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="CAS 5.0.0-RC1 Release" />
+    <meta name="twitter:description" content="...in which I present an overview of CAS 5 RC1 release." />
+    <meta name="twitter:url" content="https://apereo.github.io/2016/08/26/rc1-release/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>CAS 5.0.0-RC1 Release</h1>
+  <span class="post-meta">Friday, Aug 26, 2016</span><br>
+  
+  <span class="post-meta small">
+  
+    8 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+  <strong>Collaborate</strong><br />The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>Based on the <a href="https://github.com/apereo/cas/milestones">CAS project release schedule</a>, today we are excited to announce the first release candidate in the CAS 5 series. There are a <a href="https://github.com/apereo/cas/releases/tag/v5.0.0.RC1">few enhancements</a> packed into this release that are worthy to publicize. So here it goes.</p>
+
+<p>Before we get started, it should be pointed out that <a href="https://github.com/apereo/cas-overlay-template/tree/5.0">releases of CAS 5 are available to adopters to try</a>. Deployers are more than welcome to try these out and share feedback.</p>
+
+<p>The current documentation of CAS 5 is also <a href="https://apereo.github.io/cas/development/index.html">available here</a>.</p>
+
+<h1 id="openid-connect">OpenID Connect</h1>
+
+<p>OIDC support in CAS gets a number of improvements and bug fixes thanks to <a href="https://github.com/leleuj">Jérôme</a>.</p>
+
+<h1 id="google-recaptcha">Google reCAPTCHA</h1>
+
+<p>Over the years, there have been several requests on the mailing list asking for guidance to enable a CAS integration with Google’s reCAPTCHA. While <a href="https://wiki.jasig.org/display/CASUM/Integrating+reCaptcha+with+CAS">a recipe</a> existed for enabling this feature for older CAS versions, over time it’d gotten rusty. In this release, CAS starts to support <a href="https://apereo.github.io/cas/development/integration/Configuring-Google-reCAPTCHA.html">Google’s reCAPTCHA</a> natively. Just like with all other features, there will be no need to modify
+the CAS login webflow or any other configuration file. Include the relevant module, and provide your settings for reCAPTCHA.</p>
+
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/DBIcr"><a href="//imgur.com/DBIcr"></a></blockquote>
+<script async="" src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<p><a href="http://news.softpedia.com/news/google-recaptcha-cracked-in-new-automated-attack-502677.shtml">This article</a> may be of further interest to you.</p>
+
+<h1 id="default-redirect-url">Default Redirect URL</h1>
+
+<p>What happens when users accidentally and incorrectly bookmark the <code class="highlighter-rouge">https://sso.example.org/cas/login</code> url? They get to the CAS login page, authenticate and then are greeted with a warm welcoming message that redirects them to nowhere important. Phone calls and support tickets flood IT services reporting that CAS or this/that application are broken.</p>
+
+<p>That’s no fun.</p>
+
+<p>So to accommodate this briefly, CAS starts to support a default redirect URL to which you can redirect your audience if no target application is specified upon authentication. The URL can be just about anywhere, as long as you have authorized and registered it correctly. In most cases, it’s a redirect to some sort of portal page that lists all services integrated with CAS.</p>
+
+<h1 id="case-insensitive-attribute-release">Case Insensitive Attribute Release</h1>
+
+<p>So you have set up CAS to retrieve attributes from your LDAP server and decided to retrieve the attribute <code class="highlighter-rouge">givenName</code>. You then register a few services and design them such that they would be allowed to receive <code class="highlighter-rouge">givenName</code>, yet nothing is released. Your logs show <code class="highlighter-rouge">givenName</code> is found and your LDAP queries and browsers all show that attribute has a valid value and all the right permissions are set. What’s happening? Is CAS secretly biased against that attribute?</p>
+
+<p>Some LDAP servers seem to change the case of the attribute name when they pass it back to the requesting application. CAS may submit <code class="highlighter-rouge">givenName</code>, yet it receives <code class="highlighter-rouge">givenname</code>. When the application asks for attributes CAS looks at the associated attribute policy and finds that it’s authorized to release <code class="highlighter-rouge">givenName</code>, yet the actual principal has no such attribute! It only has <code class="highlighter-rouge">givenname</code>. As a result, the application gets nothing.</p>
+
+<p>To accommodate this scenario, CAS starts to treat attributes that are specified in attribute release policies in a case insensitive manner. With this change, CAS may ask for <code class="highlighter-rouge">givenName</code> and the LDAP server is free to return <code class="highlighter-rouge">givenname</code>, <code class="highlighter-rouge">GIVENNAME</code> or a hyper-emo version of it, <code class="highlighter-rouge">gIvEnNaMe</code>. At release time, since case no longer matters the application will correctly receive <code class="highlighter-rouge">givenName</code>.</p>
+
+<p>If it matters that much, note that you can always control the exact case of the attribute released as well and override the CAS behavior.</p>
+
+<p>Also note that this behavior is applicable to all sources from which you retrieve
+attributes. It’s not limited to LDAP though the issue described most commonly
+affects LDAP.</p>
+
+<h1 id="geoprofiling-authentication-requests">Geoprofiling Authentication Requests</h1>
+
+<p>How do you block what you may consider a suspicious authentication attempt? For instance, you may wish to disallow requests from certain locations or IP addresses or even fancier, you may want those requests to pass through multifactor authentication for extra security.</p>
+
+<p>As a variant of <a href="https://apereo.github.io/cas/development/installation/Configuring-Adaptive-Authentication.html">adaptive authentication</a> and starting with this release candidate CAS allows you to geoprofile authentication requests and then based on your devised rules, reject those or force them through a particular multifactor provider. Geoprofiling can be achieved via Maxmind or GoogleMaps, both of which are services that <strong>require a paid subscription</strong> for full API usage.</p>
+
+<h1 id="groovy-maaan">Groovy, maaan!</h1>
+
+<p>Furthermore, CAS starts to support <a href="https://apereo.github.io/cas/development/integration/Attribute-Release-Policies.html#groovy-script">attribute release</a> via
+the Groovy programming language. In short, you can specify a groovy script
+that is executed upon attribute resolution and/or release to dynamically
+and programmatically decide which application should receive a selection
+of attributes.</p>
+
+<p>Note that attribute resolution could always be done via Groovy. This bit is not new.
+We have just made the configuration of it a whole easier. Also note that in CAS, attribute resolution is a separate process from attribute release. You can mix and match options that are available for both.</p>
+
+<p>Needless to say, the script is all Groovy and and is capable of executing
+any kind of operation the Groovy language itself is able to support.</p>
+
+<h1 id="spring-cloud-vault--mongodb">Spring Cloud: Vault &amp; MongoDb</h1>
+
+<p>CAS adds support for <a href="https://www.vaultproject.io">Vault</a>
+and MongoDb, as options that may be used to
+house <a href="https://apereo.github.io/cas/development/installation/Configuration-Management.html">CAS configuration</a>.</p>
+
+<h1 id="duosecurity-websdk-23">DuoSecurity WebSDK 2.3</h1>
+
+<p>Thanks to contributions from DuoSecurity, the Duo WebSDK module is now
+bumped to <code class="highlighter-rouge">2.3</code>.</p>
+
+<h1 id="front-channel-slo">Front Channel SLO</h1>
+
+<p>While it has been and still is somewhat of an experimental feature,
+this release candidate improves the CAS front-channel single logout functionality.
+CAS attempts to collect applications that are defined to use front-channel logout and
+will use a bit of fancy javascript to contact each endpoint to pass along the logout notification request.
+The payload and syntax of the request is identical to the current back-channel logout, and status of each
+request is tracked and displayed in the user interface.</p>
+
+<h1 id="saml2-sp-integrations">SAML2 SP Integrations</h1>
+
+<p>Now that CAS 5 starts to support the SAML2 protocol, you gotta ask: what
+if we could extend the auto-configuration strategy to provide built-in SP
+integrations? That is, much like anything else, you should be able to declare what
+your SP metadata is, what attributes it requires and so on in a simple <code class="highlighter-rouge">.properties</code>
+file. CAS should auto-register the SP and take care of all the other technical details.</p>
+
+<p>Right?</p>
+
+<p>Right! With this release, CAS starts to support the following <a href="https://apereo.github.io/cas/development/integration/Configuring-SAML-SP-Integrations.html">SP Integrations</a>
+out of the box:</p>
+
+<ul>
+  <li>Dropbox</li>
+  <li>Box</li>
+  <li>Salesforce</li>
+  <li>SAManage</li>
+  <li>ServiceNow</li>
+  <li>PowerFAIDS Net Partner</li>
+  <li>Workday</li>
+  <li>WebEx</li>
+  <li>Office365</li>
+</ul>
+
+<p>These are generally SPs for which the SAML2 integration recipe is quite simple.
+As we progress forward, we hope to start collecting more and more
+of such SPs, specially those that are more visible and used by the wider
+community often, such that we can <strong>configure once, run everywhere</strong> rather than
+document it repeatedly, maintain it separately and repeat it for every deployment
+forever.</p>
+
+<p>If you have SP suggestions, please feel free to share.</p>
+
+<h1 id="audit-log">Audit Log</h1>
+
+<p>In certain cases and depending on the nature of the request, CAS would produce
+an <code class="highlighter-rouge">audit:unknown</code> in the audit log. Thanks to <a href="https://github.com/dima767">Dima</a>,
+this behavior is corrected to ensure the audit log can produce a valid user id
+for all cases.</p>
+
+<h1 id="logging-dashboard">Logging Dashboard</h1>
+
+<p>CAS starts to allow its administrators, permissions granting, to observe logging configuration and view log outputs in real time. This is done via the magic of Web Sockets, where
+CAS and the browser establish a light-weight TCP connection to stream log data.</p>
+
+<p>Here are a few screenshots:</p>
+
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/a2vUk"><a href="//imgur.com/a2vUk"></a></blockquote>
+<script async="" src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<h1 id="custom-error-pages">Custom Error Pages</h1>
+
+<p>Thanks to the magic of Spring Boot, CAS starts to present customized error
+pages based on http error codes. You can for instance design a simple <code class="highlighter-rouge">401.html</code>
+to explain the error to your users better. Error pages can be defined in form
+of series as well, such as <code class="highlighter-rouge">5xx.html</code>.</p>
+
+<p>Here are a few screenshots:</p>
+
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/jGMeo"><a href="//imgur.com/jGMeo"></a></blockquote>
+<script async="" src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<h1 id="password-management">Password Management</h1>
+
+<p>Starting with this release, CAS provides very modest <a href="https://apereo.github.io/cas/development/installation/Password-Policy-Enforcement.html">password management capabilities</a>.
+This is an optional feature which allows users to change their password in-place
+when CAS detects an authentication failure due to a rejected password. LDAP is supported
+as a backend option for managing the account password, though you could always extend
+CAS to provide your own implementations of password management services for various backends.</p>
+
+<p>Note that this feature is off by default and without it, you simply get today’s CAS experience
+which is a link redirecting to your own password management tool.</p>
+
+<p>Here are a few screenshots:</p>
+
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/RMC7j"><a href="//imgur.com/RMC7j"></a></blockquote>
+<script async="" src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+<h1 id="whats-next">What’s Next?</h1>
+
+<p>The development team is working to make sure the CAS 5 release is on <a href="https://github.com/apereo/cas/milestones">schedule</a>.</p>
+
+<p>At this point, all new development has been frozen and project is solely focusing on testing the release candidate and applying bug fixes based on community reports. There will likely be other release candidates but short of any major incidents or changes, the CAS 5 GA release should be available right on schedule.</p>
+
+<h1 id="how-can-you-help">How can you help?</h1>
+
+<ul>
+  <li>Start your early <a href="https://github.com/apereo/cas-overlay-template/tree/5.0">CAS 5 deployment</a> today. Try out features and <a href="https://apereo.github.io/cas/Mailing-Lists.html">share feedback</a>.</li>
+  <li>Better yet, <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">contribute patches</a>.</li>
+  <li>Review and suggest documentation improvements.</li>
+  <li>Review the release schedule and make sure you report your desired feature requests on the project’s issue tracker.</li>
+</ul>
+
+<h1 id="das-ende">Das Ende</h1>
+
+<p>A big hearty thanks to all who participated in the development of this release to submit patches, report issues and suggest improvements. Keep’em coming!</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2016%2F08%2F26%2Frc1-release%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=CAS+5.0.0-RC1+Release&amp;url=https%3A%2F%2Fapereo.github.io%2F2016%2F08%2F26%2Frc1-release%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2016%2F08%2F26%2Frc1-release%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2016%2F08%2F26%2Frc1-release%2F&amp;title=CAS+5.0.0-RC1+Release" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2016%2F08%2F26%2Frc1-release%2F&amp;title=CAS+5.0.0-RC1+Release" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2016%2F08%2F26%2Frc1-release%2F&amp;name=CAS+5.0.0-RC1+Release" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2016%2F08%2F26%2Frc1-release%2F&amp;title=CAS+5.0.0-RC1+Release" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2016%2F08%2F26%2Frc1-release%2F&amp;title=CAS+5.0.0-RC1+Release" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2016%2F08%2F26%2Frc1-release%2F&amp;t=CAS+5.0.0-RC1+Release" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

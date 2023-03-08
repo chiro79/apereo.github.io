@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Apereo CAS - Integration with Spring Cloud Config Server &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="CAS distributed configuration management using Spring Cloud Server for fun and profit. Learn how to centralize and setup configuration and property sources as part of the Cloud Config server and how to connect your Apereo CAS deployment to the Cloud Config server to receive real-time configuration updates per environment and deployment tier.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/10/25/cas6-cloud-config-server/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apereo CAS - Integration with Spring Cloud Config Server">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/10/25/cas6-cloud-config-server/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Apereo CAS - Integration with Spring Cloud Config Server" />
+    <meta name="twitter:description" content="CAS distributed configuration management using Spring Cloud Server for fun and profit. Learn how to centralize and setup configuration and property sources as part of the Cloud Config server and how to connect your Apereo CAS deployment to the Cloud Config server to receive real-time configuration updates per environment and deployment tier." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/10/25/cas6-cloud-config-server/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Apereo CAS - Integration with Spring Cloud Config Server</h1>
+  <span class="post-meta">Thursday, Oct 25, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    13 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+  <strong>Collaborate</strong><br />The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>As your CAS deployment moves through the deployment pipeline from dev to test to production, you can manage the configuration between those environments and be certain that applications have everything they need to run when they migrate through the use of an external configuration server provided by the <a href="https://github.com/spring-cloud/spring-cloud-config">Spring Cloud project</a>. While most CAS deployments tend to fall into the simpler category of managing CAS configuration directly alongside the CAS server deployment, this tutorial focuses on allowing CAS to work with the Spring Cloud Config server for distributed configuration management.</p>
+
+<p>The <a href="https://apereo.github.io/cas/development/configuration/Configuration-Server-Management.html">Spring Cloud Config server</a> is an external and central configuration server to keep state and settings for all sorts of applications, CAS included. It provides an abstract way for CAS (and all of its other clients) to obtain settings from a variety of sources such as file system, git or svn repositories, MongoDb databases, Vault, etc. The beauty of this solution is that to the CAS web application server, (or the clients of the Spring Cloud Config server in general), it matters not where settings come from since CAS has no knowledge of the underlying property sources. It simply talks to the configuration server to locate settings and move on.</p>
+
+<p>In this walkthrough, we will focus on the following tasks:</p>
+
+<ul>
+  <li>Spring Cloud Config Server deployment
+    <ul>
+      <li>Property source configuration</li>
+      <li>Endpoint and operational security</li>
+      <li>Managing sensitive settings via encryption</li>
+      <li>Distributed real-time updates to settings</li>
+    </ul>
+  </li>
+  <li>CAS server integration with the Config server</li>
+</ul>
+
+<p>Our starting position is based on the following:</p>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">6.0.0-RC3</code></li>
+  <li>Java 11</li>
+  <li><a href="https://github.com/apereo/cas-overlay-template">CAS Overlay</a> (The <code class="highlighter-rouge">master</code> branch specifically)</li>
+  <li><a href="https://github.com/apereo/cas-configserver-overlay">CAS Spring Cloud Config server overlay</a></li>
+  <li><a href="https://stedolan.github.io/jq/">CLI JSON Processor <code class="highlighter-rouge">jq</code></a></li>
+</ul>
+
+<h2 id="spring-cloud-config-server-configuration">Spring Cloud Config Server Configuration</h2>
+
+<h3 id="overlay-basics">Overlay Basics</h3>
+
+<p>The Spring Cloud Config server runs a standalone Spring Boot application on its own with a setup that is very similar to the CAS server itself. There is a <a href="https://github.com/apereo/cas-configserver-overlay">WAR overlay</a> that can be used to configure and deploy the server. By default, the application runs on port <code class="highlighter-rouge">8888</code> and is available at <code class="highlighter-rouge">/casconfigserver</code> and does require SSL with a keystore that is expected at <code class="highlighter-rouge">file:/etc/cas/thekeystore</code>. The default settings should match the following:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">server.port</span><span class="p">=</span><span class="s">8444</span>
+
+<span class="py">server.ssl.key-store</span><span class="p">=</span><span class="s">file:/etc/cas/thekeystore</span>
+<span class="py">server.ssl.key-store-password</span><span class="p">=</span><span class="s">changeit</span>
+<span class="py">server.ssl.key-password</span><span class="p">=</span><span class="s">changeit</span>
+</code></pre></div></div>
+
+<h3 id="security">Security</h3>
+
+<p>In order to secure the Config server, we can create a <code class="highlighter-rouge">src/main/resources/application-security.properties</code> to contain the following settings:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">spring.security.user.name</span><span class="p">=</span><span class="s">casuser</span>
+<span class="py">spring.security.user.password</span><span class="p">=</span><span class="s">Mellon</span>
+
+<span class="py">management.endpoints.web.base-path</span><span class="p">=</span><span class="s">/actuator</span>
+<span class="py">management.endpoints.env.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">management.endpoints.web.exposure.include</span><span class="p">=</span><span class="s">env</span>
+</code></pre></div></div>
+
+<h3 id="run">Run</h3>
+
+<p>We should also modify the <code class="highlighter-rouge">build.sh</code> file to auto-activate the <code class="highlighter-rouge">security</code> profile to allow our security-related settings to be loaded:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>run<span class="o">()</span> <span class="o">{</span>
+    package <span class="o">&amp;&amp;</span> java <span class="nt">-jar</span> <span class="nt">-Dspring</span>.profiles.include<span class="o">=</span>security build/libs/casconfigserver.war
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Once you’re ready, execute the following:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh run
+</code></pre></div></div>
+
+<p>…at which point a successful startup attempt would demonstrate the following in the logs:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;The following profiles are active: security,native&gt;
+...
+&lt;Starting Servlet Engine: Apache Tomcat/9.0.12&gt;
+...
+&lt;Starting ProtocolHandler ["https-jsse-nio-8888"]&gt;
+...
+&lt;Started CasConfigurationServerWebApplication in 14.823 seconds (JVM running for 16.248)&gt;
+</code></pre></div></div>
+
+<p>…and the server should be available at <code class="highlighter-rouge">https://admin.example.org:8888/casconfigserver</code>.</p>
+
+<h3 id="configuration-sources">Configuration Sources</h3>
+
+<p>The Spring Cloud Config server by default runs under a <code class="highlighter-rouge">native</code> profile, which basically allows it to locate properties and settings under the <code class="highlighter-rouge">/etc/cas/config</code> folder, which is very similar to the default CAS server setup. We are going to take this one step further and allow it to also load settings from a git repository. To do this, we need a <code class="highlighter-rouge">src/main/resources/bootstrap.properties</code> file with the following:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">spring.application.name</span><span class="p">=</span><span class="s">casconfigserver</span>
+<span class="py">spring.profiles.active</span><span class="p">=</span><span class="s">native,default,security</span>
+<span class="py">spring.cloud.config.server.native.searchLocations</span><span class="p">=</span><span class="s">file:///etc/cas/config</span>
+<span class="py">spring.cloud.config.server.git.uri</span><span class="p">=</span><span class="s">file://path/to/config-server-repo</span>
+<span class="c"># spring.cloud.config.server.bootstrap=true
+</span></code></pre></div></div>
+
+<p>Not only the Config server is loading properties from embedded resources on the classpath, but it is also configured to look at <code class="highlighter-rouge">/etc/cas/config</code> as well as our Git repository at <code class="highlighter-rouge">config-server-repo</code> which is expected to contain properties and settings. As an example, we can create and initialize the <code class="highlighter-rouge">config-server-repo</code> directory as a Git repository and then <strong>add and commit</strong> the following files to it:</p>
+
+<h4 id="applicationyml"><code class="highlighter-rouge">application.yml</code></h4>
+
+<p>Global settings regardless of the application:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">info</span><span class="pi">:</span>
+  <span class="na">description</span><span class="pi">:</span> <span class="s">Spring Cloud Config Server</span>
+</code></pre></div></div>
+
+<h4 id="casproperties"><code class="highlighter-rouge">cas.properties</code></h4>
+
+<p>Global settings for the <code class="highlighter-rouge">cas</code> application:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">server.port</span><span class="p">=</span><span class="s">8555</span>
+</code></pre></div></div>
+
+<h4 id="cas-devproperties"><code class="highlighter-rouge">cas-dev.properties</code></h4>
+
+<p>Settings for the <code class="highlighter-rouge">cas</code> application under the <code class="highlighter-rouge">dev</code> profile:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.authn.accept.users</span><span class="p">=</span><span class="s">casuser::Devel</span>
+</code></pre></div></div>
+
+<h4 id="cas-qaproperties"><code class="highlighter-rouge">cas-qa.properties</code>:</h4>
+
+<p>Settings for the <code class="highlighter-rouge">cas</code> application under the <code class="highlighter-rouge">qa</code> profile:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.authn.accept.users</span><span class="p">=</span><span class="s">casuser::QA</span>
+</code></pre></div></div>
+
+<p>Build and run as usual.</p>
+
+<h3 id="query-configuration">Query Configuration</h3>
+
+<p>Now that the Config server is connected to a number of property sources with a number of files organized in fancy ways, we can query the server and ask for application settings.</p>
+
+<p>For example, ask the server to get all the configuration settings for <code class="highlighter-rouge">cas</code> under the <code class="highlighter-rouge">qa</code> profile:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-k</span> <span class="nt">-u</span> casuser:Mellon https://config.example.org:8888/casconfigserver/cas/qa | jq
+</code></pre></div></div>
+
+<p>…or the <code class="highlighter-rouge">dev</code> profile:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-k</span> <span class="nt">-u</span> casuser:Mellon https://config.example.org:8888/casconfigserver/cas/dev | jq
+</code></pre></div></div>
+
+<p>Notice how in each scenario, global settings, and common application settings and then profile-specific settings are returned back to you. As the caller, you don’t know where the settings come from or how they are controlled and by whom. All you need to know is: <em>Get me the right set of settings for my app at this profile</em>.</p>
+
+<p>Let’s make a change. Navigate to the <code class="highlighter-rouge">cas-qa.properties</code> file and add the following, then commit the change to the repository:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.authn.accept.users</span><span class="p">=</span><span class="s">casuser::QASomething</span>
+</code></pre></div></div>
+
+<p>…and the call the Config server again:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-k</span> <span class="nt">-u</span> casuser:Mellon https://config.example.org:8888/casconfigserver/cas/qa | jq
+</code></pre></div></div>
+
+<p>Notice how your change was picked up automatically. As a bonus exercise, push your git repository to a cloud provider such as Github or Bitbucket and modify the Config server with the URL of the new Git repository. Then make a change using the Github/BitBucket online editor to one of the settings and observe how the Config server recognizes changes automatically. Very cool!</p>
+
+<h3 id="sensitive-configuration">Sensitive Configuration</h3>
+
+<p>So far, we have been embedding values directly in configuration files. Let’s try to make our setup a bit more secure by encrypting values before they are added to our repository. In the <code class="highlighter-rouge">bootstrap.properties</code> file add the following settings:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">encrypt.key-store.location</span><span class="p">=</span><span class="s">file:///etc/cas/casconfigserver.jks</span>
+<span class="py">encrypt.key-store.password</span><span class="p">=</span><span class="s">changeit</span>
+<span class="py">encrypt.key-store.alias</span><span class="p">=</span><span class="s">cas</span>
+<span class="py">encrypt.key-store.secret</span><span class="p">=</span><span class="s">changeit</span>
+</code></pre></div></div>
+
+<p>You will, of course, need to create the above keystore using <code class="highlighter-rouge">keytool</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keytool <span class="nt">-genkeypair</span> <span class="nt">-alias</span> cas <span class="nt">-keyalg</span> RSA <span class="se">\</span>
+  <span class="nt">-dname</span> <span class="s2">"CN=CAS,OU=Unit,O=Organization,L=City,S=State,C=US"</span> <span class="se">\</span>
+  <span class="nt">-keypass</span> changeit <span class="nt">-keystore</span> /etc/cas/casconfigserver.jks <span class="nt">-storepass</span> changeit
+</code></pre></div></div>
+
+<p>The keystore above is what controls the semantics of encryption/decryption of settings. The encryption is done with the public key, and a private key is needed for decryption.</p>
+
+<p>As a test, I am going to ask the Config server to encrypt the text <code class="highlighter-rouge">casuser::QASomething</code> for me:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-k</span> <span class="nt">-u</span> casuser:Mellon https://config.example.org:8888/casconfigserver/encrypt <span class="nt">-d</span> casuser::QASomething
+</code></pre></div></div>
+
+<p>If you take the encrypted value and simply try to decrypt it you should see the original:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-k</span> <span class="nt">-u</span> casuser:Mellon https://config.example.org:8888/casconfigserver/encrypt <span class="nt">-d</span> <span class="nv">$ENCRYPTED_VALUE</span>
+</code></pre></div></div>
+
+<p>Once the value is encrypted, it can be put back into the <code class="highlighter-rouge">cas-qa.properties</code> configuration file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.authn.accept.users</span><span class="p">=</span><span class="s">{cipher}$ENCRYPTED_VALUE</span>
+</code></pre></div></div>
+
+<p>If you ask the Config server for the <code class="highlighter-rouge">qa</code> profile of the <code class="highlighter-rouge">cas</code> application, you should see the <em>decrypted value</em> in the results:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-k</span> <span class="nt">-u</span> casuser:Mellon https://config.example.org:8888/casconfigserver/cas/qa | jq
+</code></pre></div></div>
+
+<p>That’s it for now. Let’s move onto the CAS server configuration and let it fetch settings from the Config server.</p>
+
+<h2 id="cas-server-configuration">CAS Server Configuration</h2>
+
+<p>The task at hand is to describe the Spring Cloud Config server to the CAS server so it can begin to configure itself via provided settings. To do so, you want to start with the <a href="https://github.com/apereo/cas-overlay-template">CAS Overlay</a>, clone the project and then put the following settings into a <code class="highlighter-rouge">src/main/resources/bootstrap.properties</code> file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">spring.application.name</span><span class="p">=</span><span class="s">cas</span>
+
+<span class="py">spring.profiles.active</span><span class="p">=</span><span class="s">default</span>
+
+<span class="py">spring.cloud.config.uri</span><span class="p">=</span><span class="s">https://casuser:Mellon@config.example.org.unicon.net:8888/casconfigserver</span>
+<span class="py">spring.cloud.config.profile</span><span class="p">=</span><span class="s">qa</span>
+<span class="py">spring.cloud.config.label</span><span class="p">=</span><span class="s">master</span>
+
+<span class="py">spring.cloud.config.enabled</span><span class="p">=</span><span class="s">true</span>
+
+<span class="py">spring.cloud.config.watch.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">spring.cloud.config.watch.initialDelay</span><span class="p">=</span><span class="s">30000</span>
+<span class="py">spring.cloud.config.watch.delay</span><span class="p">=</span><span class="s">1000</span>
+
+<span class="py">spring.cloud.config.fail-fast</span><span class="p">=</span><span class="s">true</span>
+<span class="py">health.config.enabled</span><span class="p">=</span><span class="s">true</span>
+</code></pre></div></div>
+
+<p>In summary, we have the Spring Cloud config enabled with a location to the Config server. Next, we teach CAS to activate the <code class="highlighter-rouge">qa</code> profile when it asks for configuration settings, and we switch the CAS server application profile to <code class="highlighter-rouge">default</code> to disable the standalone strategy of locating settings. As for the other settings, hold onto them right now and we’ll review them in just a bit.</p>
+
+<p>The <code class="highlighter-rouge">label</code> setting is useful for rolling back to previous versions of configuration; with the default Config Server implementation it can be a git label, branch name or commit id. A label can also be provided as a comma-separated list, in which case the items in the list are tried one-by-one until one succeeds. This can be useful when working on a feature branch, for instance, when you might want to align the config label with your branch, but make it optional.</p>
+
+<p>So at this point, our expectation is that CAS will load its own <code class="highlighter-rouge">application.properties</code> file by default which has a bunch of settings that for instance deal with SSL, keystores, ports, etc. Then we expect CAS to load any and all settings from the Spring Cloud config server that are associated with <code class="highlighter-rouge">cas</code> and <code class="highlighter-rouge">qa</code> where these settings should override anything that CAS by default handles and provides. This means that when it’s all said and done, our CAS server should be running on port <code class="highlighter-rouge">8555</code> (as opposed to the default <code class="highlighter-rouge">8443</code>) and the static credentials used to authenticate users should include the username/password <code class="highlighter-rouge">casuser</code> and <code class="highlighter-rouge">QASomething</code> (as opposed to the default <code class="highlighter-rouge">casuser</code> and <code class="highlighter-rouge">Mellon</code>).</p>
+
+<p>Right?</p>
+
+<p>If you have followed the story so far, crank up the your CAS server deployment and examine the above scenario. Works as advertised, doesn’t it?!</p>
+
+<h3 id="refresh--reload">Refresh &amp; Reload</h3>
+
+<p>The CAS spring cloud configuration server is constantly monitoring changes to the underlying property sources automatically but has no way to broadcast those changes to its own clients, such as the CAS server itself. Therefore, in order to broadcast such change events, CAS presents various endpoints that allow the user to <a href="https://apereo.github.io/cas/development/configuration/Configuration-Management-Reload.html">refresh the configuration</a> as needed. This means that an adopter would simply change a required CAS setting and then would submit a request to CAS to <em>refresh</em> its current state. At runtime! All CAS internal components that are affected by the external change are quietly reloaded and the setting takes immediate effect, completely removing the need for container restarts or CAS re-deployments.</p>
+
+<p>In order to handle automatic updates to CAS settings from the Spring Cloud Config server, we can try the following:</p>
+
+<p>First, we are going to switch the CAS server to activate the <code class="highlighter-rouge">dev</code> profile (instead of the current <code class="highlighter-rouge">qa</code>) when querying for settings in the <code class="highlighter-rouge">bootstrap.properties</code> file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">spring.cloud.config.profile</span><span class="p">=</span><span class="s">dev</span>
+</code></pre></div></div>
+
+<p>Then, we are going to modify and commit the <code class="highlighter-rouge">cas-dev.properties</code> file of the Spring Cloud Config server in our Git repository to enable CAS actuator endpoints by default which will allow us to invoke the <code class="highlighter-rouge">actuator/refresh</code> endpoint provided by Spring Boot:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">management.endpoints.web.exposure.include</span><span class="p">=</span><span class="s">*</span>
+<span class="py">management.endpoints.enabled-by-default</span><span class="p">=</span><span class="s">true</span>
+<span class="py">cas.monitor.endpoints.endpoint.defaults.access</span><span class="p">=</span><span class="s">AUTHENTICATED</span>
+<span class="py">spring.security.user.name</span><span class="p">=</span><span class="s">casuser</span>
+<span class="py">spring.security.user.password</span><span class="p">=</span><span class="s">Mellon</span>
+</code></pre></div></div>
+
+<div class="alert alert-warning">
+  <strong>WATCH OUT!</strong><br />The above collection of settings <strong>MUST</strong> only be used for demo purposes and serve as an <strong>EXAMPLE</strong>. It is not wise to enable and expose all actuator endpoints to the web and certainly, the security of the exposed endpoints should be taken into account very seriously. None of the CAS or Spring Boot actuator endpoints are enabled by default. For production, you should carefully choose which endpoints to expose.
+</div>
+
+<p>Once the changes are committed, we can switch back to the CAS server and re-run it one more time for it to pick up the <code class="highlighter-rouge">dev</code> profile settings and give us access to the relevant endpoints. When the CAS server is up, try invoking the <code class="highlighter-rouge">refresh</code> endpoint of the CAS server:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-k</span> <span class="nt">-u</span> casuser:Mellon https://sso.example.org:8555/cas/actuator/refresh <span class="nt">-d</span> <span class="o">{}</span> <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span>
+</code></pre></div></div>
+
+<p>Watch the CAS server logs where you see something like:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INFO [...CasConfigurationEventListener] - &lt;Refreshing CAS configuration. Stand by...&gt;
+</code></pre></div></div>
+
+<p>Let’s change something then. Switch over to the <code class="highlighter-rouge">cas-dev.properties</code> file of the Spring Cloud Config server and change and commit the following setting:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.authn.accept.users</span><span class="p">=</span><span class="s">casuser::Developers</span>
+</code></pre></div></div>
+
+<p>Once the change is committed, invoke the refresh endpoint again just as before and observe the output:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="s2">"config.client.version"</span><span class="p">,</span><span class="s2">"cas.authn.accept.users"</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<p>At this point, we should be able to pull up the CAS server in the browser and log in using <code class="highlighter-rouge">casuser</code> and <code class="highlighter-rouge">Developers</code> as credentials. Right? Give it a shot. Works as advertised, doesn’t it?!</p>
+
+<div class="alert alert-info">
+  <strong>Remember</strong><br />CAS components that qualify for the refresh operations need to have been marked with a special Java annotation that is <code>@RefreshScope</code>. If you find that the refresh operation does not actually do its job, chances are the components that are affected and controlled by the setting are not marked that way. A pull request should fix that right up!</div>
+
+<p>This is very handy. You can make a change to a given application and profile in a centralized configuration server and simply invoke the client, that is the CAS server to refresh itself. Imagine the possibilities with distributed development and configuration management!</p>
+
+<h3 id="what-about">What About…</h3>
+
+<p>There a few things that we have yet to address that would be outside the scope of this document. Here they are:</p>
+
+<h4 id="spring-cloud-config-bus">Spring Cloud Config Bus</h4>
+
+<p>If we have more than one CAS server we need to invoke the <code class="highlighter-rouge">refresh</code> endpoint for each and every single server node for it to refresh itself and pick up changes. To solve this problem, we can use Spring Cloud Bus. The bus acts as the communication channel across all CAS server nodes and can be backed via RabbitMQ, Kafka, Redis, etc. Each CAS server will be connected to the bus and gains a special endpoint called <code class="highlighter-rouge">bus-refresh</code>. Calling this endpoint will cause the receiving node to:</p>
+
+<ul>
+  <li>Get the latest configuration from the config server and update its configuration annotated by <code class="highlighter-rouge">@RefreshScope</code></li>
+  <li>Send a message to the bus informing about refresh event</li>
+  <li>All subscribed CAS nodes will update their configuration as well</li>
+</ul>
+
+<h4 id="spring-cloud-config-monitor">Spring Cloud Config Monitor</h4>
+
+<p>How does the Spring Cloud Config server detect changes from property sources? Could we make that process automatic, and have it broadcast a notification to CAS server nodes? This is where the Spring Cloud Config Monitor comes in handy. Similar to the above, the Config server can take advantage of this monitor that may be backed by a bus via AMQP. As changes are detected, they are broadcasted via events on the bus for the receiving CAS nodes to recognize and update themselves automatically, without manual refresh invocations.</p>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+
+<p>So, as you can observe there is quite a lot involved here to make for a cloud-ready distributed configuration management system. For many CAS deployments, this might seem overkill as most simply just rely on a standalone type of deployment where there is only a couple of CAS server nodes each feeding off of a simple <code class="highlighter-rouge">cas.properties</code> file adjacent to the node itself. It is true that the setting up CAS in the cloud using the described strategies in this post can take quite a bit of time and expertise. Thus, evaluate options carefully before jumping into coolness. If you have a strategic vision of managing configuration in distributed cloud-ready fashion, this is a good long-term investment. If you are thinking about centralizing application configuration across your entire institution and manage the configuration in a distributed and real-time fashion, it’s worth it to go through the setup. If you have use cases that require configuration changes in real-time without downtime and restarts in a distributed environment, it makes sense to explore such options. Otherwise, you may find the pain and the cons outweigh the pros.</p>
+
+<h2 id="finale">Finale</h2>
+
+<p>I hope this review was of some help to you and I am sure that both this post as well as the functionality it attempts to explain can be improved in any number of ways. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F25%2Fcas6-cloud-config-server%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Apereo+CAS+-+Integration+with+Spring+Cloud+Config+Server&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F25%2Fcas6-cloud-config-server%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F25%2Fcas6-cloud-config-server%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F25%2Fcas6-cloud-config-server%2F&amp;title=Apereo+CAS+-+Integration+with+Spring+Cloud+Config+Server" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F25%2Fcas6-cloud-config-server%2F&amp;title=Apereo+CAS+-+Integration+with+Spring+Cloud+Config+Server" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F25%2Fcas6-cloud-config-server%2F&amp;name=Apereo+CAS+-+Integration+with+Spring+Cloud+Config+Server" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F25%2Fcas6-cloud-config-server%2F&amp;title=Apereo+CAS+-+Integration+with+Spring+Cloud+Config+Server" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F25%2Fcas6-cloud-config-server%2F&amp;title=Apereo+CAS+-+Integration+with+Spring+Cloud+Config+Server" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F25%2Fcas6-cloud-config-server%2F&amp;t=Apereo+CAS+-+Integration+with+Spring+Cloud+Config+Server" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

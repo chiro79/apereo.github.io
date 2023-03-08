@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Extending CAS 5 Webflows &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Learn and master extending CAS 5 Spring Webflow definitions.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/10/07/webflow-extcfg/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Extending CAS 5 Webflows">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/10/07/webflow-extcfg/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Extending CAS 5 Webflows" />
+    <meta name="twitter:description" content="Learn and master extending CAS 5 Spring Webflow definitions." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/10/07/webflow-extcfg/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Extending CAS 5 Webflows</h1>
+  <span class="post-meta">Saturday, Oct 7, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    4 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+  <strong>Collaborate</strong><br />The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>Unlike previous versions, CAS 5 attempts to automate all required Spring Webflow changes on a per-module basis. This aligns well with the new <code class="highlighter-rouge">IDD</code> (Intention-Driven Development) model where all one should have to do is, declare the appropriate module in the build script…and viola. CAS will take care of the rest.</p>
+
+<p>You may ask: Wait! What’s really happening? How can it accomplish everything that we had to apply manually before? Why am I being asked to do less work? What exactly do the CAS internals look like? Did machines finally take over? Most importantly, Turkey’s <a href="http://ind.pn/2dsJ0iV">tombili</a> died?!</p>
+
+<p>Some answers follow.</p>
+
+<h1 id="hakuna-matata">Hakuna Matata</h1>
+
+<p>Stop worrying. Stop coding. You are no longer required to become a Spring Webflow ninja or Java champion overnight to apply a myriad of XML configuration snippets here and there to get something to work. That’s all taken care of for you. Sit back and relax.</p>
+
+<p>More importantly, avoid making ad-hoc changes to the Webflow as much as possible. Consider how the change you have in mind might be more suitable as a direct contribution to CAS itself so you can just take advantage of its configuration; NOT its maintenance.</p>
+
+<p>If you find something that is broken where the auto-configuration strategy fails to deliver as advertised, discuss that with the project community. Submit an issue and/or file a patch. Avoid one-off changes.</p>
+
+<h1 id="the-flexibility-argument">The “Flexibility” Argument</h1>
+
+<p>You may have been illusioned to think that the auto-configuration strategy is less powerful because much of the configuration is hidden away and you no longer have the flexibility to change anything and everything.</p>
+
+<p>Consider:</p>
+
+<ul>
+  <li>Just because you had access to 20 configuration files, that did not mean that you could go about changing anything and everything. This claim is not a question of capability. It’s a question of sanity and rationale. Is there a reason the project should expose you to 20 files where in reality, you mostly should, nay, MUST care about just a few?</li>
+  <li>Similarly, just because you now have access to only a few configuration files that does not mean your capabilities of modifying the software internals are now diminished and your freedom lost. The mechanics may have changed but not the underlying principals.</li>
+</ul>
+
+<p>In fact, you can do A LOT MORE.</p>
+
+<h1 id="what-did-you-do">What Did You Do?</h1>
+
+<p>So in the olden days, the following recipe was <em>more or less</em> what was done:</p>
+
+<ol>
+  <li>Write a Spring Webflow <code class="highlighter-rouge">Action</code> in Java that does X.</li>
+  <li>Declare a Spring bean definition in <code class="highlighter-rouge">XML</code> that configures that action class.</li>
+  <li>Modify the Spring Webflow configuration to point to that action at the right injection point.</li>
+</ol>
+
+<p>Wait. I may have missed a few steps. The recipe did also include:</p>
+
+<ol>
+  <li>A degree in software engineering and/or computer science may be needed.</li>
+  <li>Learn Java</li>
+  <li>Learn Spring; Convince yourself that this is really expected of you.</li>
+  <li>Learn Spring Webflow; Convince yourself that this is really expected of you.</li>
+  <li>Learn CAS APIs</li>
+  <li>Learn CAS Spring Webflow</li>
+</ol>
+
+<p>What is also inconsistent with this strategy is that a perhaps-simple change spanned across multiple unfamiliar barriers. Even if you learned and mastered all the underlying technologies, you still needed to touch Java, Spring XML and Spring Webflow XML configuration to get something to work.</p>
+
+<p>Is that verbosity the same thing as flexibility?</p>
+
+<h1 id="so-now-what">So, Now What?</h1>
+
+<p>Every CAS module that needs to dynamically augment the Spring Webflow routes simply takes on the following form:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomethingWebflowConfigurer</span> <span class="kd">extends</span> <span class="n">AbstractCasWebflowConfigurer</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doInitialize</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Flow</span> <span class="n">flow</span> <span class="o">=</span> <span class="kd">super</span><span class="o">.</span><span class="na">getLoginFlow</span><span class="o">();</span>
+        <span class="c1">// Magic happens; Call 'super' to see what you have access to...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>CAS modules register their <code class="highlighter-rouge">WebflowConfigurer</code> instances in <code class="highlighter-rouge">@Configuration</code> classes:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span><span class="o">(</span><span class="s">"SomethingConfiguration"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomethingConfiguration</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="nd">@Qualifier</span><span class="o">(</span><span class="s">"loginFlowRegistry"</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="n">FlowDefinitionRegistry</span> <span class="n">loginFlowDefinitionRegistry</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="n">FlowBuilderServices</span> <span class="n">flowBuilderServices</span><span class="o">;</span>
+
+    <span class="nd">@ConditionalOnMissingBean</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"somethingWebflowConfigurer"</span><span class="o">)</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="n">CasWebflowConfigurer</span> <span class="nf">somethingWebflowConfigurer</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">SomethingWebflowConfigurer</span> <span class="n">w</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SomethingWebflowConfigurer</span><span class="o">();</span>
+        <span class="n">w</span><span class="o">.</span><span class="na">setLoginFlowDefinitionRegistry</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">loginFlowDefinitionRegistry</span><span class="o">);</span>
+        <span class="n">w</span><span class="o">.</span><span class="na">setFlowBuilderServices</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">flowBuilderServices</span><span class="o">);</span>
+        <span class="o">...</span>
+        <span class="k">return</span> <span class="n">w</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>When CAS comes up, it scans the context to find <code class="highlighter-rouge">@Configuration</code> classes and then will invoke each and every <code class="highlighter-rouge">WebflowConfigurer</code> to execute changes.</p>
+
+<h1 id="what-about-you">What About You?</h1>
+
+<p>CAS itself handles Spring Webflow changes related to its first-class features by default automatically. That strategy equally applies, should you need to write your own configurers if you absolutely need to.</p>
+
+<h2 id="accidents-happen">Accidents Happen</h2>
+
+<p>What if you have two <code class="highlighter-rouge">WebflowConfigurer</code>s who all decide to inject actions and state into the same Spring Webflow areas? What if multiple <code class="highlighter-rouge">WebflowConfigurer</code>s are competing to set themselves up as starting points of the CAS webflow? Who wins, who mourns?</p>
+
+<p>Indeed, these are questions you ought to be thinking about as a <em>developer</em>. With power comes responsibility.</p>
+
+<h1 id="summary">Summary</h1>
+
+<p>Today:</p>
+
+<ul>
+  <li>Changes are all scoped to one technology, that is Java.</li>
+  <li>You have the full power of Java to dynamically augment the Spring Webflow as you see fit.</li>
+  <li>Your changes are all self-contained.</li>
+  <li>Unlike XML, your changes are now part of the CAS APIs. If you upgrade and something breaks, you will be notified immediately at build time.</li>
+</ul>
+
+<p>That’s all.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F07%2Fwebflow-extcfg%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Extending+CAS+5+Webflows&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F07%2Fwebflow-extcfg%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F07%2Fwebflow-extcfg%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F07%2Fwebflow-extcfg%2F&amp;title=Extending+CAS+5+Webflows" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F07%2Fwebflow-extcfg%2F&amp;title=Extending+CAS+5+Webflows" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F07%2Fwebflow-extcfg%2F&amp;name=Extending+CAS+5+Webflows" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F07%2Fwebflow-extcfg%2F&amp;title=Extending+CAS+5+Webflows" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F07%2Fwebflow-extcfg%2F&amp;title=Extending+CAS+5+Webflows" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F07%2Fwebflow-extcfg%2F&amp;t=Extending+CAS+5+Webflows" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

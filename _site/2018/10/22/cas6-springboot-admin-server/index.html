@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Apereo CAS - Spring Boot Admin Integration &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Learn to manage and monitor your Apereo CAS deployment using the Spring Boot Admin server and Spring Boot Actuator endpoints.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/10/22/cas6-springboot-admin-server/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apereo CAS - Spring Boot Admin Integration">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/10/22/cas6-springboot-admin-server/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Apereo CAS - Spring Boot Admin Integration" />
+    <meta name="twitter:description" content="Learn to manage and monitor your Apereo CAS deployment using the Spring Boot Admin server and Spring Boot Actuator endpoints." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/10/22/cas6-springboot-admin-server/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Apereo CAS - Spring Boot Admin Integration</h1>
+  <span class="post-meta">Monday, Oct 22, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    5 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+  <strong>Collaborate</strong><br />The blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p><a href="https://github.com/codecentric/spring-boot-admin">Spring Boot Admin</a> is a community project to manage and monitor Spring Boot applications such as Apereo CAS. The admin server presents an AngularJS-based UI that interacts with the <a href="https://apereo.github.io/cas/development/installation/Monitoring-Statistics.html">actuator endpoints</a> provided by Spring Boot in CAS. One CAS has registered itself with the admin server, either using the <em>Spring Admin Client</em> via HTTP or as part of discovery using technologies such as Eureka, Consul, etc, the admin server can begin to provide feature to monitor CAS for health status, JVM &amp; memory metrics, environment settings, thread dumps, audit data, logs, etc.</p>
+
+<p>While the CAS integration with the Spring Boot Admin server has been available for some time (likely since CAS <code class="highlighter-rouge">5.1.x</code>), in this tutorial we will focus on how to get the latest version of <a href="https://apereo.github.io/cas/development/installation/Configuring-Monitoring-Administration.html">Apereo CAS integrated with the Admin server</a>. At a high-level, we need to accomplish the following:</p>
+
+<ul>
+  <li>Deploy and configure the Spring Boot Admin server</li>
+  <li>Configure CAS to register with the Spring Boot Admin server</li>
+</ul>
+
+<p>Our starting position is based on the following:</p>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">6.0.0-RC3</code></li>
+  <li>Java 11</li>
+  <li><a href="https://github.com/apereo/cas-overlay-template">CAS Overlay</a> (The <code class="highlighter-rouge">master</code> branch specifically)</li>
+  <li><a href="https://github.com/apereo/cas-bootadmin-overlay">Spring Boot Admin overlay</a></li>
+  <li><a href="https://stedolan.github.io/jq/">CLI JSON Processor <code class="highlighter-rouge">jq</code></a></li>
+</ul>
+
+<h2 id="spring-boot-admin-server-configuration">Spring Boot Admin Server Configuration</h2>
+
+<p>The Spring Boot Admin server runs a standalone Spring Boot application on its own with a setup that is very similar to the CAS server itself. There is a <a href="https://github.com/apereo/cas-bootadmin-overlay">WAR overlay</a> that can be used to configure and deploy the server. Once you clone the Admin overlay project, you may need to create a <code class="highlighter-rouge">src/main/resources/application.properties</code> to control the behavior of the Admin server. By default, the application runs on port <code class="highlighter-rouge">8444</code> and does require SSL with a keystore that is expected at <code class="highlighter-rouge">file:/etc/cas/thekeystore</code>. The default settings should match the following:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">server.port</span><span class="p">=</span><span class="s">8444</span>
+
+<span class="py">server.ssl.key-store</span><span class="p">=</span><span class="s">file:/etc/cas/thekeystore</span>
+<span class="py">server.ssl.key-store-password</span><span class="p">=</span><span class="s">changeit</span>
+<span class="py">server.ssl.key-password</span><span class="p">=</span><span class="s">changeit</span>
+
+<span class="c"># Protect the boot-admin endpoints for basic/form authn
+</span><span class="py">spring.security.user.name</span><span class="p">=</span><span class="s">casuser</span>
+<span class="py">spring.security.user.password</span><span class="p">=</span><span class="s">e3f98098-edb5-4217-9dcb-ad04999a8794</span>
+</code></pre></div></div>
+
+<p>Given the Admin server itself is based on top of Spring Boot, all relevant Spring Boot settings here do also apply to control the general behavior of the web application. There are also many other settings available to tweak the behavior of the Admin server functionality itself. For a more comprehensive list, please see the <a href="https://codecentric.github.io/spring-boot-admin/current">Spring Boot Admin documentation</a>.</p>
+
+<p>Once you’re ready, execute the following:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh run
+</code></pre></div></div>
+
+<p>…at which point a successful startup attempt would demonstrate the following in the logs:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INFO [org.apereo.cas.CasSpringBootAdminServerWebApplication] - &lt;No active profile set, falling back to default profiles: default&gt;
+...
+INFO [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] - &lt;Tomcat started on port(s): 8444 (https) with context path ''&gt;
+...
+INFO [org.apereo.cas.CasSpringBootAdminServerWebApplication] - &lt;Started CasSpringBootAdminServerWebApplication in 20.798
+</code></pre></div></div>
+
+<p>…which allows you to navigate to Admin server in your browser at <code class="highlighter-rouge">https://admin.example.org:8444</code>:</p>
+
+<p><img src="https://user-images.githubusercontent.com/1205228/47254172-3b859700-d46b-11e8-8ea2-9d42cb7407d6.png" alt="image" /></p>
+
+<p>There is nothing registered with the Admin server yet. As the next step, we will connect our CAS server to the Admin server.</p>
+
+<h2 id="cas-server-configuration">CAS Server Configuration</h2>
+
+<p>Each individual CAS server is given the ability to auto-register itself with the Admin server. This is done using the following module that should go into the CAS overlay:</p>
+
+<div class="language-gradle highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">compile</span> <span class="s2">"org.apereo.cas:cas-server-support-bootadmin-client:${project.'cas.version'}"</span>
+</code></pre></div></div>
+
+<p>Of course, we need to teach CAS about our Admin server using the <code class="highlighter-rouge">cas.properties</code> file:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">spring.boot.admin.client.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">spring.boot.admin.client.url</span><span class="p">=</span><span class="s">https://admin.example.org:8444</span>
+<span class="py">spring.boot.admin.client.instance.management-base-url</span><span class="p">=</span><span class="s">https://sso.example.org/cas</span>
+</code></pre></div></div>
+
+<p>So, our CAS server is running on <code class="highlighter-rouge">https://sso.example.org/cas</code> which presents a number of <a href="https://apereo.github.io/cas/development/installation/Monitoring-Statistics.html">actuator endpoints</a> that are used by the Admin server to monitor status and report results. Therefore, we will need to enable the endpoints in CAS in <code class="highlighter-rouge">cas.properties</code> so they may be consumable by the Admin server:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">management.endpoints.enabled-by-default</span><span class="p">=</span><span class="s">true</span>
+<span class="py">management.endpoints.web.exposure.include</span><span class="p">=</span><span class="s">*</span>
+
+<span class="py">spring.security.user.name</span><span class="p">=</span><span class="s">casuser</span>
+<span class="py">spring.security.user.password</span><span class="p">=</span><span class="s">Mellon</span>
+
+<span class="py">cas.monitor.endpoints.endpoint.defaults.access</span><span class="p">=</span><span class="s">AUTHENTICATED</span>
+</code></pre></div></div>
+
+<p>These settings are primarily offered and controlled by Spring Boot and accomplish the following:</p>
+
+<ul>
+  <li>Enable all actuator endpoints by default.</li>
+  <li>Expose all actuator endpoints over the web via http.</li>
+  <li>Secure all actuator endpoints using basic authentication where the master credentials are <code class="highlighter-rouge">casuser</code> and <code class="highlighter-rouge">Mellon</code>.</li>
+</ul>
+
+<div class="alert alert-warning">
+  <strong>WATCH OUT!</strong><br />The above collection of settings <strong>MUST</strong> only be used for demo purposes and serve as an <strong>EXAMPLE</strong>. It is not wise to enable and expose all actuator endpoints to the web and certainly, the security of the exposed endpoints should be taken into account very seriously. None of the CAS or Spring Boot actuator endpoints are enabled by default. For production you should carefully choose which endpoints to expose.
+</div>
+
+<p>To verify, you can try to hit a few of the endpoints to see the behavior in action:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-u</span> casuser:Mellon <span class="nt">-k</span> https://sso.example.org/cas/actuator/status | jq
+</code></pre></div></div>
+
+<p>…where you get back:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OK"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"health"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"misaghmoayyed"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"server"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://sso.example.org/cas"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6.0.0-RC3 - ..."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>You can also try hitting <code class="highlighter-rouge">actuator/health</code>, <code class="highlighter-rouge">actuator/info</code> and <a href="(https://apereo.github.io/cas/development/installation/Monitoring-Statistics.html)">many others</a>.</p>
+
+<p>Now that are endpoints are enabled and secured, we need to configure CAS to use our security credentials when contacting the Admin server as well:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">spring.boot.admin.client.instance.metadata.user.name</span><span class="p">=</span><span class="s">casuser</span>
+<span class="py">spring.boot.admin.client.instance.metadata.user.password</span><span class="p">=</span><span class="s">Mellon</span>
+
+<span class="c"># In case Spring Boot Admin endpoints are protected via basic authn
+</span><span class="py">spring.boot.admin.client.username</span><span class="p">=</span><span class="s">casuser</span>
+<span class="py">spring.boot.admin.client.password</span><span class="p">=</span><span class="s">e3f98098-edb5-4217-9dcb-ad04999a8794</span>
+</code></pre></div></div>
+
+<div class="alert alert-warning">
+  <strong>WATCH OUT!</strong><br />While the actuator endpoints in CAS are protected in some fashion, the endpoints of the Spring Boot Admin server that are responsible for handling registration requests and more are not by default protected using the existing overlay. This is an item that will likely get worked out before the final CAS release.&lt;/a&gt;.
+</div>
+
+<p>When you build and deploy CAS next, the Admin server should properly recognize the registration request and display something like this:</p>
+
+<p><img src="https://user-images.githubusercontent.com/1205228/47254581-58bd6400-d471-11e8-9eb4-75709190355e.png" alt="image" /></p>
+
+<p>…where you can drill into the app and look at various screens and monitoring activity. For example, check out the available http web mappings and URLs:</p>
+
+<p><img src="https://user-images.githubusercontent.com/1205228/47254701-a6869c00-d472-11e8-9e54-2123ae63c414.png" alt="image" /></p>
+
+<p>…or logging configuration:</p>
+
+<p><img src="https://user-images.githubusercontent.com/1205228/47254710-ca49e200-d472-11e8-94e8-7cb5a711f5a7.png" alt="image" /></p>
+
+<p>There is a lot more you can do with the Admin server to add security, custom notifications, etc. Please see the <a href="https://codecentric.github.io/spring-boot-admin/current">Spring Boot Admin documentation</a>.</p>
+
+<h2 id="finale">Finale</h2>
+
+<p>I hope this review was of some help to you and I am sure that both this post as well as the functionality it attempts to explain can be improved in any number of ways. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F22%2Fcas6-springboot-admin-server%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Apereo+CAS+-+Spring+Boot+Admin+Integration&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F22%2Fcas6-springboot-admin-server%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F22%2Fcas6-springboot-admin-server%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F22%2Fcas6-springboot-admin-server%2F&amp;title=Apereo+CAS+-+Spring+Boot+Admin+Integration" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F22%2Fcas6-springboot-admin-server%2F&amp;title=Apereo+CAS+-+Spring+Boot+Admin+Integration" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F22%2Fcas6-springboot-admin-server%2F&amp;name=Apereo+CAS+-+Spring+Boot+Admin+Integration" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F22%2Fcas6-springboot-admin-server%2F&amp;title=Apereo+CAS+-+Spring+Boot+Admin+Integration" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F22%2Fcas6-springboot-admin-server%2F&amp;title=Apereo+CAS+-+Spring+Boot+Admin+Integration" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F10%2F22%2Fcas6-springboot-admin-server%2F&amp;t=Apereo+CAS+-+Spring+Boot+Admin+Integration" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

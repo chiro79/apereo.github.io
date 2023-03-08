@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Introduction to CAS Commandline Shell &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A short review of an interactive command-line shell provided by Apereo CAS.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2017/10/30/intro-cas-cli-shell/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Introduction to CAS Commandline Shell">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2017/10/30/intro-cas-cli-shell/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Introduction to CAS Commandline Shell" />
+    <meta name="twitter:description" content="A short review of an interactive command-line shell provided by Apereo CAS." />
+    <meta name="twitter:url" content="https://apereo.github.io/2017/10/30/intro-cas-cli-shell/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Introduction to CAS Commandline Shell</h1>
+  <span class="post-meta">Monday, Oct 30, 2017</span><br>
+  
+  <span class="post-meta small">
+  
+    5 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <!--
+<div class="alert alert-danger">
+  <strong>WATCH OUT!</strong><br/>This post is not official yet and may be heavily edited as CAS development makes progress. <a href="https://apereo.github.io/feed.xml">Watch</a> for further updates.
+</div>
+-->
+
+<div class="alert alert-success">
+  <strong>Collaborate</strong><br />This blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>Amongst the new features of CAS <code class="highlighter-rouge">5.2.x</code> is a <a href="https://apereo.github.io/cas/development/installation/Configuring-Commandline-Shell.html">command-line tool</a> whose objective is to automate some of the more mundane deployment tasks by tapping into the CAS APIs to provide help on available settings/modules and various other utility functions. This shell engine that is based on <a href="https://projects.spring.io/spring-shell/">Spring Shell</a> is presented as both a CLI utility and an interactive shell.</p>
+
+<p>In this post, I am going to provide an overview of the CAS Shell and enumerate a few utility functions that might prove useful during a CAS deployment.</p>
+
+<h1 id="environment">Environment</h1>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">5.2.0-SNAPSHOT</code></li>
+  <li><a href="https://github.com/apereo/cas-overlay-template">CAS Maven WAR Overlay</a></li>
+</ul>
+
+<h1 id="spawn-the-shell">Spawn The Shell</h1>
+
+<p>While I am using the Maven WAR overlay, note that each CAS WAR Overlay deployment project should already be equipped with this functionality. You should not have to do anything <em>special</em> and extra to interact with the shell. See the relevant overlay documentation and <code class="highlighter-rouge">README</code> file for more info on how to invoke and work with the shell.</p>
+
+<p>Specifically applicable to the Maven WAR Overlay, one may launch the CLI by simply executing the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh cli
+</code></pre></div></div>
+
+<p>This should present you with the general welcome message as well as a list of command-line options accepted for various functions.</p>
+
+<h1 id="command-line-options">Command-line Options</h1>
+
+<p>One of the more useful utilities baked into CAS CLI tool is the ability to search for CAS settings and get better documentation and help on each. All individual CAS properties in most cases carry relevant Javadocs, examples, and links embedded right alongside the field in the housing component. The CAS build process upon every release attempts to collect all settings and their documentation into a JSON metadata file that can be queried by the CLI tool for more info. This of course not only includes CAS specific settings (i.e. <code class="highlighter-rouge">cas.authn.xyz=something</code>) but also all other Spring Boot settings and just about any other component that exposes its settings via a <code class="highlighter-rouge">@ConfigurationProperties</code>.</p>
+
+<p>If you want to learn more about how this is done, please <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/configuration-metadata.html">see this article</a>.</p>
+
+<h2 id="examples">Examples</h2>
+
+<div class="alert alert-info">
+  <strong>Note</strong><br />For the majority of the listed commands, I am going to skip the output. Feel free to try these yourself and observe the outcome.
+</div>
+
+<h3 id="configuration-metadata">Configuration Metadata</h3>
+
+<p>Let’s say we are looking for additional documentation on <code class="highlighter-rouge">duoApplicationKey</code>. To run the search, use:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Skipping the CAS Banner via `-skb` </span>
+./build.sh cli <span class="nt">-skb</span> <span class="nt">-p</span> duoApplicationKey
+</code></pre></div></div>
+
+<p>Cool, but maybe that’s too limiting. How about notes on every setting in CAS that deals with <code class="highlighter-rouge">duo</code>?</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh cli <span class="nt">-skb</span> <span class="nt">-p</span> duo.+
+</code></pre></div></div>
+
+<p>The output seems too verbose. How about we compact it a little bit?</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh cli <span class="nt">-skb</span> <span class="nt">-p</span> duo.+ <span class="nt">--summary</span>
+</code></pre></div></div>
+
+<p>Nice. What about some other non-CAS setting like, I don’t know, <code class="highlighter-rouge">maxHttpPostSize</code>?</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh cli <span class="nt">-p</span> maxHttpPostSize <span class="nt">-skb</span>
+</code></pre></div></div>
+
+<p>You see the above setting applies to Tomcat, Jetty and a few more. Here is a slightly fancier and more direct version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build.sh cli <span class="nt">-p</span> server.tomcat.max-http-post-size <span class="nt">-skb</span>
+</code></pre></div></div>
+
+<h3 id="others">Others</h3>
+
+<p>Other CLI options include the following:</p>
+
+<ul>
+  <li>Generating JWTs: <code class="highlighter-rouge">./build.sh cli -gw -sub Misagh -skb</code></li>
+  <li>Generating keys for a CAS setting group that requires signing/encryption keys: <code class="highlighter-rouge">./build.sh cli -gk -p cas.tgc -skb</code></li>
+  <li>…</li>
+</ul>
+
+<p>As more options and commands are added to the CLI, you should always confirm new additions by simply running <code class="highlighter-rouge">./build.sh cli -h -skb</code> to get a listing of all options.</p>
+
+<h1 id="interactive-shell">Interactive Shell</h1>
+
+<p>There is also an interactive shell which essentially provides identical functionality to the CLI yet it is more flexible and powerful in many ways. Some of the key highlights include:</p>
+
+<ul>
+  <li>A simple, annotation-driven, programming model to contribute custom commands</li>
+  <li>Tab completion, colorization, and script execution</li>
+  <li>Already built-in commands, such as clear screen, gorgeous help, exit</li>
+</ul>
+
+<p>You can simply launch into the shell via <code class="highlighter-rouge">./build.sh cli -sh</code>. While in the shell, simply type <code class="highlighter-rouge">quit</code> to exit the shell.</p>
+
+<h2 id="shell-commands">Shell Commands</h2>
+
+<p>In addition to a number built-in commands such as <code class="highlighter-rouge">help</code>, <code class="highlighter-rouge">version</code> and the most useful <code class="highlighter-rouge">cls</code> or <code class="highlighter-rouge">clear</code>, the following CAS-provided commands are available.</p>
+
+<p>Remember:</p>
+
+<ul>
+  <li>Use double-tab to take advantage of auto-completion and history.</li>
+  <li>Use <code class="highlighter-rouge">help</code> to see a listing of all commands.</li>
+  <li>Use <code class="highlighter-rouge">help &lt;command-name&gt;</code> to learn more about the command itself.</li>
+</ul>
+
+<h3 id="find">Find</h3>
+
+<p>Identical to its CLI equivalent, allows one to look up a CAS setting:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cas&gt;find <span class="nt">--name</span> duo
+</code></pre></div></div>
+
+<h3 id="undocumented-settings">Undocumented Settings</h3>
+
+<p>Acts as a sanity check and lists undocumented properties for which allowing contributors to step up and contribute to the documentation:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cas&gt;list-undocumented
+</code></pre></div></div>
+
+<h3 id="generate-jwts">Generate JWTs</h3>
+
+<p>Identical to its CLI equivalent:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cas&gt;generate-jwt <span class="nt">--subject</span> Misagh
+</code></pre></div></div>
+
+<h3 id="generate-crypto-keys">Generate Crypto Keys</h3>
+
+<p>Identical to its CLI equivalent:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cas&gt;generate-key <span class="nt">--group</span> cas.tgc
+</code></pre></div></div>
+
+<h3 id="json-to-yaml">JSON To YAML</h3>
+
+<p>Convert a CAS service definition file in JSON to YAML and optionally save the file at path:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cas&gt;generate-yaml /etc/cas/config/services/WSFED-400.json <span class="nt">--destination</span> /etc/cas/config/services/WSFED-400.yml
+</code></pre></div></div>
+
+<h3 id="validate-service">Validate Service</h3>
+
+<p>Validate a service definition file in JSON or YAML to ensure correctness of syntax. Note that this command should and does support all service types (SAML2, OAuth, etc) provided by CAS:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cas&gt;validate-service <span class="nt">--file</span> /etc/cas/config/services/WSFED-400.json
+</code></pre></div></div>
+
+<h3 id="add-properties">Add Properties</h3>
+
+<p>All associated settings with a given property group are added to the properties file defined. Existing values should be preserved.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cas&gt;add-properties <span class="nt">--group</span> cas.tgc <span class="nt">--file</span> /etc/cas/config/my.properties
+</code></pre></div></div>
+
+<h1 id="extending-commands">Extending Commands</h1>
+
+<p>When the shell is launched with the <code class="highlighter-rouge">-sh</code> option, all components under the <code class="highlighter-rouge">org.apereo.cas.shell</code> that are annotated with <code class="highlighter-rouge">org.springframework.stereotype.Service</code> are picked up as command implementations.</p>
+
+<p>The outline of a given command is as such:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">apereo</span><span class="o">.</span><span class="na">cas</span><span class="o">.</span><span class="na">shell</span><span class="o">.</span><span class="na">commands</span><span class="o">;</span>
+
+<span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DoesStuffCommand</span> <span class="kd">implements</span> <span class="n">CommandMarker</span> <span class="o">{</span>
+   
+    <span class="nd">@CliCommand</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"do-stuff"</span><span class="o">,</span> <span class="n">help</span> <span class="o">=</span> <span class="s">"This does stuff"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doStuff</span><span class="o">()</span> <span class="o">{</span>
+       <span class="o">...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>If you are interested in adding new and fancier commands, by all means create your own based on the above outline and contribute back.</p>
+
+<h1 id="summary">Summary</h1>
+
+<p>I hope this review was of some help to you. As you have been reading, I can guess that you have come up with a number of missing bits and pieces that would satisfy your use cases more comprehensively with CAS. In a way, that is exactly what this tutorial intends to inspire. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F30%2Fintro-cas-cli-shell%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Introduction+to+CAS+Commandline+Shell&amp;url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F30%2Fintro-cas-cli-shell%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F30%2Fintro-cas-cli-shell%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F30%2Fintro-cas-cli-shell%2F&amp;title=Introduction+to+CAS+Commandline+Shell" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F30%2Fintro-cas-cli-shell%2F&amp;title=Introduction+to+CAS+Commandline+Shell" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F30%2Fintro-cas-cli-shell%2F&amp;name=Introduction+to+CAS+Commandline+Shell" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F30%2Fintro-cas-cli-shell%2F&amp;title=Introduction+to+CAS+Commandline+Shell" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F30%2Fintro-cas-cli-shell%2F&amp;title=Introduction+to+CAS+Commandline+Shell" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2017%2F10%2F30%2Fintro-cas-cli-shell%2F&amp;t=Introduction+to+CAS+Commandline+Shell" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hope for GitHub Pages &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="GitHub Pages could be a win for Apereo beyond blogging.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2016/09/16/hope-for-gh-pages/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Hope for GitHub Pages">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2016/09/16/hope-for-gh-pages/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Hope for GitHub Pages" />
+    <meta name="twitter:description" content="GitHub Pages could be a win for Apereo beyond blogging." />
+    <meta name="twitter:url" content="https://apereo.github.io/2016/09/16/hope-for-gh-pages/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Hope for GitHub Pages</h1>
+  <span class="post-meta">Friday, Sep 16, 2016</span><br>
+  
+  <span class="post-meta small">
+  
+    5 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <h1 id="short-version">Short version</h1>
+
+<ul>
+  <li>“+1” for Apereo adoption of <a href="https://pages.github.com/">GitHub Pages</a> for this website.</li>
+  <li>I’m hopeful for applying this approach beyond blogging.</li>
+  <li>Static site generators have lots of advantages. Those advantages align with Apereo values and realities.</li>
+  <li>Call to action to use <a href="https://pages.github.com/">GitHub Pages</a> more and better and thereby make Apereo websites better.</li>
+</ul>
+
+<h1 id="1">+1</h1>
+
+<p>I’m really excited and supportive about Apereo’s adopting <a href="https://pages.github.com/">GitHub Pages</a> for this website, and I’m hopeful about using it for more than just a blog.</p>
+
+<p>Not only do I concur that this is a good idea,</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dm1p9mE9RBw?rel=0&amp;t=2s" frameborder="0" allowfullscreen=""></iframe>
+
+<p>(Which is to say, “+1”, in Apache parlance.)</p>
+
+<h1 id="advantages-of-static-site-generator-websites">Advantages of static site generator websites</h1>
+
+<p><a href="https://jekyllrb.com/">Jekyll</a>-driven <a href="https://pages.github.com/">GitHub Pages</a> has tremendous advantages aligned with Apereo values and operations.</p>
+
+<ul>
+  <li>Driving the website by <a href="https://github.com/apereo/apereo.github.io">a public Git repository</a> improves <strong>transparency</strong>. It means anyone can inspect the content and <a href="https://github.com/apereo/apereo.github.io/commits/master">history</a> of the site to understand just what is being said and the history of saying it. And anyone can inspect the program that generates the site from the content files. Not just the open source technology used in the abstract - the <a href="https://github.com/apereo/apereo.github.io/tree/master/_layouts">specific configuration</a>, instantiation of that automation.</li>
+  <li>Driving the website by a public GitHub repository improves <strong>openness</strong>. It means <a href="https://help.github.com/articles/creating-a-pull-request/">anyone can propose a change</a>. Anyone can even <a href="https://help.github.com/articles/editing-files-in-another-user-s-repository/">edit through the GitHub UI in a Web browser</a> if working with text files locally is off-putting.</li>
+  <li>Driving the website by a public GitHub repository improves <strong>meritocracy</strong>. It means when anyone proposes a change, that proposed change can be publicly evaluated on its merits. GitHub Pull Requests and their <a href="https://help.github.com/articles/reviewing-changes-in-pull-requests/">review features</a> are a beautiful thing.</li>
+  <li>Driving the website by a public GitHub repository improves <strong>collaboration</strong>. It means anyone can collaborate with anyone in any branches they need, in public or private forks if need be.</li>
+  <li>Modeling the website content as text files in a public GitHub repository better enables (much) <strong>better tools for working on the content</strong>. Programmers edit text files. A website that is fundamentally text files as content is more amenable to programmers and technically minded people doing great things efficiently. <code class="highlighter-rouge">grep</code> and its kin are beautiful and powerful. As is your text editor of choice.</li>
+  <li>Driving the website by an open and openly configured static site generator enables (much) <strong>better tools for working on the website framework</strong>. To the extent necessary, programmers can collaborate not just on the content but also on the “program” that generates the website from the content – the CSS, the templating, all the way through <a href="https://jekyllrb.com/">the free and open source static site generator framework itself</a>.</li>
+  <li>GitHub Pages is much better aligned with affordable and sustainable Apereo operations practices. Apereo runs very thin on infrastructure and even thinner on staff and volunteer bandwidth to wrangle infrastructure. GitHub Pages <strong>adds zero to Apereo’s server and database footprint</strong>.</li>
+  <li>GitHub Pages websites are also <strong>free as in cheapness</strong>, which lines up well with Apereo funding levels. Apereo maybe should pay someone to develop awesome website content (arguable). Apereo definitely shouldn’t be paying anyone to host a website, operate its database, keep WordPress patched. Accept free-as-in-cheapness infrastructure for commodity website hosting and repurpose scarce resources for something more higher-ed-open-source-IT-aligned.</li>
+  <li>Static site generators enable higher quality results. It’s easier for web developers to collaborate on making a website much sharper, much snappier, much better when using sharper tools.</li>
+  <li>Using <a href="https://jekyllrb.com/">Jekyll</a>-driven <a href="https://pages.github.com/">GitHub Pages</a> <strong>eases future migrations</strong>. While GitHub Pages operates with panache, <a href="https://jekyllrb.com/">Jekyll</a> is open source and generates a static website that can be served up from just about anywhere on just about any technology stack. Using GitHub Pages <em>doesn’t</em> entail vendor lock-in.</li>
+  <li>Using <a href="https://jekyllrb.com/">Jekyll</a>-driven <a href="https://pages.github.com/">GitHub Pages</a> eases future migrations. If Apereo ever wants to port this content to a different website management platform, well, all the content is just text files. It’s hard to beat that as a friendly starting point for laying hands on this content and importing it into something else.</li>
+</ul>
+
+<p>(These are advantages of open source public-git-repository-driven static site generators more generally. Jekyll-driven GitHub Pages is a particularly nice implementation of an approach that can be achieved with more hassle using other specific technologies.)</p>
+
+<h1 id="examples-of-use-of-github-pages-outside-and-within-apereo">Examples of use of GitHub Pages, outside and within Apereo</h1>
+
+<p>Okay, so <a href="https://pages.github.com/">GitHub Pages</a> in particular, and static site generators more generally, are technically awesome. You might reasonably ask, why is this website nonetheless so very ugly?</p>
+
+<p>I want to assure that GitHub Pages sites can be beautiful, usable, arbitrarily comprehensive, etc.</p>
+
+<p>GitHub has a <a href="https://github.com/showcases/github-pages-examples">showcase of GitHub Pages examples</a>. These are some of the more website-flavored examples:</p>
+
+<ul>
+  <li><a href="http://electron.atom.io/community/">Electron</a></li>
+  <li><a href="https://facebook.github.io/react/">react</a></li>
+  <li><a href="https://developer.github.com/">developer.github</a></li>
+</ul>
+
+<p>We need not look so far afield to find examples of using GitHub Pages to make websites happen: there are usages within Apereo already.</p>
+
+<ul>
+  <li><a href="https://apereo.github.io/cas/">CAS</a></li>
+  <li><a href="http://apereo-learning-analytics-initiative.github.io/OpenDashboard/">OpenDashboard</a></li>
+  <li><a href="http://oaeproject.org/">OAE</a> (note this demonstrates that GitHub Pages sites can have arbitrary hostnames, don’t have to be .github.io branded.)</li>
+  <li><a href="https://csev.github.io/tsugi/">Tsugi</a></li>
+</ul>
+
+<h1 id="next-steps">Next steps</h1>
+
+<p>Better is better. Make things better, and then make things better again. Repeat.</p>
+
+<p>I believe that static site generator approaches are better than database-backed-web-application approaches (WordPress, Drupal, even my beloved Ghost) for web sites, more often than not.</p>
+
+<p>GitHub Pages-driven <a href="http://oaeproject.org/">oaeproject.org</a> feels more awesome, more beautiful, more full of potential to me than does <a href="https://www.apereo.org/projects/apereo-oae">its equivalent pages within apereo.org</a>.</p>
+
+<p>The next step is to do more of that. To keep making Apereo content better using better tools. And then to repeat.</p>
+
+<p>I hope these steps will add up to a walk will be a walk out of database-backed website solutions and into static site generator solutions, for the better productivity, quality, openness, transparency, and sustainability of Apereo website delivery.</p>
+
+<h1 id="disclaimer">Disclaimer</h1>
+
+<p>Opinions expressed are my own and are not necessarily those of Apereo, of my employer, of the uPortal project, or of other projects and organizations with which I am involved.</p>
+
+<p><a href="https://twitter.com/awpetro">Andrew Petro</a></p>
+
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2016%2F09%2F16%2Fhope-for-gh-pages%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Hope+for+GitHub+Pages&amp;url=https%3A%2F%2Fapereo.github.io%2F2016%2F09%2F16%2Fhope-for-gh-pages%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2016%2F09%2F16%2Fhope-for-gh-pages%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2016%2F09%2F16%2Fhope-for-gh-pages%2F&amp;title=Hope+for+GitHub+Pages" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2016%2F09%2F16%2Fhope-for-gh-pages%2F&amp;title=Hope+for+GitHub+Pages" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2016%2F09%2F16%2Fhope-for-gh-pages%2F&amp;name=Hope+for+GitHub+Pages" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2016%2F09%2F16%2Fhope-for-gh-pages%2F&amp;title=Hope+for+GitHub+Pages" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2016%2F09%2F16%2Fhope-for-gh-pages%2F&amp;title=Hope+for+GitHub+Pages" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2016%2F09%2F16%2Fhope-for-gh-pages%2F&amp;t=Hope+for+GitHub+Pages" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>

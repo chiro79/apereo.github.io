@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Apereo CAS - Attribute-based Application Authorization &#8211; Apereo Community Blog</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A walkthrough to demonstrate how one might fetch attributes from a number of data sources, turning them into roles that could then be used to enforce application access and authorization.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Apereo Project Participants">
+    
+    <meta name="keywords" content="">
+    <link rel="canonical" href="https://apereo.github.io/2018/02/20/cas-service-rbac-attributeresolution/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Apereo Community Blog" href="/feed.xml" />
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+          crossorigin="anonymous">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
+    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+            integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+            crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202303081604" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js??config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apereo CAS - Attribute-based Application Authorization">
+    <meta property="og:description" content="This is a blog managed and edited by the Apereo project participants. It is typically used to post project updates, announce news, etc.">
+    <meta property="og:url" content="https://apereo.github.io/2018/02/20/cas-service-rbac-attributeresolution/">
+    <meta property="og:site_name" content="Apereo Community Blog">
+    
+    <meta property="og:image" content="https://apereo.github.io/images/me.jpeg">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@Apereo" />
+        <meta name="twitter:creator" content="@Apereo" />
+    
+    <meta name="twitter:title" content="Apereo CAS - Attribute-based Application Authorization" />
+    <meta name="twitter:description" content="A walkthrough to demonstrate how one might fetch attributes from a number of data sources, turning them into roles that could then be used to enforce application access and authorization." />
+    <meta name="twitter:url" content="https://apereo.github.io/2018/02/20/cas-service-rbac-attributeresolution/" />
+    
+    <meta name="twitter:image" content="https://apereo.github.io/images/me.jpeg" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-83384532-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+
+    
+    
+</head>
+
+<body class="site animated fade-in-down">
+  
+
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MZG9L7"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MZG9L7');</script>
+  
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://apereo.github.io" class="site-title">Apereo Community Blog</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/contact/">Say Hello</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">All Posts</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/search/">Search</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/apereo"></a>
+    
+    
+    
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/Apereo"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:info@apereo.org"></a>
+    
+    
+    
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Apereo CAS - Attribute-based Application Authorization</h1>
+  <span class="post-meta">Tuesday, Feb 20, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    6 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div class="alert alert-success">
+<strong>Collaborate</strong><br />This blog is managed and hosted on GitHub. If you wish to update the contents of this post or if you have found an inaccuracy and wish to make corrections, we recommend that you please submit a pull request to <a href="https://github.com/apereo/apereo.github.io">this repository</a>.
+</div>
+
+<p>A fairly common CAS deployment use case is to enforce access to a particular set of applications via user attributes and roles. Once the authentication/authorization server passed on the required attributes and entitlements to the application, each service might individually be tasked with controlling entry access, and once authorized, enforcement of a set of specific functions inside the application which the user may be allowed to carry out. The purpose of this tutorial is to present an alternative to the first scenario, by providing options to centrally control and manage that ruleset that allows the user to enter an application that is integrated with Apereo CAS.</p>
+
+<p>Our task list is rather short:</p>
+
+<ol>
+  <li>Configure CAS to fetch attributes from LDAP, JDBC and other potential sources.</li>
+  <li>Register an application with CAS and define authorization rules for access based on retrieved attributes.</li>
+</ol>
+
+<p>To keep this tutorial simple, we are going to stick with the default CAS method of authentication with the obvious assumption that our authentication sources shall be different from sources that may produce user attributes.</p>
+
+<h1 id="environment">Environment</h1>
+
+<ul>
+  <li>CAS <code class="highlighter-rouge">5.2.x</code></li>
+  <li><a href="https://github.com/apereo/cas-overlay-template">CAS Maven WAR Overlay</a></li>
+</ul>
+
+<p>Follow the instructions provided by the <code class="highlighter-rouge">README</code> file to produce a functional build.</p>
+
+<h1 id="attribute-retrieval">Attribute Retrieval</h1>
+
+<p><a href="https://apereo.github.io/cas/development/integration/Attribute-Resolution.html">Attribute resolution strategies</a> in CAS are controlled by the <a href="https://github.com/apereo/person-directory">Person Directory project</a>. The Person Directory dependency is automatically bundled with the CAS server and provides a number of options to fetch attributes and user data from sources such as LDAP, JDBC, etc. Since we do have multiple sources of attributes, the Person Directory component is also able to aggregate and merge the results and has options to decide how to deal with disagreements in case two sources produce conflicting data.</p>
+
+<p>There is very little left for us to do other than to teach CAS about our specific data sources.</p>
+
+<h2 id="ldap-attribute-retrieval">LDAP Attribute Retrieval</h2>
+
+<p>In the given <code class="highlighter-rouge">cas.properties</code> file, the following settings allow us to fetch attributes from LDAP:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">cas.authn.attributeRepository.ldap[0]</span><span class="py">.baseDn</span><span class="p">=</span><span class="s">ou=people,dc=example,dc=org</span>
+<span class="err">cas.authn.attributeRepository.ldap[0]</span><span class="py">.ldapUrl</span><span class="p">=</span><span class="s">ldap://localhost:1385</span>
+<span class="err">cas.authn.attributeRepository.ldap[0]</span><span class="py">.userFilter</span><span class="p">=</span><span class="s">uid={0}</span>
+<span class="err">cas.authn.attributeRepository.ldap[0]</span><span class="py">.useSsl</span><span class="p">=</span><span class="s">false</span>
+<span class="err">cas.authn.attributeRepository.ldap[0]</span><span class="py">.bindDn</span><span class="p">=</span><span class="s">...</span>
+<span class="err">cas.authn.attributeRepository.ldap[0]</span><span class="py">.bindCredential</span><span class="p">=</span><span class="s">...</span>
+
+<span class="err">cas.authn.attributeRepository.ldap[0]</span><span class="py">.attributes.displayName</span><span class="p">=</span><span class="s">displayName</span>
+<span class="err">cas.authn.attributeRepository.ldap[0]</span><span class="py">.attributes.givenName</span><span class="p">=</span><span class="s">givenName</span>
+<span class="err">cas.authn.attributeRepository.ldap[0]</span><span class="py">.attributes.mail</span><span class="p">=</span><span class="s">email</span>
+</code></pre></div></div>
+
+<p>The above configuration defined the very basic essentials as far as LDAP connection information while also teaching CAS the set of attributes that should be first <em>retrieved</em> and optionally <em>remapped</em>. In practice, CAS would begin to fetch <code class="highlighter-rouge">displayName</code>, <code class="highlighter-rouge">givenName</code> and <code class="highlighter-rouge">mail</code> from the directory server and then process the final collection to include <code class="highlighter-rouge">displayName</code>, <code class="highlighter-rouge">givenName</code> and <code class="highlighter-rouge">email</code>. From this point on, CAS only knows of the user’s email address under the <code class="highlighter-rouge">email</code> attribute and needless to say, this is the attribute name that should be used everywhere else in the CAS configuration.</p>
+
+<div class="alert alert-info">
+<strong>Multiple Sources</strong><br />CAS settings able to accept multiple values are typically documented with an index, such as <code>cas.some.setting[0]=value</code>. The index [0] is meant to be incremented by the adopter to allow for distinct multiple configuration blocks
+</div>
+
+<h2 id="jdbc-attribute-retrieval">JDBC Attribute Retrieval</h2>
+
+<p>The  table <code class="highlighter-rouge">table_users</code> in our HyperSQL database contains the user attributes we need:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><code class="highlighter-rouge">uid</code></th>
+      <th><code class="highlighter-rouge">attribute</code></th>
+      <th><code class="highlighter-rouge">value</code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">casuser</code></td>
+      <td><code class="highlighter-rouge">role</code></td>
+      <td><code class="highlighter-rouge">Manager</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">casuser</code></td>
+      <td><code class="highlighter-rouge">role</code></td>
+      <td><code class="highlighter-rouge">Supervisor</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">user2</code></td>
+      <td><code class="highlighter-rouge">role</code></td>
+      <td><code class="highlighter-rouge">Engineer</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The above schema is what’s referred to as a <em>Multi-Row</em> setup in the Person Directory configuration. In other words, this is the sort of setup that has more than one row dedicated to a user entry and quite possibly similar to above, multiple rows carry out multiple values for a single attribute definition (i.e. <code class="highlighter-rouge">role</code>). In order to teach CAS about this setup, we could start with the following settings:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">cas.authn.attributeRepository.jdbc[0]</span><span class="py">.attributes.role</span><span class="p">=</span><span class="s">personRole</span>
+
+<span class="err">cas.authn.attributeRepository.jdbc[0]</span><span class="py">.singleRow</span><span class="p">=</span><span class="s">false</span>
+<span class="err">cas.authn.attributeRepository.jdbc[0]</span><span class="py">.columnMappings.attribute</span><span class="p">=</span><span class="s">value</span>
+
+<span class="err">cas.authn.attributeRepository.jdbc[0]</span><span class="py">.sql</span><span class="p">=</span><span class="s">SELECT * FROM table_users WHERE {0}</span>
+<span class="err">cas.authn.attributeRepository.jdbc[0]</span><span class="py">.username</span><span class="p">=</span><span class="s">uid</span>
+<span class="err">cas.authn.attributeRepository.jdbc[0]</span><span class="py">.driverClass</span><span class="p">=</span><span class="s">...</span>
+<span class="err">cas.authn.attributeRepository.jdbc[0]</span><span class="py">.user</span><span class="p">=</span><span class="s">...</span>
+<span class="err">cas.authn.attributeRepository.jdbc[0]</span><span class="py">.password</span><span class="p">=</span><span class="s">...</span>
+<span class="err">cas.authn.attributeRepository.jdbc[0]</span><span class="py">.url</span><span class="p">=</span><span class="s">...</span>
+</code></pre></div></div>
+
+<p>Pay attention to how the <code class="highlighter-rouge">columnMappings</code> setting defines a set of 1-1 mappings between columns that contain the attribute name vs the attribute value. Furthermore and similar to the LDAP setup, we are teaching CAS to fetch the attribute <code class="highlighter-rouge">role</code> (again, determined based on the mappings defined) and virtually <em>rename</em> the attribute to <code class="highlighter-rouge">personRole</code>. Just like the LDAP setup and from this point on, CAS only knows of the user’s role under the <code class="highlighter-rouge">personRole</code> attribute and needles to say, this is the attribute name that should be used everywhere else in the CAS configuration.</p>
+
+<h1 id="smoke-test">Smoke Test</h1>
+
+<p>At this point, you should be able to authenticate into CAS and observe in the logs that the constructed authenticated principal contains the following attributes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>... &lt;Authenticated principal <span class="o">[</span>casuser] with attributes <span class="o">[{</span><span class="nv">personRole</span><span class="o">=[</span>Manager, Supervisor], 
+<span class="nv">displayName</span><span class="o">=</span>Test User, <span class="nv">givenName</span><span class="o">=</span>CAS, <span class="nv">email</span><span class="o">=</span>casuser@example.org<span class="o">}]</span> ...&gt;
+</code></pre></div></div>
+
+<p>If you <a href="https://apereo.github.io/cas/development/installation/Troubleshooting-Guide.html">need to troubleshoot</a>, the best course of action would be to adjust logs to produce <code class="highlighter-rouge">DEBUG</code> information.</p>
+
+<h1 id="application-registration">Application Registration</h1>
+
+<p>The CAS service management facility allows CAS server administrators to declare and configure which services/applications may make use of CAS in different ways. The core component of the service management facility is the service registry that stores one or more registered services containing metadata that drives a number of CAS behaviors including authorization rules.</p>
+
+<p>To keep this tutorial simple, we are going to use the <a href="https://apereo.github.io/cas/development/installation/JSON-Service-Management.html">JSON Service Registry</a>. This registry reads services definitions from JSON configuration files on startup. JSON files are expected to be found inside a configured directory location and this registry will recursively look through the directory structure to find relevant JSON files.</p>
+
+<p>For this tutorial, we expect CAS to find our JSON registration record files using the following setting:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">cas.serviceRegistry.initFromJson</span><span class="p">=</span><span class="s">false</span>
+<span class="py">cas.serviceRegistry.json.location</span><span class="p">=</span><span class="s">file:/etc/cas/config/services</span>
+</code></pre></div></div>
+
+<p>…and inside the above directory, we are going to create an <code class="highlighter-rouge">ExampleApplication-100.json</code> file that contains the following:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example</span><span class="se">\\</span><span class="s2">.application</span><span class="se">\\</span><span class="s2">.edu.*"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"ExampleApplication"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"evaluationOrder"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>All that remains for us is to decorate the registration record with the authorization rules.</p>
+
+<h1 id="application-authorization-rules">Application Authorization Rules</h1>
+
+<p>The <a href="https://apereo.github.io/cas/development/installation/Configuring-Service-Access-Strategy.html">access strategy of a registered service</a> provides fine-grained control over the application authorization rules. It describes whether the service is allowed to use the CAS server, allowed to participate in single sign-on authentication, and (as it’s relevant for our use case here) it may also be configured to require a certain set of attributes that must exist before access can be granted to the service.</p>
+
+<div class="alert alert-info">
+<strong>Remember</strong><br />CAS is only gatekeeping here, deciding whether entrance is allowed to the given application. Once the user is allowed to enter, the extent of capabilities and functions available to the user are and must be decided by the application itself where CAS at that point would completely step aside.
+</div>
+
+<p>Our JSON registration record could be modified as such:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.RegexRegisteredService"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"serviceId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example</span><span class="se">\\</span><span class="s2">.application</span><span class="se">\\</span><span class="s2">.edu.*"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"ExampleApplication"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"evaluationOrder"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"accessStrategy"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"requiredAttributes"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"@class"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"java.util.HashMap"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"personRole"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"java.util.HashSet"</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"Manager"</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In simpler terms, the above configuration is saying: <em>Access to applications that interact with CAS whose URL matches the pattern defined by the <code class="highlighter-rouge">serviceId</code> is only granted if the authenticating user has an attribute <code class="highlighter-rouge">personRole</code> that contains the value <code class="highlighter-rouge">Manager</code></em>.</p>
+
+<h1 id="summary">Summary</h1>
+
+<p>I hope this review was of some help to you and I am sure that both this post as well as the functionality it attempts to explain can be improved in any number of ways. Please feel free to <a href="https://apereo.github.io/cas/developer/Contributor-Guidelines.html">engage and contribute</a> as best as you can.</p>
+
+<p><a href="https://twitter.com/misagh84">Misagh Moayyed</a></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F20%2Fcas-service-rbac-attributeresolution%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Apereo+CAS+-+Attribute-based+Application+Authorization&amp;url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F20%2Fcas-service-rbac-attributeresolution%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F20%2Fcas-service-rbac-attributeresolution%2F" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F20%2Fcas-service-rbac-attributeresolution%2F&amp;title=Apereo+CAS+-+Attribute-based+Application+Authorization" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+      <a class="fa fa-digg" href="http://digg.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F20%2Fcas-service-rbac-attributeresolution%2F&amp;title=Apereo+CAS+-+Attribute-based+Application+Authorization" rel="nofollow" target="_blank" title="Share on Digg"></a>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F20%2Fcas-service-rbac-attributeresolution%2F&amp;name=Apereo+CAS+-+Attribute-based+Application+Authorization" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F20%2Fcas-service-rbac-attributeresolution%2F&amp;title=Apereo+CAS+-+Attribute-based+Application+Authorization" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+      <a class="fa fa-stumbleupon" href="http://www.stumbleupon.com/submit?url=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F20%2Fcas-service-rbac-attributeresolution%2F&amp;title=Apereo+CAS+-+Attribute-based+Application+Authorization" rel="nofollow" target="_blank" title="Share on StumbleUpon"></a>
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fapereo.github.io%2F2018%2F02%2F20%2Fcas-service-rbac-attributeresolution%2F&amp;t=Apereo+CAS+-+Attribute-based+Application+Authorization" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+  <div class="py2 post-footer">
+  <!-- <img src="/images/me.jpeg" alt="John Otander" class="avatar" /> -->
+
+  <p>
+    Follow Apereo on <a href="https://twitter.com/Apereo">Twitter</a>.
+  </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2019/02/01/610rc1-release/" class="post-link">
+        <h4 class="post-title">CAS 6.1.0 RC1 Feature Release</h4>
+        <p class="post-summary">...in which I present an overview of CAS 6.1.0 RC1 release.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oohlalamobile-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - OohLala Mobile SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate OohLala Mobile with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-oclc-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cranium Cafe SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cranium Cafe with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/24/cas53-elumen-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - eLumen SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate eLumen with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/23/cas53-getrave-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Rave SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Rave with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/22/cas53-hiretouch-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HireTouch SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HireTouch with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/06/cas53-office365-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Microsoft Office 365 SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Microsoft Office 365 with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-happyfox-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - HappyFox SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate HappyFox with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/04/cas53-cisco-webex-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - Cisco Webex SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate Cisco Webex with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2018/12/03/cas53-vmwareidentitymgr-saml2-integration/" class="post-link">
+        <h4 class="post-title">Apereo CAS - VMware Identity Manager SAML2 Integration</h4>
+        <p class="post-summary">Learn how to integrate VMware Identity Manager with Apereo CAS running as a SAML2 identity provider.</p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+
+          
+</footer>
+<!-- AnchorJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.min.js"></script>
+<script>
+    anchors.options.visible = 'always';
+    anchors.add('article h1, article h2, article h3, article h4, article h5, article h6');
+</script>
+
+	
+</body>
+</html>
